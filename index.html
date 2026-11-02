@@ -82,7 +82,16 @@
       /* Header mobile tetap melekat pada viewport ketika halaman digulir. */
       #mainApp > .mobile-topbar-fixed { position: fixed !important; top: 0; left: 0; right: 0; width: 100%; z-index: 1040; box-sizing: border-box; }
       #mainApp > .row.g-0 { padding-top: 66px !important; }
+      /* Sidebar mobile dikeluarkan dari alur layout agar tidak meninggalkan
+         ruang vertikal kosong sebelum konten. Offcanvas tetap berfungsi. */
+      #mainApp > .row.g-0 > .col-md-3.col-lg-2 {
+        position: absolute !important; left: 0 !important; top: 0 !important;
+        width: 0 !important; height: 0 !important; min-height: 0 !important;
+        padding: 0 !important; margin: 0 !important; overflow: visible !important;
+      }
+      #mainApp.d-none > .mobile-topbar-fixed { display: none !important; }
       #mainApp .content-section { scroll-margin-top: 72px; }
+      #mainApp > .row.g-0 > .col-md-9.col-lg-10 { position: relative; width: 100% !important; min-width: 0; }
       #mainApp .sticky-top { background: #fff !important; color: #172033 !important; border-bottom: 1px solid #e5e7eb !important; box-shadow: 0 2px 10px rgba(15,23,42,.06) !important; z-index: 1030; }
       #mainApp .mobile-menu-btn { color: #334155 !important; border-color: #cbd5e1 !important; }
       #mainApp .mobile-menu-btn i { color: #334155 !important; }
@@ -2297,7 +2306,9 @@
 
     var loginPage = document.getElementById('loginPage');
     var mainApp = document.getElementById('mainApp');
+    var publicHome = document.getElementById('publicHomePage');
     if (loginPage) loginPage.classList.add('d-none');
+    if (publicHome) publicHome.classList.add('d-none');
     if (mainApp) mainApp.classList.remove('d-none');
     var badge = document.getElementById('userRoleBadge');
     var mobileBadge = document.getElementById('mobileUserRoleBadge');
@@ -2838,9 +2849,8 @@
     var bsOffcanvas = sidebarEl ? bootstrap.Offcanvas.getInstance(sidebarEl) : null;
     if (bsOffcanvas) bsOffcanvas.hide();
 
-    // Android Chrome can restore the old scroll offset after Bootstrap closes
-    // the mobile offcanvas. Reset only after the hide transition has completed,
-    // then force layout so the selected section is visible immediately.
+    // Android Chrome kadang tidak mengecat ulang konten setelah offcanvas ditutup.
+    // Pertahankan header fixed, lalu lakukan repaint ringan pada section aktif.
     if (window.matchMedia('(max-width: 767.98px)').matches) {
       var resetMobileMenuViewport = function() {
         var app = document.getElementById('mainApp');
@@ -2848,29 +2858,42 @@
         if (app) { app.style.visibility = 'visible'; void app.offsetHeight; }
         if (activeSection) {
           activeSection.classList.remove('d-none');
+          activeSection.style.display = '';
           activeSection.style.visibility = 'visible';
-          void activeSection.offsetHeight;
+          activeSection.style.opacity = '1';
+          void activeSection.getBoundingClientRect().height;
         }
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-        if (app) app.scrollTop = 0;
-        requestAnimationFrame(function() {
+
+        var resetScroll = function() {
           window.scrollTo(0, 0);
           document.documentElement.scrollTop = 0;
           document.body.scrollTop = 0;
+          if (app) app.scrollTop = 0;
+        };
+        resetScroll();
+
+        requestAnimationFrame(function() {
           if (activeSection) {
-            activeSection.style.transform = 'none';
-            activeSection.style.display = '';
-            void activeSection.getBoundingClientRect().height;
-            activeSection.style.visibility = 'visible';
+            // Membaca layout dan mengganti opacity sementara memicu repaint
+            // tanpa mengubah ukuran/posisi section atau mengganggu header.
+            void activeSection.getBoundingClientRect();
+            activeSection.style.opacity = '0.999';
+            void activeSection.offsetHeight;
+            activeSection.style.opacity = '1';
           }
+          // Nudge scroll 1px lalu kembali ke atas: membantu Chrome Android
+          // menyegarkan viewport setelah perubahan kelas d-none/offcanvas.
+          window.scrollTo(0, 1);
+          requestAnimationFrame(function() {
+            resetScroll();
+            if (activeSection) void activeSection.getBoundingClientRect().height;
+          });
         });
       };
       if (sidebarEl && sidebarEl.classList.contains('show')) {
         sidebarEl.addEventListener('hidden.bs.offcanvas', resetMobileMenuViewport, { once: true });
       }
-      [0, 120, 380, 650].forEach(function(delay) { setTimeout(resetMobileMenuViewport, delay); });
+      [0, 120, 300, 550].forEach(function(delay) { setTimeout(resetMobileMenuViewport, delay); });
     }
 
     if (targetKey === 'honor') loadHonorGuru();
@@ -3000,8 +3023,12 @@
       updateDashboardTotalBars(data.siswa || 0, data.guru || 0, data.kelas || 0);
 
       if (data.absensiHariIni) {
-        document.getElementById('dashPctHadir').innerText = data.absensiHariIni.pctHadir + '%';
-        document.getElementById('dashSubHadir').innerText = data.absensiHariIni.totalHadir + ' Siswa Hadir';
+        // Siswa yang terlambat tetap dihitung hadir di sekolah.
+        // Sakit dan izin tetap kategori terpisah, tidak ditambahkan ke hadir.
+        var totalHadirDashboard = (Number(data.absensiHariIni.totalHadir) || 0) + (Number(data.absensiHariIni.totalTerlambat) || 0);
+        var pctHadirDashboard = Math.min(100, (Number(data.absensiHariIni.pctHadir) || 0) + (Number(data.absensiHariIni.pctTerlambat) || 0));
+        document.getElementById('dashPctHadir').innerText = pctHadirDashboard + '%';
+        document.getElementById('dashSubHadir').innerText = totalHadirDashboard + ' Siswa Hadir (termasuk terlambat)';
         document.getElementById('dashPctBolos').innerText = data.absensiHariIni.pctBolos + '%';
         document.getElementById('dashSubBolos').innerText = data.absensiHariIni.totalBolos + ' Siswa Bolos';
         var pA=document.getElementById('dashPctAlpha'),sA=document.getElementById('dashSubAlpha');
@@ -3012,7 +3039,7 @@
         if(pT)pT.innerText=(data.absensiHariIni.pctTerlambat||0)+'%';
         if(sT)sT.innerText=(data.absensiHariIni.totalTerlambat||0)+' Siswa Terlambat';
         updateDashboardAttendanceBar('dashBarTerlambat',data.absensiHariIni.pctTerlambat||0,35,false);
-        updateDashboardAttendanceBar('dashBarHadir', data.absensiHariIni.pctHadir, 0, false);
+        updateDashboardAttendanceBar('dashBarHadir', pctHadirDashboard, 0, false);
         updateDashboardAttendanceBar('dashBarBolos', data.absensiHariIni.pctBolos, 58, false);
         var pI=document.getElementById('dashPctIzin'),pS=document.getElementById('dashPctSakit'),sI=document.getElementById('dashSubIzin'),sS=document.getElementById('dashSubSakit');
         if(pI)pI.innerText=(data.absensiHariIni.pctIzin||0)+'%'; if(pS)pS.innerText=(data.absensiHariIni.pctSakit||0)+'%';
@@ -4259,6 +4286,10 @@
       ['NIP', 'Nama Guru', 'Valid Hadir/Jam', 'Tarif/Jam', 'Hari Transport', 'Tj Transpot/Hari', 'Tj Jabatan', 'Total Honor', 'Keterangan / Tanda Tangan'], rows);
   }
 
+  // Antrean penyimpanan per siswa agar perubahan cepat Jam 1-4 tidak saling menimpa.
+  // Satu permintaan aktif per siswa; perubahan terbaru dikirim setelah permintaan sebelumnya selesai.
+  var absensiSaveQueues = Object.create(null);
+
   // ==========================================
   // ABSENSI PELAJARAN & REKAPITULASI
   // ==========================================
@@ -4295,14 +4326,78 @@
   }
 
   function onAbsensiJamChange(input) {
-    var status=input.checked?'Hadir':'Bolos';
-    input.dataset.status=status;input.title=status;var label=input.parentElement.querySelector('.status-label');if(label){label.textContent=status;label.className='status-label small text-'+(status==='Hadir'?'success':'danger');}
-    var row=input.closest('tr[data-nisn]');if(!row)return;
-    var item={tanggal:document.getElementById('absensiSelectTanggal').value,kelas:document.getElementById('absensiSelectKelas').value,
-      nisn:row.getAttribute('data-nisn'),nama:row.getAttribute('data-nama')};
-    ['jam1','jam2','jam3','jam4'].forEach(function(j){var cb=row.querySelector('.'+j);item[j]=cb.dataset.status||'Alpha';});
-    google.script.run.withSuccessHandler(function(){appNotify('Absensi '+item.nisn+' diperbarui secara realtime.','success');refreshDashboard();})
-      .withFailureHandler(function(e){appNotify('Gagal menyimpan absensi: '+(e&&e.message?e.message:e),'error');}).simpanAbsensi([item],item.tanggal);
+    var status = input.checked ? 'Hadir' : 'Bolos';
+    input.dataset.status = status;
+    input.title = status;
+    var label = input.parentElement.querySelector('.status-label');
+    if (label) {
+      label.textContent = status;
+      label.className = 'status-label small text-' + (status === 'Hadir' ? 'success' : 'danger');
+    }
+
+    var row = input.closest('tr[data-nisn]');
+    if (!row) return;
+    var tanggal = document.getElementById('absensiSelectTanggal').value;
+    var kelas = document.getElementById('absensiSelectKelas').value;
+    var item = {
+      tanggal: tanggal,
+      kelas: kelas,
+      nisn: row.getAttribute('data-nisn'),
+      nama: row.getAttribute('data-nama')
+    };
+    ['jam1', 'jam2', 'jam3', 'jam4'].forEach(function(jam) {
+      var cb = row.querySelector('.' + jam);
+      item[jam] = cb ? (cb.dataset.status || (cb.checked ? 'Hadir' : 'Alpha')) : 'Alpha';
+    });
+
+    var key = [tanggal, kelas, item.nisn].join('|');
+    var queue = absensiSaveQueues[key] || (absensiSaveQueues[key] = {
+      timer: null, inFlight: false, latest: null, version: 0, savedVersion: 0
+    });
+    queue.latest = item;
+    queue.version++;
+    queue.row = row;
+    if (queue.timer) clearTimeout(queue.timer);
+    if (label) {
+      label.title = 'Perubahan menunggu disimpan…';
+    }
+    // Debounce singkat: gabungkan klik cepat, lalu simpan snapshot terbaru.
+    queue.timer = setTimeout(function() {
+      queue.timer = null;
+      kirimAbsensiTerbaru_(key);
+    }, 180);
+  }
+
+  function kirimAbsensiTerbaru_(key) {
+    var queue = absensiSaveQueues[key];
+    if (!queue || queue.inFlight || !queue.latest || queue.savedVersion === queue.version) return;
+    queue.inFlight = true;
+    var versionKirim = queue.version;
+    var snapshot = JSON.parse(JSON.stringify(queue.latest));
+
+    google.script.run
+      .withSuccessHandler(function(res) {
+        queue.inFlight = false;
+        queue.savedVersion = versionKirim;
+        if (queue.row && queue.row.isConnected) {
+          var labels = queue.row.querySelectorAll('.status-label');
+          labels.forEach(function(el) { el.title = 'Tersimpan'; });
+        }
+        if (queue.savedVersion < queue.version) {
+          // Ada perubahan lebih baru saat request berjalan; simpan versi terbaru setelah ini selesai.
+          kirimAbsensiTerbaru_(key);
+        } else {
+          appNotify('Absensi ' + snapshot.nisn + ' tersimpan.','success');
+          refreshDashboard();
+        }
+      })
+      .withFailureHandler(function(e) {
+        queue.inFlight = false;
+        appNotify('Gagal menyimpan absensi ' + snapshot.nisn + ': ' +
+          (e && e.message ? e.message : e), 'error');
+        // Jangan menghapus snapshot terbaru. Klik berikutnya atau tombol Simpan dapat mengirim ulang.
+      })
+      .simpanAbsensi([snapshot], snapshot.tanggal);
   }
 
   function simpanAbsensiLengkap() {
@@ -4311,7 +4406,7 @@
     var rows=document.querySelectorAll('#tblAbsensi tr[data-nisn]'),list=[];
     rows.forEach(function(r){
       var item={tanggal:t,kelas:k,nisn:r.getAttribute('data-nisn'),nama:r.getAttribute('data-nama')};
-      ['jam1','jam2','jam3','jam4'].forEach(function(j){var cb=r.querySelector('.'+j);item[j]=cb.dataset.status||(cb.checked?'Hadir':'Alpha');});
+      ['jam1','jam2','jam3','jam4'].forEach(function(j){var cb=r.querySelector('.'+j);item[j]=cb ? (cb.dataset.status || (cb.checked?'Hadir':'Alpha')) : 'Alpha';});
       list.push(item);
     });
     google.script.run.withSuccessHandler(function(res){appNotify(res,'success');refreshDashboard();})
@@ -5055,9 +5150,7 @@
             masdaQrBusy=false;
             loadAbsensiGerbang();
             if(r&&r.success){refreshDashboard();if(mode==='masuk'){var t=document.getElementById('absensiSelectTanggal'),k=document.getElementById('absensiSelectKelas');if(t&&k&&String(k.value)===String(r.siswa.kelas))loadAbsensiSiswa();}
-            if(hint)hint.innerHTML=(r&&r.success)
-              ? '<i class="bi bi-check-circle"></i> Absensi berhasil tersimpan. Tekan Mulai Kamera untuk memindai siswa berikutnya.'
-              : '<i class="bi bi-exclamation-triangle"></i> '+escapeHtml((r&&r.message)||'Absensi tidak dicatat. Periksa status siswa.');}
+            if(hint)hint.innerHTML='<i class="bi bi-check-circle"></i> Absensi tersimpan. Tekan Mulai Kamera untuk memindai siswa berikutnya.';}
           }).withFailureHandler(function(e){if(out)out.innerHTML='<div class="alert alert-danger">'+escapeHtml(e.message||e)+'</div>';masdaQrBusy=false;}).catatAbsensiGerbang(nisn,mode,mode==='masuk'?status:'Hadir');
         });
         if(stage)stage.classList.add('camera-active');
@@ -5358,7 +5451,7 @@
     var boxes=document.querySelectorAll('.public-home-menu-check:checked');var menus=Array.from(boxes).map(function(el){return el.value;});
     google.script.run.withSuccessHandler(function(r){publicHomeSelectedMenus=menus;renderPublicHomeMenu();appNotify((r&&r.message)||'Tampilan halaman awal berhasil disimpan.','success');}).withFailureHandler(function(e){appNotify('Gagal menyimpan tampilan halaman awal: '+(e.message||e),'error');}).savePublicHomeMenuConfig(menus,sessionStorage.getItem(MASDA_SESSION_KEY)||'');
   }
-  function showLoginPage(type){var home=document.getElementById('publicHomePage'),login=document.getElementById('loginPage');if(home)home.classList.add('d-none');if(login){login.classList.remove('d-none');login.classList.remove('login-student-mode','login-admin-mode');login.classList.add(type==='student'?'login-student-mode':'login-admin-mode');}var badge=document.getElementById('loginPortalBadge');if(badge)badge.innerHTML=type==='student'?'<i class="bi bi-mortarboard me-1"></i>Portal Siswa':'<i class="bi bi-shield-check me-1"></i>Portal Guru &amp; Staf';var alertBox=document.getElementById('loginAlert');if(alertBox)alertBox.innerHTML='';var menu=document.getElementById('publicHomeLoginMenu');if(menu)menu.classList.add('d-none');window.scrollTo({top:0,behavior:'smooth'});}
+  function showLoginPage(type){var home=document.getElementById('publicHomePage'),login=document.getElementById('loginPage'),main=document.getElementById('mainApp');if(main)main.classList.add('d-none');if(home)home.classList.add('d-none');if(login){login.classList.remove('d-none');login.classList.remove('login-student-mode','login-admin-mode');login.classList.add(type==='student'?'login-student-mode':'login-admin-mode');}var badge=document.getElementById('loginPortalBadge');if(badge)badge.innerHTML=type==='student'?'<i class="bi bi-mortarboard me-1"></i>Portal Siswa':'<i class="bi bi-shield-check me-1"></i>Portal Guru &amp; Staf';var alertBox=document.getElementById('loginAlert');if(alertBox)alertBox.innerHTML='';var menu=document.getElementById('publicHomeLoginMenu');if(menu)menu.classList.add('d-none');window.scrollTo({top:0,behavior:'smooth'});}
   function backToPublicHome(){var home=document.getElementById('publicHomePage'),login=document.getElementById('loginPage'),main=document.getElementById('mainApp');if(main)main.classList.add('d-none');if(login){login.classList.add('d-none');login.classList.remove('login-student-mode','login-admin-mode');}if(home)home.classList.remove('d-none');closePublicHomeContent();window.scrollTo({top:0,behavior:'smooth'});}
   function togglePublicHomeLoginMenu(){var menu=document.getElementById('publicHomeLoginMenu'),btn=document.getElementById('publicHomeLoginToggle');if(!menu)return;var opening=menu.classList.contains('d-none');menu.classList.toggle('d-none',!opening);if(btn)btn.setAttribute('aria-expanded',opening?'true':'false');}
   function showPublicHomeLogin(type){showLoginPage(type==='student'?'student':'admin');var toggle=document.getElementById('publicHomeLoginToggle');if(toggle)toggle.setAttribute('aria-expanded','false');if(type==='student'){setTimeout(function(){var f=document.getElementById('studentLoginNisn');if(f)f.focus();},120);}else{var u=document.getElementById('loginUser');if(u)u.focus();}}
