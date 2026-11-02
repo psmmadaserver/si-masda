@@ -1,0 +1,27 @@
+Si MasDA — Sinkronisasi Absensi QR dan Simpan Realtime
+
+Isi paket:
+- index.html: memakai file aplikasi terakhir yang tersedia; mempertahankan perbaikan header dan halaman kosong, lalu menambahkan antrean penyimpanan perubahan Jam 1–4.
+- kode.gs: mempertahankan anti-bentrok QR (satu masuk dan satu pulang per hari) dan menserialisasi penulisan Absensi dengan LockService.
+- api/masda.js: bridge Vercel yang sebelumnya dipakai untuk memulihkan login.
+
+Perilaku:
+1. QR masuk tepat waktu atau terlambat: Jam 1–4 di menu Absensi Pelajaran disinkronkan menjadi Hadir.
+2. Status gerbang Izin: Jam 1–4 disinkronkan menjadi Izin.
+3. Status gerbang Sakit: Jam 1–4 disinkronkan menjadi Sakit.
+4. Guru dapat menghapus centang pada jam tertentu untuk mengubah status jam tersebut menjadi Bolos.
+5. Setiap perubahan dijadwalkan simpan otomatis. Klik cepat digabungkan; jika ada perubahan ketika penyimpanan berjalan, snapshot terbaru akan dikirim setelah penyimpanan sebelumnya selesai agar perubahan terakhir tidak kalah oleh request yang datang terlambat.
+6. Tombol Simpan tetap tersedia untuk menyimpan seluruh tabel.
+7. Anti-bentrok QR tetap aktif di backend.
+
+Penerapan:
+A. Cadangkan index.html dan kode.gs yang saat ini aktif.
+B. GitHub/Vercel: ganti index.html dan api/masda.js dengan file paket ini, commit, tunggu deployment selesai.
+C. Apps Script: ganti kode.gs dengan file paket ini, simpan, lalu Deploy > Manage deployments > Edit > New version > Deploy.
+D. Pastikan variabel Vercel MASDA_GAS_URL tetap menunjuk ke URL /exec deployment GAS yang benar.
+E. Uji siswa yang scan masuk: periksa tabel Absensi Pelajaran. Uji status Izin dan Sakit. Lalu ubah Jam 2/Jam 3 menjadi Bolos, tunggu notifikasi tersimpan, muat ulang tabel dan pastikan perubahan tetap ada.
+
+Catatan:
+- Data absensi lama tidak dihapus.
+- Sebelum mengganti kode.gs, periksa apakah Anda memiliki perubahan lain yang lebih baru daripada paket anti-bentrok QR v2; bila ada, cadangkan dan gabungkan perubahan tersebut agar tidak tertimpa.
+- Saya belum dapat menjalankan tes langsung pada deployment dan Google Sheets milik Anda.

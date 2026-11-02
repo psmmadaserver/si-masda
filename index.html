@@ -3023,8 +3023,12 @@
       updateDashboardTotalBars(data.siswa || 0, data.guru || 0, data.kelas || 0);
 
       if (data.absensiHariIni) {
-        document.getElementById('dashPctHadir').innerText = data.absensiHariIni.pctHadir + '%';
-        document.getElementById('dashSubHadir').innerText = data.absensiHariIni.totalHadir + ' Siswa Hadir';
+        // Siswa yang terlambat tetap dihitung hadir di sekolah.
+        // Sakit dan izin tetap kategori terpisah, tidak ditambahkan ke hadir.
+        var totalHadirDashboard = (Number(data.absensiHariIni.totalHadir) || 0) + (Number(data.absensiHariIni.totalTerlambat) || 0);
+        var pctHadirDashboard = Math.min(100, (Number(data.absensiHariIni.pctHadir) || 0) + (Number(data.absensiHariIni.pctTerlambat) || 0));
+        document.getElementById('dashPctHadir').innerText = pctHadirDashboard + '%';
+        document.getElementById('dashSubHadir').innerText = totalHadirDashboard + ' Siswa Hadir (termasuk terlambat)';
         document.getElementById('dashPctBolos').innerText = data.absensiHariIni.pctBolos + '%';
         document.getElementById('dashSubBolos').innerText = data.absensiHariIni.totalBolos + ' Siswa Bolos';
         var pA=document.getElementById('dashPctAlpha'),sA=document.getElementById('dashSubAlpha');
@@ -3035,7 +3039,7 @@
         if(pT)pT.innerText=(data.absensiHariIni.pctTerlambat||0)+'%';
         if(sT)sT.innerText=(data.absensiHariIni.totalTerlambat||0)+' Siswa Terlambat';
         updateDashboardAttendanceBar('dashBarTerlambat',data.absensiHariIni.pctTerlambat||0,35,false);
-        updateDashboardAttendanceBar('dashBarHadir', data.absensiHariIni.pctHadir, 0, false);
+        updateDashboardAttendanceBar('dashBarHadir', pctHadirDashboard, 0, false);
         updateDashboardAttendanceBar('dashBarBolos', data.absensiHariIni.pctBolos, 58, false);
         var pI=document.getElementById('dashPctIzin'),pS=document.getElementById('dashPctSakit'),sI=document.getElementById('dashSubIzin'),sS=document.getElementById('dashSubSakit');
         if(pI)pI.innerText=(data.absensiHariIni.pctIzin||0)+'%'; if(pS)pS.innerText=(data.absensiHariIni.pctSakit||0)+'%';
@@ -4282,6 +4286,10 @@
       ['NIP', 'Nama Guru', 'Valid Hadir/Jam', 'Tarif/Jam', 'Hari Transport', 'Tj Transpot/Hari', 'Tj Jabatan', 'Total Honor', 'Keterangan / Tanda Tangan'], rows);
   }
 
+  // Antrean penyimpanan per siswa agar perubahan cepat Jam 1-4 tidak saling menimpa.
+  // Satu permintaan aktif per siswa; perubahan terbaru dikirim setelah permintaan sebelumnya selesai.
+  var absensiSaveQueues = Object.create(null);
+
   // ==========================================
   // ABSENSI PELAJARAN & REKAPITULASI
   // ==========================================
@@ -4318,14 +4326,78 @@
   }
 
   function onAbsensiJamChange(input) {
-    var status=input.checked?'Hadir':'Bolos';
-    input.dataset.status=status;input.title=status;var label=input.parentElement.querySelector('.status-label');if(label){label.textContent=status;label.className='status-label small text-'+(status==='Hadir'?'success':'danger');}
-    var row=input.closest('tr[data-nisn]');if(!row)return;
-    var item={tanggal:document.getElementById('absensiSelectTanggal').value,kelas:document.getElementById('absensiSelectKelas').value,
-      nisn:row.getAttribute('data-nisn'),nama:row.getAttribute('data-nama')};
-    ['jam1','jam2','jam3','jam4'].forEach(function(j){var cb=row.querySelector('.'+j);item[j]=cb.dataset.status||'Alpha';});
-    google.script.run.withSuccessHandler(function(){appNotify('Absensi '+item.nisn+' diperbarui secara realtime.','success');refreshDashboard();})
-      .withFailureHandler(function(e){appNotify('Gagal menyimpan absensi: '+(e&&e.message?e.message:e),'error');}).simpanAbsensi([item],item.tanggal);
+    var status = input.checked ? 'Hadir' : 'Bolos';
+    input.dataset.status = status;
+    input.title = status;
+    var label = input.parentElement.querySelector('.status-label');
+    if (label) {
+      label.textContent = status;
+      label.className = 'status-label small text-' + (status === 'Hadir' ? 'success' : 'danger');
+    }
+
+    var row = input.closest('tr[data-nisn]');
+    if (!row) return;
+    var tanggal = document.getElementById('absensiSelectTanggal').value;
+    var kelas = document.getElementById('absensiSelectKelas').value;
+    var item = {
+      tanggal: tanggal,
+      kelas: kelas,
+      nisn: row.getAttribute('data-nisn'),
+      nama: row.getAttribute('data-nama')
+    };
+    ['jam1', 'jam2', 'jam3', 'jam4'].forEach(function(jam) {
+      var cb = row.querySelector('.' + jam);
+      item[jam] = cb ? (cb.dataset.status || (cb.checked ? 'Hadir' : 'Alpha')) : 'Alpha';
+    });
+
+    var key = [tanggal, kelas, item.nisn].join('|');
+    var queue = absensiSaveQueues[key] || (absensiSaveQueues[key] = {
+      timer: null, inFlight: false, latest: null, version: 0, savedVersion: 0
+    });
+    queue.latest = item;
+    queue.version++;
+    queue.row = row;
+    if (queue.timer) clearTimeout(queue.timer);
+    if (label) {
+      label.title = 'Perubahan menunggu disimpan…';
+    }
+    // Debounce singkat: gabungkan klik cepat, lalu simpan snapshot terbaru.
+    queue.timer = setTimeout(function() {
+      queue.timer = null;
+      kirimAbsensiTerbaru_(key);
+    }, 180);
+  }
+
+  function kirimAbsensiTerbaru_(key) {
+    var queue = absensiSaveQueues[key];
+    if (!queue || queue.inFlight || !queue.latest || queue.savedVersion === queue.version) return;
+    queue.inFlight = true;
+    var versionKirim = queue.version;
+    var snapshot = JSON.parse(JSON.stringify(queue.latest));
+
+    google.script.run
+      .withSuccessHandler(function(res) {
+        queue.inFlight = false;
+        queue.savedVersion = versionKirim;
+        if (queue.row && queue.row.isConnected) {
+          var labels = queue.row.querySelectorAll('.status-label');
+          labels.forEach(function(el) { el.title = 'Tersimpan'; });
+        }
+        if (queue.savedVersion < queue.version) {
+          // Ada perubahan lebih baru saat request berjalan; simpan versi terbaru setelah ini selesai.
+          kirimAbsensiTerbaru_(key);
+        } else {
+          appNotify('Absensi ' + snapshot.nisn + ' tersimpan.','success');
+          refreshDashboard();
+        }
+      })
+      .withFailureHandler(function(e) {
+        queue.inFlight = false;
+        appNotify('Gagal menyimpan absensi ' + snapshot.nisn + ': ' +
+          (e && e.message ? e.message : e), 'error');
+        // Jangan menghapus snapshot terbaru. Klik berikutnya atau tombol Simpan dapat mengirim ulang.
+      })
+      .simpanAbsensi([snapshot], snapshot.tanggal);
   }
 
   function simpanAbsensiLengkap() {
@@ -4334,7 +4406,7 @@
     var rows=document.querySelectorAll('#tblAbsensi tr[data-nisn]'),list=[];
     rows.forEach(function(r){
       var item={tanggal:t,kelas:k,nisn:r.getAttribute('data-nisn'),nama:r.getAttribute('data-nama')};
-      ['jam1','jam2','jam3','jam4'].forEach(function(j){var cb=r.querySelector('.'+j);item[j]=cb.dataset.status||(cb.checked?'Hadir':'Alpha');});
+      ['jam1','jam2','jam3','jam4'].forEach(function(j){var cb=r.querySelector('.'+j);item[j]=cb ? (cb.dataset.status || (cb.checked?'Hadir':'Alpha')) : 'Alpha';});
       list.push(item);
     });
     google.script.run.withSuccessHandler(function(res){appNotify(res,'success');refreshDashboard();})
@@ -4342,39 +4414,8 @@
   }
 
   function openModalRekapHarian() {
-    showRekapModalSafe('modalRekapHarian');
     fetchRekapHarian();
-  }
-
-  function showRekapModalSafe(modalId) {
-    var modalEl = document.getElementById(modalId);
-    if (!modalEl || !window.bootstrap || !bootstrap.Modal) {
-      appNotify('Jendela rekap belum siap. Muat ulang halaman lalu coba kembali.', 'error');
-      return;
-    }
-    // Modal rekap dipindahkan ke body agar tidak terpotong oleh parent/transform.
-    if (modalEl.parentElement !== document.body) document.body.appendChild(modalEl);
-    // Bersihkan backdrop yatim sebelum membuka rekap agar layar tidak terkunci redup.
-    if (!document.querySelector('.modal.show')) {
-      document.querySelectorAll('.modal-backdrop').forEach(function(el){el.remove();});
-      document.body.classList.remove('modal-open');
-      document.body.style.removeProperty('overflow');
-      document.body.style.removeProperty('padding-right');
-    }
-    if (!modalEl.dataset.rekapCleanupBound) {
-      modalEl.addEventListener('hidden.bs.modal', function(){
-        setTimeout(function(){
-          if (!document.querySelector('.modal.show')) {
-            document.querySelectorAll('.modal-backdrop').forEach(function(el){el.remove();});
-            document.body.classList.remove('modal-open');
-            document.body.style.removeProperty('overflow');
-            document.body.style.removeProperty('padding-right');
-          }
-        }, 40);
-      });
-      modalEl.dataset.rekapCleanupBound = '1';
-    }
-    bootstrap.Modal.getOrCreateInstance(modalEl, {backdrop:true, keyboard:true, focus:true}).show();
+    new bootstrap.Modal(document.getElementById('modalRekapHarian')).show();
   }
 
   function fetchRekapHarian() {
@@ -4400,16 +4441,12 @@
         html += '</tr>';
       });
       tbody.innerHTML = html;
-    }).withFailureHandler(function(err){
-      var tbody=document.getElementById('tblRekapHarian');
-      if(tbody)tbody.innerHTML='<tr><td colspan="7" class="text-center text-danger">Gagal memuat rekap: '+escapeHtml(err&&err.message?err.message:err)+'</td></tr>';
-      appNotify('Gagal memuat rekap harian. Periksa koneksi API dan coba kembali.','error');
     }).getRekapAbsensiHarian(t, k);
   }
 
   function openModalRekapBulanan() {
-    showRekapModalSafe('modalRekapBulanan');
     fetchRekapBulanan();
+    new bootstrap.Modal(document.getElementById('modalRekapBulanan')).show();
   }
 
   function fetchRekapBulanan() {
@@ -4434,10 +4471,6 @@
         html += '</tr>';
       });
       tbody.innerHTML = html;
-    }).withFailureHandler(function(err){
-      var tbody=document.getElementById('tblRekapBulananSummary');
-      if(tbody)tbody.innerHTML='<tr><td colspan="4" class="text-center text-danger">Gagal memuat rekap: '+escapeHtml(err&&err.message?err.message:err)+'</td></tr>';
-      appNotify('Gagal memuat rekap bulanan. Periksa koneksi API dan coba kembali.','error');
     }).getRekapAbsensiBulanan(m, k);
   }
 
