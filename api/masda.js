@@ -1,38 +1,38 @@
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    res.setHeader('Allow', 'POST');
-    return res.status(405).json({ success: false, message: 'Gunakan metode POST.' });
-  }
-
-  const gasUrl = process.env.MASDA_GAS_URL;
-  if (!gasUrl || !/^https:\/\/script\.google\.com\/macros\/s\//.test(gasUrl)) {
-    return res.status(500).json({ success: false, message: 'Konfigurasi backend belum lengkap. Atur MASDA_GAS_URL di Vercel.' });
-  }
-
+// siMADA Vercel API proxy - CommonJS for reliable Vercel Node.js deployment.
+// Required environment variable: MASDA_GAS_URL = deployed Google Apps Script Web App URL ending in /exec.
+module.exports = async function handler(req, res) {
+  res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
+  res.setHeader('Pragma', 'no-cache');
+  if (req.method === 'OPTIONS') { res.setHeader('Allow', 'POST, OPTIONS'); return res.status(204).end(); }
+  if (req.method !== 'POST') { res.setHeader('Allow', 'POST, OPTIONS'); return res.status(405).json({ success:false, code:'METHOD_NOT_ALLOWED', message:'Gunakan metode POST.' }); }
+  const gasUrl = String(process.env.MASDA_GAS_URL || '').trim();
+  if (!/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec(?:\?.*)?$/.test(gasUrl)) return res.status(500).json({ success:false, code:'GAS_URL_INVALID', message:'MASDA_GAS_URL belum benar. Isi dengan URL Web App Google Apps Script yang berakhiran /exec.' });
   try {
-    const body = typeof req.body === 'string' ? JSON.parse(req.body) : (req.body || {});
-    const allowed = new Set(['rpc','login','session','logout','dashboard','masterData','masterGuruList','masterGuruSave','masterGuruDelete','masterKelasSave','masterKelasDelete','masterSiswaSave','masterSiswaDelete','masterJadwalSave','masterJadwalDelete','jurnalList','jurnalSave','jurnalDelete','honorList','honorMine','absensiStudents','absensiSave','absensiDaily','absensiMonthly','kesiswaanList','kesiswaanSave','sarprasList','sarprasSave','sarprasDelete','ppdbList','ppdbSave','ppdbDelete','profilGet','profilSave','strukturGet','strukturSave','websiteList','websiteSave','websiteDelete','penggunaList','penggunaSave','penggunaDelete','pengumumanList','pengumumanSave','pengumumanDelete']);
-    if (!body || !allowed.has(String(body.action || ''))) {
-      return res.status(400).json({ success: false, message: 'Aksi API tidak diizinkan.' });
+    let body = req.body;
+    if (typeof body === 'string') body = JSON.parse(body || '{}');
+    if (!body || typeof body !== 'object' || Array.isArray(body)) body = {};
+    if (!Object.keys(body).length && req && typeof req[Symbol.asyncIterator] === 'function') {
+      let raw = ''; for await (const chunk of req) raw += chunk.toString(); if (raw) body = JSON.parse(raw);
     }
-
-    const upstream = await fetch(gasUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(body),
-      redirect: 'follow'
-    });
-    const text = await upstream.text();
+    if (!body || body.action !== 'rpc' || typeof body.method !== 'string') return res.status(400).json({ success:false, code:'INVALID_REQUEST', message:'Format permintaan API tidak sesuai. Aksi RPC tidak ditemukan.' });
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 25000);
+    let upstream, raw;
+    try {
+      upstream = await fetch(gasUrl, { method:'POST', headers:{ 'Content-Type':'text/plain;charset=utf-8', 'Accept':'application/json' }, body:JSON.stringify(body), redirect:'follow', signal:controller.signal });
+      raw = await upstream.text();
+    } finally { clearTimeout(timeout); }
     let data;
-    try { data = JSON.parse(text); }
+    try { data = JSON.parse(raw); }
     catch (_) {
-      console.error('Apps Script returned non-JSON response:', upstream.status, text.slice(0, 300));
-      return res.status(502).json({ success: false, message: 'Respons Apps Script tidak valid. Pastikan versi deployment sudah diperbarui.' });
+      const preview = String(raw || '').replace(/\s+/g, ' ').slice(0, 220);
+      console.error('siMADA GAS returned non-JSON:', upstream && upstream.status, preview);
+      return res.status(502).json({ success:false, code:'GAS_NON_JSON', message:'Google Apps Script tidak mengembalikan JSON. Periksa deployment Web App, akses, lalu deploy New version. HTTP GAS: ' + (upstream ? upstream.status : 'unknown') + '. Respons: ' + (preview || '(kosong)') });
     }
-    res.setHeader('Cache-Control', 'no-store');
     return res.status(200).json(data);
   } catch (err) {
-    console.error('siMADA API proxy error:', err);
-    return res.status(502).json({ success: false, message: 'Tidak dapat terhubung ke backend Apps Script.' });
+    const timedOut = err && err.name === 'AbortError';
+    console.error('siMADA API proxy error:', err && err.stack ? err.stack : err);
+    return res.status(502).json({ success:false, code:timedOut?'GAS_TIMEOUT':'API_PROXY_ERROR', message:timedOut?'Google Apps Script tidak merespons dalam 25 detik.':'Proxy API gagal: ' + (err && err.message ? err.message : 'kesalahan tidak diketahui.') });
   }
-}
+};

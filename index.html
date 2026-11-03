@@ -34,8 +34,11 @@
               return response.text().then(function (raw) {
                 var data;
                 try { data = JSON.parse(raw); }
-                catch (_) { throw new Error('Respons API siMADA tidak valid.'); }
-                if (!response.ok) throw new Error(data.message || 'Permintaan API gagal.');
+                catch (_) {
+                  var preview = String(raw || '').replace(/\s+/g, ' ').slice(0, 180);
+                  throw new Error('API siMADA mengembalikan respons non-JSON (HTTP ' + response.status + '). Periksa deployment Vercel pada /api/masda. ' + preview);
+                }
+                if (!response.ok) throw new Error((data && data.message) || ('Permintaan API gagal (HTTP ' + response.status + ').'));
                 if (data && data.__masdaRpcError) throw new Error(data.message || 'Permintaan API gagal.');
                 return data;
               });
