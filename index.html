@@ -7,8 +7,9 @@
   (function () {
     'use strict';
     var SESSION_KEY = 'siMADA_sessionToken';
+    var LEGACY_SESSION_KEY = 'siMasDA_sessionToken';
     function currentToken() {
-      try { return sessionStorage.getItem(SESSION_KEY) || ''; } catch (_) { return ''; }
+      try { return sessionStorage.getItem(SESSION_KEY) || sessionStorage.getItem(LEGACY_SESSION_KEY) || ''; } catch (_) { return ''; }
     }
     function createRunner(successHandler, failureHandler, userObject) {
       var runnerTarget = {};
@@ -2295,6 +2296,7 @@
   var userAksesList = [];
   // Sesi aman: token disimpan per-tab (sessionStorage), bukan password pengguna.
   var MASDA_SESSION_KEY = 'siMADA_sessionToken';
+  function masdaGetSessionToken_() { try { return sessionStorage.getItem(MASDA_SESSION_KEY) || sessionStorage.getItem('siMasDA_sessionToken') || ''; } catch(e) { return ''; } }
 
   function activateUserSession(res) {
     if (!res || !res.success) return false;
@@ -2691,7 +2693,7 @@
     if (!currentUser || String(currentUser.role).toLowerCase()!=='siswa') { appNotify('Silakan login menggunakan NISN siswa terlebih dahulu.','error'); return; }
     var reason=document.getElementById('studentPermitReason').value || '', out=document.getElementById('studentPermitResult');
     out.innerHTML='<span class="text-muted">Menyimpan pengajuan...</span>';
-    google.script.run.withSuccessHandler(function(r){ out.innerHTML='<div class="alert '+(r&&r.success?'alert-success':'alert-danger')+' py-2 mb-0">'+escapeHtml((r&&r.message)||'')+'</div>'; if(r&&r.success){appNotify(r.message);if(document.getElementById('absensiSelectTanggal'))document.getElementById('absensiSelectTanggal').value=r.tanggal;} }).withFailureHandler(function(e){out.innerHTML='<div class="alert alert-danger py-2 mb-0">'+escapeHtml(e.message||e)+'</div>';}).ajukanIzinSakitSiswa(sessionStorage.getItem(MASDA_SESSION_KEY)||'',status,reason);
+    google.script.run.withSuccessHandler(function(r){ out.innerHTML='<div class="alert '+(r&&r.success?'alert-success':'alert-danger')+' py-2 mb-0">'+escapeHtml((r&&r.message)||'')+'</div>'; if(r&&r.success){appNotify(r.message);if(document.getElementById('absensiSelectTanggal'))document.getElementById('absensiSelectTanggal').value=r.tanggal;} }).withFailureHandler(function(e){out.innerHTML='<div class="alert alert-danger py-2 mb-0">'+escapeHtml(e.message||e)+'</div>';}).ajukanIzinSakitSiswa(masdaGetSessionToken_(),status,reason);
   }
 
   function handleStudentLogin() {
@@ -4993,21 +4995,21 @@
         var badge=ev.jenis==='Hari Efektif'||ev.jenis==='Kegiatan Khusus'?'text-bg-success':(ev.jenis==='Libur Nasional'?'text-bg-danger':'text-bg-warning');
         return '<tr><td class="text-nowrap">'+escapeHtml(ev.tanggal)+'</td><td><span class="badge '+badge+'">'+escapeHtml(ev.jenis)+'</span></td><td>'+escapeHtml(ev.keterangan)+'</td><td><button class="btn btn-sm btn-outline-danger" type="button" onclick="hapusKalenderAkademikUI(&quot;'+escapeHtml(ev.tanggal)+'&quot;)"><i class="bi bi-trash"></i></button></td></tr>';
       }).join('');
-    }).withFailureHandler(function(e){if(body)body.innerHTML='<tr><td colspan="4" class="text-danger text-center p-4">'+escapeHtml(e.message||e)+'</td></tr>';}).getHariEfektifConfig(y,sessionStorage.getItem(MASDA_SESSION_KEY)||'');
+    }).withFailureHandler(function(e){if(body)body.innerHTML='<tr><td colspan="4" class="text-danger text-center p-4">'+escapeHtml(e.message||e)+'</td></tr>';}).getHariEfektifConfig(y,masdaGetSessionToken_());
   }
   function saveHariEfektifSettingsUI(){
     var cfg={jamMasuk:document.getElementById('heJamMasuk').value,jamPulang:document.getElementById('heJamPulang').value,hariEfektif:Array.from(document.querySelectorAll('.he-weekday:checked')).map(function(el){return Number(el.value);})};
-    google.script.run.withSuccessHandler(function(r){appNotify(r.message||'Pengaturan tersimpan.','success');loadHariEfektif();}).withFailureHandler(function(e){appNotify(e.message||e,'error');}).saveHariEfektifSettings(cfg,sessionStorage.getItem(MASDA_SESSION_KEY)||'');
+    google.script.run.withSuccessHandler(function(r){appNotify(r.message||'Pengaturan tersimpan.','success');loadHariEfektif();}).withFailureHandler(function(e){appNotify(e.message||e,'error');}).saveHariEfektifSettings(cfg,masdaGetSessionToken_());
   }
   function saveKalenderAkademikUI(){
     var ev={tanggal:document.getElementById('heTanggal').value,jenis:document.getElementById('heJenis').value,keterangan:document.getElementById('heKeterangan').value.trim()};
     if(!ev.tanggal||!ev.keterangan){appNotify('Tanggal dan keterangan wajib diisi.','error');return;}
     if(ev.tanggal.substring(0,4)!==document.getElementById('heTahun').value){appNotify('Tanggal harus berada pada tahun yang dipilih.','error');return;}
-    google.script.run.withSuccessHandler(function(r){appNotify(r.message||'Tanggal kalender tersimpan.','success');document.getElementById('heKeterangan').value='';loadHariEfektif();}).withFailureHandler(function(e){appNotify(e.message||e,'error');}).saveKalenderAkademikEvent(ev,sessionStorage.getItem(MASDA_SESSION_KEY)||'');
+    google.script.run.withSuccessHandler(function(r){appNotify(r.message||'Tanggal kalender tersimpan.','success');document.getElementById('heKeterangan').value='';loadHariEfektif();}).withFailureHandler(function(e){appNotify(e.message||e,'error');}).saveKalenderAkademikEvent(ev,masdaGetSessionToken_());
   }
   function hapusKalenderAkademikUI(tanggal){
     if(!confirm('Hapus tanggal '+tanggal+' dari kalender akademik?'))return;
-    google.script.run.withSuccessHandler(function(r){appNotify(r.message||'Tanggal dihapus.','success');loadHariEfektif();}).withFailureHandler(function(e){appNotify(e.message||e,'error');}).deleteKalenderAkademikEvent(tanggal,sessionStorage.getItem(MASDA_SESSION_KEY)||'');
+    google.script.run.withSuccessHandler(function(r){appNotify(r.message||'Tanggal dihapus.','success');loadHariEfektif();}).withFailureHandler(function(e){appNotify(e.message||e,'error');}).deleteKalenderAkademikEvent(tanggal,masdaGetSessionToken_());
   }
   function loadWaGateway(){
     google.script.run.withSuccessHandler(function(c){
@@ -5058,7 +5060,7 @@
       var rows=res.siswa||[];
       if(!rows.length){student.innerHTML='<option value="">Semua siswa kelas ini sudah absen / tidak ada data</option>';return;}
       student.innerHTML='<option value="">Pilih siswa</option>'+rows.map(function(x){return '<option value="'+escapeHtml(x.nisn)+'">'+escapeHtml(x.nama)+' · '+escapeHtml(x.nisn)+'</option>';}).join('');
-    }).withFailureHandler(function(e){student.innerHTML='<option value="">'+escapeHtml(e.message||e)+'</option>';}).getSiswaBelumAbsenGerbang(cls.value,sessionStorage.getItem(MASDA_SESSION_KEY)||'');
+    }).withFailureHandler(function(e){student.innerHTML='<option value="">'+escapeHtml(e.message||e)+'</option>';}).getSiswaBelumAbsenGerbang(cls.value,masdaGetSessionToken_());
   }
   function catatIzinSakitSiswaTerpilih(){
     var status=(document.getElementById('qrStatusMasuk')||{}).value||'', nisn=(document.getElementById('qrPermitStudent')||{}).value||'', out=document.getElementById('qrAttendanceResult');
@@ -5070,7 +5072,7 @@
       if(wa&&!wa.success)msg+=' Catatan notifikasi: '+(wa.message||'belum berhasil dikirim.');
       if(out)out.innerHTML='<div class="alert '+(r&&r.success?'alert-success':'alert-warning')+'"><b>'+escapeHtml(msg)+'</b>'+(r&&r.siswa?'<div>'+escapeHtml(r.siswa.nama)+' · '+escapeHtml(r.siswa.kelas)+' · '+escapeHtml(status)+'</div>':'')+'</div>';
       if(r&&r.success){loadAbsensiGerbang();loadSiswaBelumAbsenUntukIzinSakit();}
-    }).withFailureHandler(function(e){if(out)out.innerHTML='<div class="alert alert-danger">'+escapeHtml(e.message||e)+'</div>';}).catatIzinSakitGerbang(nisn,status,sessionStorage.getItem(MASDA_SESSION_KEY)||'');
+    }).withFailureHandler(function(e){if(out)out.innerHTML='<div class="alert alert-danger">'+escapeHtml(e.message||e)+'</div>';}).catatIzinSakitGerbang(nisn,status,masdaGetSessionToken_());
   }
 
   function loadAbsensiGerbang() {
@@ -5456,7 +5458,7 @@
   }
   function savePublicHomeMenu(){
     var boxes=document.querySelectorAll('.public-home-menu-check:checked');var menus=Array.from(boxes).map(function(el){return el.value;});
-    google.script.run.withSuccessHandler(function(r){publicHomeSelectedMenus=menus;renderPublicHomeMenu();appNotify((r&&r.message)||'Tampilan halaman awal berhasil disimpan.','success');}).withFailureHandler(function(e){appNotify('Gagal menyimpan tampilan halaman awal: '+(e.message||e),'error');}).savePublicHomeMenuConfig(menus,sessionStorage.getItem(MASDA_SESSION_KEY)||'');
+    google.script.run.withSuccessHandler(function(r){publicHomeSelectedMenus=menus;renderPublicHomeMenu();appNotify((r&&r.message)||'Tampilan halaman awal berhasil disimpan.','success');}).withFailureHandler(function(e){appNotify('Gagal menyimpan tampilan halaman awal: '+(e.message||e),'error');}).savePublicHomeMenuConfig(menus,masdaGetSessionToken_());
   }
   function showLoginPage(type){var home=document.getElementById('publicHomePage'),login=document.getElementById('loginPage'),main=document.getElementById('mainApp');if(main)main.classList.add('d-none');if(home)home.classList.add('d-none');if(login){login.classList.remove('d-none');login.classList.remove('login-student-mode','login-admin-mode');login.classList.add(type==='student'?'login-student-mode':'login-admin-mode');}var badge=document.getElementById('loginPortalBadge');if(badge)badge.innerHTML=type==='student'?'<i class="bi bi-mortarboard me-1"></i>Portal Siswa':'<i class="bi bi-shield-check me-1"></i>Portal Guru &amp; Staf';var alertBox=document.getElementById('loginAlert');if(alertBox)alertBox.innerHTML='';var menu=document.getElementById('publicHomeLoginMenu');if(menu)menu.classList.add('d-none');window.scrollTo({top:0,behavior:'smooth'});}
   function backToPublicHome(){var home=document.getElementById('publicHomePage'),login=document.getElementById('loginPage'),main=document.getElementById('mainApp');if(main)main.classList.add('d-none');if(login){login.classList.add('d-none');login.classList.remove('login-student-mode','login-admin-mode');}if(home)home.classList.remove('d-none');closePublicHomeContent();window.scrollTo({top:0,behavior:'smooth'});}
