@@ -32,7 +32,7 @@ export default async function handler(req, res) {
     res.setHeader('Cache-Control', 'no-store');
     return res.status(200).json(data);
   } catch (err) {
-    console.error('Si MasDA API proxy error:', err);
+    console.error('siMADA API proxy error:', err);
     return res.status(502).json({ success: false, message: 'Tidak dapat terhubung ke backend Apps Script.' });
   }
 }

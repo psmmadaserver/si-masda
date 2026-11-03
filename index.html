@@ -6,7 +6,7 @@
   <script>
   (function () {
     'use strict';
-    var SESSION_KEY = 'siMasDA_sessionToken';
+    var SESSION_KEY = 'siMADA_sessionToken';
     function currentToken() {
       try { return sessionStorage.getItem(SESSION_KEY) || ''; } catch (_) { return ''; }
     }
@@ -17,7 +17,7 @@
           if (prop === 'withSuccessHandler') return function (fn) { return createRunner(typeof fn === 'function' ? fn : null, failureHandler, userObject); };
           if (prop === 'withFailureHandler') return function (fn) { return createRunner(successHandler, typeof fn === 'function' ? fn : null, userObject); };
           if (prop === 'withUserObject') return function (obj) { return createRunner(successHandler, failureHandler, obj); };
-          if (prop === 'toString') return function () { return '[Si MasDA API Runner]'; };
+          if (prop === 'toString') return function () { return '[siMADA API Runner]'; };
           if (typeof prop !== 'string' || prop.charAt(0) === '_' || prop === 'then') return undefined;
           return function () {
             var args = Array.prototype.slice.call(arguments);
@@ -33,7 +33,7 @@
               return response.text().then(function (raw) {
                 var data;
                 try { data = JSON.parse(raw); }
-                catch (_) { throw new Error('Respons API Si MasDA tidak valid.'); }
+                catch (_) { throw new Error('Respons API siMADA tidak valid.'); }
                 if (!response.ok) throw new Error(data.message || 'Permintaan API gagal.');
                 if (data && data.__masdaRpcError) throw new Error(data.message || 'Permintaan API gagal.');
                 return data;
@@ -42,7 +42,7 @@
               if (successHandler) successHandler(result, userObject);
             }).catch(function (error) {
               if (failureHandler) failureHandler({ message: error && error.message ? error.message : String(error) }, userObject);
-              else console.error('[Si MasDA API]', prop, error);
+              else console.error('[siMADA API]', prop, error);
             });
           };
         }
@@ -56,7 +56,7 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Si MasDA — Sistem Manajemen MAS Darul Amin</title>
+  <title>siMADA — Sistem Manajemen MAS Darul Amin</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -300,7 +300,7 @@
     }
   .website-tile:hover{transform:translateY(-4px);box-shadow:0 1rem 2rem rgba(15,23,42,.10)!important}
 
-    /* Notifikasi bawaan aplikasi Si MasDA */
+    /* Notifikasi bawaan aplikasi siMADA */
     #appNotificationStack{position:fixed;right:18px;top:18px;z-index:20000;display:flex;flex-direction:column;gap:10px;width:min(390px,calc(100vw - 28px));pointer-events:none}
     .app-notification{pointer-events:auto;display:flex;align-items:flex-start;gap:12px;background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:14px 15px;box-shadow:0 14px 40px rgba(15,23,42,.18);animation:appToastIn .22s ease-out;overflow:hidden;position:relative}
     .app-notification:after{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--toast-color,#0284c7)}
@@ -330,7 +330,7 @@
 
 
 
-    /* Loading screen Si MasDA: ringan, responsif, dan terpisah dari Bootstrap modal. */
+    /* Loading screen siMADA: ringan, responsif, dan terpisah dari Bootstrap modal. */
     #masdaLoadingScreen{position:fixed;inset:0;z-index:2147482000;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(ellipse at 50% 35%,#263449 0%,#111827 58%,#0b1220 100%);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .28s ease,visibility .28s ease;color:#eaf3ff}
     #masdaLoadingScreen.is-active{opacity:1;visibility:visible;pointer-events:auto}
     #masdaLoadingScreen .loader-panel{width:min(100%,390px);min-height:236px;padding:34px 26px 26px;border:1px solid rgba(148,163,184,.18);border-radius:20px;background:rgba(15,23,42,.78);box-shadow:0 24px 70px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.035);text-align:center;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
@@ -387,7 +387,7 @@
 
 
     /* =========================================================
-       SI MASDA UI REFRESH — dashboard & data master
+       siMADA UI REFRESH — dashboard & data master
        CSS-only overrides: tidak mengubah ID, data, atau fungsi JS.
        ========================================================= */
     :root {
@@ -651,7 +651,7 @@
 
 
 <style>
-/* Halaman publik Si MasDA - desain mengikuti referensi sekolah */
+/* Halaman publik siMADA - desain mengikuti referensi sekolah */
 #publicHomePage{min-height:100vh;background:#f5f8fc;color:#14213d;font-family:inherit;overflow:hidden}
 #publicHomePage *{box-sizing:border-box}
 .public-home-topbar{min-height:32px;background:#00695c;color:#fff;padding:6px clamp(16px,5vw,76px);display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:11px;font-weight:700}
@@ -784,14 +784,14 @@
   <div class="loader-panel">
     <div class="loader-logo-wrap" id="masdaLoaderLogoWrap"><div class="loader-logo-fallback"><i class="bi bi-mortarboard-fill"></i></div></div>
     <div class="loader-status"><span class="loader-status-dot"></span><span id="masdaLoadingStatus">Menyiapkan aplikasi</span></div>
-    <h2 id="masdaLoadingTitle">Si MasDA</h2>
+    <h2 id="masdaLoadingTitle">siMADA</h2>
     <p id="masdaLoadingDescription">Menyiapkan pengalaman kerja yang lebih mudah dan terintegrasi.</p>
     <div class="loader-track" aria-hidden="true"><span></span></div>
   </div>
 </div>
 
 
-<!-- HALAMAN AWAL PUBLIK SI MASDA -->
+<!-- HALAMAN AWAL PUBLIK siMADA -->
 <section id="publicHomePage" class="masda-public-home">
   <div class="public-home-topbar"><div class="topbar-contact"><span id="homePhoneWrap"><i class="bi bi-telephone-fill"></i><span id="homeSchoolPhone"></span></span><span id="homeEmailWrap"><i class="bi bi-envelope-fill"></i><span id="homeSchoolEmail"></span></span></div></div>
   <header class="public-home-nav">
@@ -815,7 +815,7 @@
             <i class="bi bi-building-fill fs-2"></i>
           </div>
         </div>
-        <h4 class="fw-bold text-dark" id="loginSchoolName">Si MasDA</h4>
+        <h4 class="fw-bold text-dark" id="loginSchoolName">siMADA</h4>
         <p class="text-muted small">MAS Darul Amin</p>
         <div id="loginPortalBadge" class="login-portal-badge"><i class="bi bi-shield-check me-1"></i>Portal Guru &amp; Staf</div>
       </div>
@@ -891,8 +891,8 @@
   <div class="mobile-topbar-fixed d-md-none p-2 px-3 d-flex justify-content-between align-items-center no-print sticky-top">
     <div class="d-flex align-items-center gap-2" style="min-width:0">
       <button class="btn btn-outline-secondary btn-sm py-1 px-2 mobile-menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-label="Buka menu"><i class="bi bi-list fs-5"></i></button>
-      <img id="mobileAppLogo" class="mobile-brand-logo" alt="Logo Si MasDA" src="" style="display:none">
-      <span class="fw-bold fs-6 text-truncate" style="max-width: 180px;" id="mobileSchoolName">Si MasDA</span>
+      <img id="mobileAppLogo" class="mobile-brand-logo" alt="Logo siMADA" src="" style="display:none">
+      <span class="fw-bold fs-6 text-truncate" style="max-width: 180px;" id="mobileSchoolName">siMADA</span>
     </div>
     <div class="d-flex align-items-center gap-2">
       <small class="badge bg-info text-dark" id="mobileUserRoleBadge">Administrator</small>
@@ -907,7 +907,7 @@
         
         <!-- HEADER OFFCANVAS HP -->
         <div class="offcanvas-header d-md-none text-white border-bottom border-secondary pb-2 mb-3">
-          <h5 class="offcanvas-title fw-bold d-flex align-items-center" id="sidebarMenuLabel"><img id="sidebarMobileLogo" src="" alt="Logo Si MasDA" style="display:none;width:30px;height:30px;object-fit:contain;margin-right:10px;border-radius:7px"> Si MasDA</h5>
+          <h5 class="offcanvas-title fw-bold d-flex align-items-center" id="sidebarMenuLabel"><img id="sidebarMobileLogo" src="" alt="Logo siMADA" style="display:none;width:30px;height:30px;object-fit:contain;margin-right:10px;border-radius:7px"> siMADA</h5>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" data-bs-target="#sidebarMenu" aria-label="Close"></button>
         </div>
 
@@ -916,7 +916,7 @@
             <i class="bi bi-mortarboard-fill text-info fs-3"></i>
           </div>
           <div>
-            <h6 class="fw-bold mb-0 text-white" id="sidebarSchoolName">Si MasDA</h6>
+            <h6 class="fw-bold mb-0 text-white" id="sidebarSchoolName">siMADA</h6>
             <small class="text-info fs-7" id="userRoleBadge">Administrator</small>
           </div>
         </div>
@@ -937,7 +937,7 @@
           <li class="nav-item" data-menu="kesiswaan"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('kesiswaan', event)"><i class="bi bi-person-badge me-2"></i> Kesiswaan</a></li>
           <li class="nav-item" data-menu="sarpras"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('sarpras', event)"><i class="bi bi-box-seam me-2"></i> SarPras</a></li>
           <li class="nav-item" data-menu="pengaturan"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('pengaturan', event)"><i class="bi bi-gear me-2"></i> Pengaturan User</a></li>
-          <li class="nav-item" data-menu="website"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('website', event)"><i class="bi bi-globe me-2"></i> Website Terkait</a></li>
+          <li class="nav-item" data-menu="website"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('website', event)"><i class="bi bi-globe me-2"></i> Link Terkait</a></li>
           <li class="nav-item mt-4"><a class="nav-link text-danger" href="javascript:void(0)" onclick="logout(event)"><i class="bi bi-box-arrow-right me-2"></i> Keluar</a></li>
         </ul>
       </div>
@@ -951,9 +951,9 @@
         <div class="print-header-inner">
           <img id="printSchoolLogo" class="print-school-logo" alt="Logo sekolah" style="display:none">
           <div class="print-header-text">
-            <h3 class="print-school-title" id="printSchoolTitle">Si MasDA</h3>
+            <h3 class="print-school-title" id="printSchoolTitle">siMADA</h3>
             <div id="printSchoolSubtitle" class="print-school-subtitle"></div>
-            <div id="printSchoolTagline" class="print-school-tagline">Si MasDA — Sistem Manajemen</div>
+            <div id="printSchoolTagline" class="print-school-tagline">siMADA — Sistem Manajemen</div>
           </div>
         </div>
         <hr style="border-top: 2px solid #000;">
@@ -1649,7 +1649,7 @@
         </div>
       </div>
       
-      <!-- WEBSITE TERKAIT -->
+      <!-- Link Terkait -->
 
       <!-- WHATSAPP GATEWAY -->
       <div id="sec-whatsapp" class="content-section d-none">
@@ -1671,7 +1671,7 @@
                 <div class="wa-qr-stage flex-grow-1"><div><div class="rounded-4 bg-light p-3 d-inline-block mb-3" id="waQrIconWrap"><i class="bi bi-phone fs-1 text-secondary" id="waQrIcon"></i></div><h6 class="fw-bold" id="waQrTitle">Tautkan nomor WhatsApp pengirim</h6><p class="wa-muted mb-0" id="waQrDescription">Simpan token API Fonnte terlebih dahulu pada tab Template Pesan &amp; Uji Coba, kemudian tekan tombol Tampilkan Kode QR WhatsApp.</p><div id="waQrOutput" class="mt-3"></div></div></div>
                 <div class="mt-3 d-flex flex-wrap gap-2"><button class="wa-btn" type="button" onclick="showWhatsAppQr()"><i class="bi bi-qr-code me-2"></i>Tampilkan Kode QR WhatsApp</button><button class="btn btn-light border" type="button" onclick="loadWaGateway()" title="Segarkan status"><i class="bi bi-arrow-clockwise me-1"></i>Segarkan</button><a class="wa-btn d-inline-block text-decoration-none" href="https://md.fonnte.com/" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right me-2"></i>Buka Dashboard Fonnte</a></div>
               </div></div>
-              <div class="col-lg-5"><div class="wa-box mb-3"><h6 class="fw-bold mb-3"><i class="bi bi-info-circle text-success me-2"></i>Panduan Menautkan WhatsApp Sekolah</h6><ol class="small text-secondary ps-3 mb-3"><li class="mb-2">Buka dashboard provider WhatsApp dan masuk ke akun sekolah.</li><li class="mb-2">Tautkan perangkat/nomor pengirim sesuai instruksi provider (misalnya dengan scan QR di dashboard).</li><li class="mb-2">Salin token API provider dan simpan pada tab <b>Template Pesan &amp; Uji Coba</b>.</li><li class="mb-2">Isi nomor WhatsApp wali siswa di Data Master → Master Siswa.</li><li>Uji pengiriman sebelum menggunakan notifikasi otomatis.</li></ol><div class="alert alert-warning small mb-0"><b>Cara kerja otomatis:</b><br>Setelah siswa melakukan absensi masuk/pulang, Si MasDA mengirim pesan ke nomor wali melalui API jika token aktif dan nomor wali tersedia.</div></div>
+              <div class="col-lg-5"><div class="wa-box mb-3"><h6 class="fw-bold mb-3"><i class="bi bi-info-circle text-success me-2"></i>Panduan Menautkan WhatsApp Sekolah</h6><ol class="small text-secondary ps-3 mb-3"><li class="mb-2">Buka dashboard provider WhatsApp dan masuk ke akun sekolah.</li><li class="mb-2">Tautkan perangkat/nomor pengirim sesuai instruksi provider (misalnya dengan scan QR di dashboard).</li><li class="mb-2">Salin token API provider dan simpan pada tab <b>Template Pesan &amp; Uji Coba</b>.</li><li class="mb-2">Isi nomor WhatsApp wali siswa di Data Master → Master Siswa.</li><li>Uji pengiriman sebelum menggunakan notifikasi otomatis.</li></ol><div class="alert alert-warning small mb-0"><b>Cara kerja otomatis:</b><br>Setelah siswa melakukan absensi masuk/pulang, siMADA mengirim pesan ke nomor wali melalui API jika token aktif dan nomor wali tersedia.</div></div>
                 <div class="wa-box"><h6 class="fw-bold mb-3">Pengaturan Cepat Pengiriman Otomatis</h6><div class="wa-switch-card mb-2"><div><b class="small">Kirim WA saat Absen Masuk</b><small>Notifikasi ketika siswa tiba di madrasah</small></div><input class="form-check-input" type="checkbox" id="waSendMasuk" checked></div><div class="wa-switch-card"><div><b class="small">Kirim WA saat Absen Pulang</b><small>Notifikasi ketika siswa pulang</small></div><input class="form-check-input" type="checkbox" id="waSendPulang" checked></div><button class="wa-btn w-100 mt-3" onclick="saveWaQuickSettings()">Simpan Pengaturan Otomatis</button></div>
               </div>
             </div>
@@ -1826,7 +1826,7 @@
     <input type="text" id="mgJabatanNama" class="form-control mb-2" value="Guru" placeholder="Contoh: Wali Kelas, Waka Kurikulum">
     <div class="accordion mt-3" id="mgRbacAccordion"><div class="accordion-item">
       <h2 class="accordion-header"><button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#mgRbacBody">Hak Akses Menu Guru (RBAC)</button></h2>
-      <div id="mgRbacBody" class="accordion-collapse collapse"><div class="accordion-body"><p class="small text-muted">Atur menu yang boleh dibuka guru dan apakah hanya melihat atau boleh mengisi/mengedit.</p><div class="row g-2"><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_dashboard">Dashboard</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_dashboard" data-menu="dashboard"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_profil">Profil Sekolah</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_profil" data-menu="profil"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_struktur">Struktur Organisasi</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_struktur" data-menu="struktur"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_master">Data Master</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_master" data-menu="master"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_jurnal">Jurnal Guru</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_jurnal" data-menu="jurnal"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_honor">Honor Guru</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_honor" data-menu="honor"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_absensi">Absensi Pelajaran</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_absensi" data-menu="absensi"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_kesiswaan">Kesiswaan</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_kesiswaan" data-menu="kesiswaan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_sarpras">SarPras</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_sarpras" data-menu="sarpras"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_pengaturan">Pengaturan User</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_pengaturan" data-menu="pengaturan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_website">Website Terkait</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_website" data-menu="website"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_whatsapp">WhatsApp Gateway</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_whatsapp" data-menu="whatsapp"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_absensiQr">Absensi QR Siswa</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_absensiQr" data-menu="absensiQr"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div></div></div></div></div>
+      <div id="mgRbacBody" class="accordion-collapse collapse"><div class="accordion-body"><p class="small text-muted">Atur menu yang boleh dibuka guru dan apakah hanya melihat atau boleh mengisi/mengedit.</p><div class="row g-2"><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_dashboard">Dashboard</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_dashboard" data-menu="dashboard"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_profil">Profil Sekolah</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_profil" data-menu="profil"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_struktur">Struktur Organisasi</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_struktur" data-menu="struktur"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_master">Data Master</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_master" data-menu="master"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_jurnal">Jurnal Guru</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_jurnal" data-menu="jurnal"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_honor">Honor Guru</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_honor" data-menu="honor"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_absensi">Absensi Pelajaran</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_absensi" data-menu="absensi"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_kesiswaan">Kesiswaan</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_kesiswaan" data-menu="kesiswaan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_sarpras">SarPras</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_sarpras" data-menu="sarpras"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_pengaturan">Pengaturan User</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_pengaturan" data-menu="pengaturan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_website">Link Terkait</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_website" data-menu="website"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_whatsapp">WhatsApp Gateway</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_whatsapp" data-menu="whatsapp"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_absensiQr">Absensi QR Siswa</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_absensiQr" data-menu="absensiQr"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div></div></div></div></div>
   </div>
   <div class="modal-footer"><button type="button" class="btn btn-primary" onclick="saveGuruModal()">Simpan Guru</button></div></div></div>
 </div>
@@ -1874,7 +1874,7 @@
     <label class="form-label fw-semibold">No. HP WhatsApp Wali</label>
     <input type="tel" id="msNoHpWali" class="form-control mb-2" placeholder="Contoh: 081234567890">
     <div class="form-text mb-2">Nomor ini digunakan untuk notifikasi absensi siswa.</div>
-    <div class="border rounded-3 p-3 mt-3 bg-light"><div class="fw-bold small text-primary mb-1"><i class="bi bi-shield-lock me-1"></i>Hak Akses Menu Akun Siswa</div><div class="small text-muted mb-2">Admin dapat menentukan menu yang boleh dibuka dan apakah siswa hanya melihat atau boleh mengisi data.</div><div class="row g-2"><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_dashboard">Dashboard Analytics</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_dashboard" data-menu="dashboard"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_profil">Profil Sekolah</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_profil" data-menu="profil"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_struktur">Struktur Organisasi</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_struktur" data-menu="struktur"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_master">Data Master</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_master" data-menu="master"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_jurnal">Jurnal Guru</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_jurnal" data-menu="jurnal"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_honor">Honor Guru</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_honor" data-menu="honor"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_absensi">Absensi Pelajaran</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_absensi" data-menu="absensi"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_kesiswaan">Kesiswaan</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_kesiswaan" data-menu="kesiswaan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_sarpras">SarPras</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_sarpras" data-menu="sarpras"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_pengaturan">Pengaturan User</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_pengaturan" data-menu="pengaturan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_website">Website Terkait</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_website" data-menu="website"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_whatsapp">WhatsApp Gateway</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_whatsapp" data-menu="whatsapp"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_absensiQr">Absensi QR / Izin Siswa</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_absensiQr" data-menu="absensiQr"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div></div></div>
+    <div class="border rounded-3 p-3 mt-3 bg-light"><div class="fw-bold small text-primary mb-1"><i class="bi bi-shield-lock me-1"></i>Hak Akses Menu Akun Siswa</div><div class="small text-muted mb-2">Admin dapat menentukan menu yang boleh dibuka dan apakah siswa hanya melihat atau boleh mengisi data.</div><div class="row g-2"><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_dashboard">Dashboard Analytics</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_dashboard" data-menu="dashboard"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_profil">Profil Sekolah</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_profil" data-menu="profil"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_struktur">Struktur Organisasi</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_struktur" data-menu="struktur"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_master">Data Master</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_master" data-menu="master"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_jurnal">Jurnal Guru</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_jurnal" data-menu="jurnal"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_honor">Honor Guru</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_honor" data-menu="honor"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_absensi">Absensi Pelajaran</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_absensi" data-menu="absensi"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_kesiswaan">Kesiswaan</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_kesiswaan" data-menu="kesiswaan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_sarpras">SarPras</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_sarpras" data-menu="sarpras"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_pengaturan">Pengaturan User</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_pengaturan" data-menu="pengaturan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_website">Link Terkait</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_website" data-menu="website"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_whatsapp">WhatsApp Gateway</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_whatsapp" data-menu="whatsapp"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_absensiQr">Absensi QR / Izin Siswa</label><select class="form-select form-select-sm ms-rbac-mode" id="msRbac_absensiQr" data-menu="absensiQr"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div></div></div>
   </div>
   <div class="modal-footer"><button type="button" class="btn btn-primary" onclick="saveSiswaModal()">Simpan Siswa</button></div></div></div>
 </div>
@@ -2143,7 +2143,7 @@
             <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_kesiswaan">Kesiswaan</label><select class="form-select form-select-sm rbac-mode" id="rbac_kesiswaan" data-menu="kesiswaan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div>
             <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_sarpras">SarPras</label><select class="form-select form-select-sm rbac-mode" id="rbac_sarpras" data-menu="sarpras"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div>
             <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_pengaturan">Pengaturan User</label><select class="form-select form-select-sm rbac-mode" id="rbac_pengaturan" data-menu="pengaturan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div>
-            <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_website">Website Terkait</label><select class="form-select form-select-sm rbac-mode" id="rbac_website" data-menu="website"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_whatsapp">WhatsApp Gateway</label><select class="form-select form-select-sm rbac-mode" id="rbac_whatsapp" data-menu="whatsapp"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_absensiQr">Absensi QR Siswa</label><select class="form-select form-select-sm rbac-mode" id="rbac_absensiQr" data-menu="absensiQr"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div>
+            <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_website">Link Terkait</label><select class="form-select form-select-sm rbac-mode" id="rbac_website" data-menu="website"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_whatsapp">WhatsApp Gateway</label><select class="form-select form-select-sm rbac-mode" id="rbac_whatsapp" data-menu="whatsapp"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_absensiQr">Absensi QR Siswa</label><select class="form-select form-select-sm rbac-mode" id="rbac_absensiQr" data-menu="absensiQr"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div>
           </div>
         </div>
 
@@ -2294,7 +2294,7 @@
   var currentUser = null;
   var userAksesList = [];
   // Sesi aman: token disimpan per-tab (sessionStorage), bukan password pengguna.
-  var MASDA_SESSION_KEY = 'siMasDA_sessionToken';
+  var MASDA_SESSION_KEY = 'siMADA_sessionToken';
 
   function activateUserSession(res) {
     if (!res || !res.success) return false;
@@ -2463,7 +2463,7 @@
     document.getElementById('masdaLoadingDescription').textContent = customDescription || msg[1];
     var wrap = document.getElementById('masdaLoaderLogoWrap');
     var logo = document.querySelector('#sidebarLogoContainer img, #loginLogoContainer img');
-    if (logo && logo.src) wrap.innerHTML = '<img class="loader-logo" alt="Logo Si MasDA" src="' + logo.src.replace(/"/g, '&quot;') + '">';
+    if (logo && logo.src) wrap.innerHTML = '<img class="loader-logo" alt="Logo siMADA" src="' + logo.src.replace(/"/g, '&quot;') + '">';
     else wrap.innerHTML = '<div class="loader-logo-fallback"><i class="bi bi-mortarboard-fill"></i></div>';
     overlay.classList.add('is-active');
     overlay.setAttribute('aria-hidden', 'false');
@@ -2914,7 +2914,7 @@
   async function logout(e) {
     if (e) { e.preventDefault(); e.stopPropagation(); }
     try {
-      var confirmed = window.confirm('Apakah Anda yakin ingin keluar dari aplikasi Si MasDA?');
+      var confirmed = window.confirm('Apakah Anda yakin ingin keluar dari aplikasi siMADA?');
       if (!confirmed) return;
 
       // Logout bersifat lokal seperti alur aplikasi sebelumnya; reset seluruh status sesi UI.
@@ -3062,6 +3062,9 @@
         renderSarprasCategoryCards(data.sarpras.byKategori || []);
         renderChartSarprasPie(data.sarpras.baik, data.sarpras.ringan, data.sarpras.berat);
       }
+    }).withFailureHandler(function(err) {
+      console.error('[siMADA dashboard]', err);
+      appNotify('Dashboard belum dapat diperbarui: ' + (err && err.message ? err.message : err), 'error');
     }).getDashboardSummary();
   }
   // Statistik dashboard disegarkan berkala agar perubahan Hadir/Izin/Sakit/Alpha segera terlihat.
@@ -3134,7 +3137,7 @@
         var loginLogo = document.getElementById('loginLogoContainer');
         if (loginLogo) loginLogo.innerHTML = '<img src="' + src.replace(/"/g, '&quot;') + '" class="login-logo-img rounded" alt="Logo sekolah" onerror="this.style.display=\'none\'">';
         var loaderWrap = document.getElementById('masdaLoaderLogoWrap');
-        if (loaderWrap) loaderWrap.innerHTML = '<img class="loader-logo" alt="Logo Si MasDA" src="' + src.replace(/"/g, '&quot;') + '">';
+        if (loaderWrap) loaderWrap.innerHTML = '<img class="loader-logo" alt="Logo siMADA" src="' + src.replace(/"/g, '&quot;') + '">';
       })
       .withFailureHandler(function(err) { console.warn('Logo sekolah belum dapat dimuat:', err); })
       .getProfil();
@@ -3146,10 +3149,10 @@
       updatePrintSchoolBranding();
       // Nama merek aplikasi konsisten untuk semua peran pengguna.
       // Nama resmi sekolah tetap disimpan dan ditampilkan pada formulir Profil Sekolah.
-      document.getElementById('loginSchoolName').innerText = 'Si MasDA';
-      document.getElementById('mobileSchoolName').innerText = 'Si MasDA';
-      document.getElementById('sidebarSchoolName').innerText = 'Si MasDA';
-      document.getElementById('printSchoolTitle').innerText = 'Si MasDA';
+      document.getElementById('loginSchoolName').innerText = 'siMADA';
+      document.getElementById('mobileSchoolName').innerText = 'siMADA';
+      document.getElementById('sidebarSchoolName').innerText = 'siMADA';
+      document.getElementById('printSchoolTitle').innerText = 'siMADA';
 
       document.getElementById('profNama').value = p['Nama Sekolah'] || '';
       document.getElementById('profNism').value = p['NISM'] || '';
@@ -4140,7 +4143,7 @@
   }
 
   // ==========================================
-  // WEBSITE TERKAIT - CRUD ADMIN
+  // Link Terkait - CRUD ADMIN
   // ==========================================
   function isAdminUser() { return currentUser && String(currentUser.role || '').trim().toLowerCase() === 'administrator'; }
   function loadWebsiteTerkait() {
@@ -4158,13 +4161,13 @@
           var icon = /^[a-z0-9 -]+$/i.test(w.ikon || '') ? w.ikon : 'bi bi-globe2';
           var actions = admin ? '<div class="d-flex gap-2 mt-3"><button class="btn btn-sm btn-light border rounded-pill flex-fill" onclick="editWebsite(\'' + escapeHtml(w.id) + '\')"><i class="bi bi-pencil me-1"></i>Edit</button><button type="button" class="btn btn-sm btn-light border text-danger rounded-pill" onclick="deleteWebsite(\'' + escapeHtml(w.id) + '\')" title="Hapus"><i class="bi bi-trash"></i></button></div>' : '';
           var logoHtml = w.logo && /^https?:\/\//i.test(w.logo) ? '<img src="' + escapeHtml(w.logo) + '" alt="Logo ' + escapeHtml(w.nama) + '" style="width:54px;height:54px;object-fit:contain;border-radius:14px" onerror="this.style.display=\'none\'">' : '<i class="' + escapeHtml(icon) + '"></i>';
-          return '<div class="col-12 col-sm-6 col-lg-4 col-xl-3"><div class="card h-100 border-0 shadow-sm rounded-4 p-3 p-md-4 website-tile" style="transition:transform .2s,box-shadow .2s"><div class="d-flex align-items-start justify-content-between"><div class="rounded-4 d-flex align-items-center justify-content-center" style="width:54px;height:54px;background:' + color + '18;color:' + color + ';font-size:1.65rem">' + logoHtml + '</div><span class="badge rounded-pill" style="background:' + color + '18;color:' + color + '">Layanan</span></div><h6 class="fw-bold mt-3 mb-1">' + escapeHtml(w.nama) + '</h6><p class="text-muted small flex-grow-1 mb-3">' + escapeHtml(w.deskripsi || 'Buka layanan website terkait') + '</p><a href="' + escapeHtml(w.url) + '" target="_blank" rel="noopener noreferrer" class="btn btn-sm rounded-pill text-white mt-auto" style="background:' + color + '">Buka Website <i class="bi bi-arrow-up-right ms-1"></i></a>' + actions + '</div></div>';
+          return '<div class="col-12 col-sm-6 col-lg-4 col-xl-3"><div class="card h-100 border-0 shadow-sm rounded-4 p-3 p-md-4 website-tile" style="transition:transform .2s,box-shadow .2s"><div class="d-flex align-items-start justify-content-between"><div class="rounded-4 d-flex align-items-center justify-content-center" style="width:54px;height:54px;background:' + color + '18;color:' + color + ';font-size:1.65rem">' + logoHtml + '</div><span class="badge rounded-pill" style="background:' + color + '18;color:' + color + '">Layanan</span></div><h6 class="fw-bold mt-3 mb-1">' + escapeHtml(w.nama) + '</h6><p class="text-muted small flex-grow-1 mb-3">' + escapeHtml(w.deskripsi || 'Buka layanan Link Terkait') + '</p><a href="' + escapeHtml(w.url) + '" target="_blank" rel="noopener noreferrer" class="btn btn-sm rounded-pill text-white mt-auto" style="background:' + color + '">Buka Website <i class="bi bi-arrow-up-right ms-1"></i></a>' + actions + '</div></div>';
         }).join('');
         window.websiteTerkaitCache = items;
       }).getWebsiteTerkait(admin);
   }
   function openFormWebsite(item) {
-    if (!isAdminUser()) { appNotify('Hanya admin yang dapat mengelola website terkait.'); return; }
+    if (!isAdminUser()) { appNotify('Hanya admin yang dapat mengelola Link Terkait.'); return; }
     item = item || {}; document.getElementById('webId').value = item.id || '';
     document.getElementById('webNama').value = item.nama || ''; document.getElementById('webUrl').value = item.url || '';
     document.getElementById('webDeskripsi').value = item.deskripsi || ''; document.getElementById('webIkon').value = item.ikon || 'bi bi-globe2';
@@ -4176,7 +4179,7 @@
   function editWebsite(id) { var item = (window.websiteTerkaitCache || []).find(function(x) { return String(x.id) === String(id); }); if (item) openFormWebsite(item); }
   function closeFormWebsite() { document.getElementById('formWebsiteWrap').classList.add('d-none'); }
   function saveWebsite() {
-    if (!isAdminUser()) { appNotify('Hanya admin yang dapat mengelola website terkait.'); return; }
+    if (!isAdminUser()) { appNotify('Hanya admin yang dapat mengelola Link Terkait.'); return; }
     var data = {id:document.getElementById('webId').value, nama:document.getElementById('webNama').value.trim(), url:document.getElementById('webUrl').value.trim(), deskripsi:document.getElementById('webDeskripsi').value.trim(), ikon:document.getElementById('webIkon').value.trim(), warna:document.getElementById('webWarna').value, logo:document.getElementById('webLogo').value.trim(), urutan:document.getElementById('webUrutan').value, aktif:document.getElementById('webAktif').value === 'true'};
     if (!data.nama || !data.url) { appNotify('Nama dan URL website wajib diisi.'); return; }
     var btn = document.getElementById('btnSimpanWebsite'); btn.disabled = true;
@@ -4185,7 +4188,7 @@
       .simpanWebsiteTerkait(data);
   }
   async function deleteWebsite(id) {
-    if (!isAdminUser()) { appNotify('Hanya admin yang dapat mengelola website terkait.'); return; }
+    if (!isAdminUser()) { appNotify('Hanya admin yang dapat mengelola Link Terkait.'); return; }
     if (!window.confirm('Hapus website ini dari daftar?')) return;
     google.script.run.withFailureHandler(function(err) { appNotify('Gagal menghapus: ' + (err.message || err)); })
       .withSuccessHandler(function(msg) { appNotify(msg); loadWebsiteTerkait(); }).hapusWebsiteTerkait(id);
@@ -4378,6 +4381,10 @@
     google.script.run
       .withSuccessHandler(function(res) {
         queue.inFlight = false;
+        if (res && res.__masdaRpcError) {
+          appNotify('Gagal menyimpan absensi ' + snapshot.nisn + ': ' + (res.message || 'Backend menolak penyimpanan.'), 'error');
+          return;
+        }
         queue.savedVersion = versionKirim;
         if (queue.row && queue.row.isConnected) {
           var labels = queue.row.querySelectorAll('.status-label');
@@ -4780,7 +4787,7 @@
     var schoolName = p['Nama Sekolah'] || 'MAS Darul Amin';
     if (title) title.textContent = schoolName;
     if (sub) sub.textContent = [p['NISM'] ? 'NISM: ' + p['NISM'] : '', p['NPSN'] ? 'NPSN: ' + p['NPSN'] : ''].filter(Boolean).join('  |  ');
-    if (tagline) tagline.textContent = 'Si MasDA — Sistem Manajemen ' + schoolName;
+    if (tagline) tagline.textContent = 'siMADA — Sistem Manajemen ' + schoolName;
   }
 
   // Dropdown ini sengaja dipilih manual oleh admin setiap akan mencetak/mengekspor Sarpras.
@@ -4858,12 +4865,12 @@
       }
     } catch (e) { console.warn('Logo tidak dapat dimasukkan ke PDF:', e); }
     doc.setFontSize(13);
-    doc.text(String(p['Nama Sekolah'] || 'Si MasDA'), pageW / 2, headerY, { align: 'center' });
+    doc.text(String(p['Nama Sekolah'] || 'siMADA'), pageW / 2, headerY, { align: 'center' });
     doc.setFontSize(9);
     var ident = [p['NISM'] ? 'NISM: ' + p['NISM'] : '', p['NPSN'] ? 'NPSN: ' + p['NPSN'] : ''].filter(Boolean).join(' | ');
     if (ident) doc.text(ident, pageW / 2, headerY + 6, { align: 'center' });
     doc.setFontSize(9);
-    doc.text('Si MasDA — Sistem Manajemen ' + String(p['Nama Sekolah'] || 'MAS Darul Amin'), pageW / 2, headerY + 12, { align: 'center' });
+    doc.text('siMADA — Sistem Manajemen ' + String(p['Nama Sekolah'] || 'MAS Darul Amin'), pageW / 2, headerY + 12, { align: 'center' });
     doc.setLineWidth(0.5);
     doc.line(14, 29, pageW - 14, 29);
     doc.setFontSize(11);
@@ -4962,8 +4969,8 @@
 
   // WhatsApp Gateway UI: tab, template, test, and history.
   var waTestMode='masuk';
-  var waDefaultMasuk='Assalamu’alaikum Wr. Wb.\nYth. Bapak/Ibu Wali dari *{nama}* (NISN: {nisn} / Kelas: {kelas}).\n\nMenginformasikan bahwa putra/putri Bapak/Ibu telah melakukan *ABSEN MASUK* di *{sekolah}* pada:\n📅 Tanggal: {tanggal}\n⏰ Waktu: {jam} WIB\n✅ Status: {status}\n\nTerima kasih.\n— Si MasDA';
-  var waDefaultPulang='Assalamu’alaikum Wr. Wb.\nYth. Bapak/Ibu Wali dari *{nama}* (NISN: {nisn} / Kelas: {kelas}).\n\nMenginformasikan bahwa putra/putri Bapak/Ibu telah melakukan *ABSEN PULANG* dari *{sekolah}* pada:\n📅 Tanggal: {tanggal}\n⏰ Waktu: {jam} WIB\n✅ Status: {status}\n\nTerima kasih.\n— Si MasDA';
+  var waDefaultMasuk='Assalamu’alaikum Wr. Wb.\nYth. Bapak/Ibu Wali dari *{nama}* (NISN: {nisn} / Kelas: {kelas}).\n\nMenginformasikan bahwa putra/putri Bapak/Ibu telah melakukan *ABSEN MASUK* di *{sekolah}* pada:\n📅 Tanggal: {tanggal}\n⏰ Waktu: {jam} WIB\n✅ Status: {status}\n\nTerima kasih.\n— siMADA';
+  var waDefaultPulang='Assalamu’alaikum Wr. Wb.\nYth. Bapak/Ibu Wali dari *{nama}* (NISN: {nisn} / Kelas: {kelas}).\n\nMenginformasikan bahwa putra/putri Bapak/Ibu telah melakukan *ABSEN PULANG* dari *{sekolah}* pada:\n📅 Tanggal: {tanggal}\n⏰ Waktu: {jam} WIB\n✅ Status: {status}\n\nTerima kasih.\n— siMADA';
   function showWaTab(tab){document.querySelectorAll('[data-wa-tab]').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-wa-tab')===tab);});document.querySelectorAll('[data-wa-panel]').forEach(function(p){p.classList.toggle('active',p.getAttribute('data-wa-panel')===tab);});if(tab==='history')loadWaHistory();if(tab==='template')loadWaTestStudents();}
   function initHariEfektifYearSelect(){
     var sel=document.getElementById('heTahun'); if(!sel||sel.options.length)return;
@@ -5222,7 +5229,7 @@
       var win=window.open('', '_blank');
       if(!win){appNotify('Jendela cetak diblokir browser. Izinkan pop-up untuk aplikasi ini.', 'error');return;}
       win.document.open();
-      win.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Cetak Semua ID Card Si MasDA</title><style>@page{size:A4;margin:8mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;color:#111}.grid{display:grid;grid-template-columns:repeat(3,2.25in);gap:7mm 5mm;justify-content:center}.card{width:2.25in;height:3.55in;position:relative;overflow:hidden;border-radius:12px;padding:10px;break-inside:avoid;page-break-inside:avoid;color:#fff;background:linear-gradient(160deg,#071d43,#0753a2 62%,#081b42)}.logo{position:absolute;top:10px;left:10px;width:28px;height:28px;object-fit:contain;background:#fff;border-radius:6px;padding:2px;z-index:3}.school{position:relative;z-index:3;margin-left:34px;font-size:8px;font-weight:bold;text-transform:uppercase;max-width:calc(100% - 38px)}.school small{display:block;font-size:6px;margin-top:3px}.photo{position:absolute;left:0;right:0;bottom:0;width:100%;height:78%;object-fit:contain;object-position:center bottom;border:0;border-radius:0;background:transparent;mask-image:linear-gradient(to bottom,#000 0%,#000 82%,rgba(0,0,0,.9) 90%,rgba(0,0,0,.55) 96%,rgba(0,0,0,0) 100%)}.placeholder{background:linear-gradient(#cbd5e1,#64748b)}.name{position:absolute;right:6px;bottom:52px;writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;font-weight:bold;max-height:66%;z-index:3}.tag{position:absolute;right:7px;bottom:9px;writing-mode:vertical-rl;transform:rotate(180deg);font-size:7px;z-index:3}.bottom{position:absolute;left:9px;bottom:9px;z-index:4;display:flex;align-items:flex-end;gap:6px}.qr{background:#fff;border-radius:4px;padding:3px;line-height:0}.qr img,.qr canvas{width:60px!important;height:60px!important}.meta{font-size:7px;line-height:1.6}.green{background:linear-gradient(150deg,#007343 0 12%,#fff 12% 86%,#007343 86%);color:#092b20;border:2px solid #087647}.green .photo,.purple .photo{position:relative;display:block;width:1.35in;height:1.45in;margin:10px auto 4px;border-radius:10px;mask-image:none;border:2px solid #087647}.green .name,.purple .name{position:relative;right:auto;bottom:auto;writing-mode:initial;transform:none;text-align:center;font-size:10px}.green .tag,.purple .tag{position:relative;right:auto;bottom:auto;writing-mode:initial;transform:none;text-align:center}.green .bottom,.purple .bottom{position:absolute;left:8px;bottom:8px;display:flex}.purple{background:linear-gradient(155deg,#f8f3ff,#fff 55%,#e9d5ff);color:#271044;border:2px solid #7c3aed}.purple .photo{border:3px solid #7c3aed;border-radius:50%;width:1.35in;height:1.35in}.blue:after{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2790%27 height=%2790%27 viewBox=%270 0 90 90%27%3E%3Cg fill=%27none%27 stroke=%27white%27 stroke-opacity=%27.14%27%3E%3Cpath d=%27M45 4 57 16 45 28 33 16Z M16 33 28 45 16 57 4 45Z M74 33 86 45 74 57 62 45Z M45 62 57 74 45 86 33 74Z%27/%3E%3C/g%3E%3C/svg%3E");pointer-events:none;z-index:2}.blue .photo{z-index:1}.qr img{object-fit:contain}@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.card{box-shadow:none}} </style></head><body><div class="grid">'+cardHtml+'</div>
+      win.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Cetak Semua ID Card siMADA</title><style>@page{size:A4;margin:8mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;color:#111}.grid{display:grid;grid-template-columns:repeat(3,2.25in);gap:7mm 5mm;justify-content:center}.card{width:2.25in;height:3.55in;position:relative;overflow:hidden;border-radius:12px;padding:10px;break-inside:avoid;page-break-inside:avoid;color:#fff;background:linear-gradient(160deg,#071d43,#0753a2 62%,#081b42)}.logo{position:absolute;top:10px;left:10px;width:28px;height:28px;object-fit:contain;background:#fff;border-radius:6px;padding:2px;z-index:3}.school{position:relative;z-index:3;margin-left:34px;font-size:8px;font-weight:bold;text-transform:uppercase;max-width:calc(100% - 38px)}.school small{display:block;font-size:6px;margin-top:3px}.photo{position:absolute;left:0;right:0;bottom:0;width:100%;height:78%;object-fit:contain;object-position:center bottom;border:0;border-radius:0;background:transparent;mask-image:linear-gradient(to bottom,#000 0%,#000 82%,rgba(0,0,0,.9) 90%,rgba(0,0,0,.55) 96%,rgba(0,0,0,0) 100%)}.placeholder{background:linear-gradient(#cbd5e1,#64748b)}.name{position:absolute;right:6px;bottom:52px;writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;font-weight:bold;max-height:66%;z-index:3}.tag{position:absolute;right:7px;bottom:9px;writing-mode:vertical-rl;transform:rotate(180deg);font-size:7px;z-index:3}.bottom{position:absolute;left:9px;bottom:9px;z-index:4;display:flex;align-items:flex-end;gap:6px}.qr{background:#fff;border-radius:4px;padding:3px;line-height:0}.qr img,.qr canvas{width:60px!important;height:60px!important}.meta{font-size:7px;line-height:1.6}.green{background:linear-gradient(150deg,#007343 0 12%,#fff 12% 86%,#007343 86%);color:#092b20;border:2px solid #087647}.green .photo,.purple .photo{position:relative;display:block;width:1.35in;height:1.45in;margin:10px auto 4px;border-radius:10px;mask-image:none;border:2px solid #087647}.green .name,.purple .name{position:relative;right:auto;bottom:auto;writing-mode:initial;transform:none;text-align:center;font-size:10px}.green .tag,.purple .tag{position:relative;right:auto;bottom:auto;writing-mode:initial;transform:none;text-align:center}.green .bottom,.purple .bottom{position:absolute;left:8px;bottom:8px;display:flex}.purple{background:linear-gradient(155deg,#f8f3ff,#fff 55%,#e9d5ff);color:#271044;border:2px solid #7c3aed}.purple .photo{border:3px solid #7c3aed;border-radius:50%;width:1.35in;height:1.35in}.blue:after{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2790%27 height=%2790%27 viewBox=%270 0 90 90%27%3E%3Cg fill=%27none%27 stroke=%27white%27 stroke-opacity=%27.14%27%3E%3Cpath d=%27M45 4 57 16 45 28 33 16Z M16 33 28 45 16 57 4 45Z M74 33 86 45 74 57 62 45Z M45 62 57 74 45 86 33 74Z%27/%3E%3C/g%3E%3C/svg%3E");pointer-events:none;z-index:2}.blue .photo{z-index:1}.qr img{object-fit:contain}@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.card{box-shadow:none}} </style></head><body><div class="grid">'+cardHtml+'</div>
 </body></html>`);
       win.onload = function() { setTimeout(function() { win.print(); }, 700); };
       win.document.close();
@@ -5383,7 +5390,7 @@
   function exportPPDBPDF(){
     if(!window.jspdf||!window.jspdf.jsPDF){appNotify('Library PDF belum tersedia.','error');return;}
     var doc=new jspdf.jsPDF({orientation:'landscape',unit:'mm',format:'a3'});doc.setFontSize(15);doc.text('DATA PENERIMAAN PESERTA DIDIK BARU (PPDB)',14,15);
-    doc.setFontSize(9);doc.text('Si MasDA — Sistem Manajemen MAS Darul Amin',14,21);
+    doc.setFontSize(9);doc.text('siMADA — Sistem Manajemen MAS Darul Amin',14,21);
     var headers=['No. Pendaftaran','Tanggal','Nama Lengkap','NIK','NISN','JK','Asal Sekolah','Orang Tua/Wali','No. HP','Status'];
     var rows=ppdbRows.map(function(r){return [r['No. Pendaftaran'],r['Tanggal Pendaftaran'],r['Nama Lengkap'],r.NIK,r.NISN,r['Jenis Kelamin'],r['Asal Sekolah'],r['Nama Wali']||r['Nama Ayah']||r['Nama Ibu'],r['No. HP Orang Tua/Wali'],r.Status];});
     doc.autoTable({head:[headers],body:rows,startY:26,styles:{fontSize:7,cellPadding:2},headStyles:{fillColor:[30,64,175]},margin:{left:10,right:10}});
@@ -5413,7 +5420,7 @@
     {key:'absensi',label:'Absensi',fullLabel:'Absensi Pelajaran',desc:'Pengelolaan kehadiran pembelajaran.',icon:'bi-calendar-check',action:'login'},
     {key:'kesiswaan',label:'Kesiswaan',fullLabel:'Kesiswaan',desc:'Layanan administrasi kesiswaan.',icon:'bi-person-badge',action:'login'},
     {key:'sarpras',label:'Sarpras',fullLabel:'Sarana & Prasarana',desc:'Informasi inventaris dan fasilitas sekolah.',icon:'bi-box-seam',action:'login'},
-    {key:'website',label:'Website',fullLabel:'Website Terkait',desc:'Tautan dan sumber informasi sekolah.',icon:'bi-globe',action:'login'},
+    {key:'website',label:'Website',fullLabel:'Link Terkait',desc:'Tautan dan sumber informasi sekolah.',icon:'bi-globe',action:'login'},
     {key:'whatsapp',label:'WhatsApp',fullLabel:'WhatsApp Gateway',desc:'Pengelolaan notifikasi WhatsApp sekolah.',icon:'bi-whatsapp',action:'login'},
     {key:'pengaturan',label:'Pengaturan',fullLabel:'Pengaturan User',desc:'Pengaturan pengguna dan hak akses.',icon:'bi-gear',action:'login'}
   ];
