@@ -936,6 +936,7 @@
           <li class="nav-item" data-menu="whatsapp"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('whatsapp', event)"><i class="bi bi-whatsapp me-2"></i> WhatsApp Gateway</a></li>
           <li class="nav-item" data-menu="absensiQr"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('absensiQr', event)"><i class="bi bi-qr-code-scan me-2"></i> Absensi QR Siswa</a></li>
           <li class="nav-item" data-menu="absensi"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('absensi', event)"><i class="bi bi-calendar-check me-2"></i> Absensi Pelajaran</a></li>
+          <li class="nav-item" data-menu="absensiPembiasaan"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('absensiPembiasaan', event)"><i class="bi bi-moon-stars me-2"></i> Absensi Pembiasaan</a></li>
           <li class="nav-item" data-menu="ppdb"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('ppdb', event)"><i class="bi bi-mortarboard me-2"></i> PPDB</a></li>
           <li class="nav-item" data-menu="pengumuman"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('pengumuman', event)"><i class="bi bi-megaphone me-2"></i> Pengumuman</a></li>
           <li class="nav-item" data-menu="kesiswaan"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('kesiswaan', event)"><i class="bi bi-person-badge me-2"></i> Kesiswaan</a></li>
@@ -1035,6 +1036,23 @@
                   <div class="dash-bar-track"><div class="dash-bar-fill" id="dashBarAlpha" style="width:0%"></div></div>
                   <small id="dashSubAlpha">0 Siswa Alpha</small>
                 </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- STATISTIK ABSENSI PEMBIASAAN -->
+          <div class="col-12 col-xl-6">
+            <div class="dash-attendance-panel h-100" style="border-top:4px solid #0d9488;background:linear-gradient(145deg,#ffffff,#f0fdfa)">
+              <div class="dash-panel-heading">
+                <div class="dash-panel-icon" style="background:linear-gradient(135deg,#0d9488,#14b8a6)"><i class="bi bi-moon-stars-fill"></i></div>
+                <div><h5>Statistik Absen Kebiasaan</h5><p>Persentase pembiasaan sholat siswa hari ini</p></div>
+                <span class="dash-panel-badge">PEMBIASAAN</span>
+              </div>
+              <div class="dash-bars">
+                <div class="dash-bar-item"><div class="dash-bar-label"><span>Sholat Dhuha</span><strong id="pbPctDhuha">0%</strong></div><div class="dash-bar-track"><div class="dash-bar-fill" id="pbBarDhuha" style="width:0%;background:linear-gradient(90deg,#0d9488,#2dd4bf)"></div></div><small id="pbSubDhuha">0 siswa</small></div>
+                <div class="dash-bar-item"><div class="dash-bar-label"><span>Tidak Sholat Dhuha</span><strong id="pbPctTidakDhuha">0%</strong></div><div class="dash-bar-track"><div class="dash-bar-fill" id="pbBarTidakDhuha" style="width:0%;background:linear-gradient(90deg,#f59e0b,#fbbf24)"></div></div><small id="pbSubTidakDhuha">0 siswa</small></div>
+                <div class="dash-bar-item"><div class="dash-bar-label"><span>Sholat Dzuhur</span><strong id="pbPctDzuhur">0%</strong></div><div class="dash-bar-track"><div class="dash-bar-fill" id="pbBarDzuhur" style="width:0%;background:linear-gradient(90deg,#2563eb,#60a5fa)"></div></div><small id="pbSubDzuhur">0 siswa</small></div>
+                <div class="dash-bar-item"><div class="dash-bar-label"><span>Tidak Sholat Dzuhur</span><strong id="pbPctTidakDzuhur">0%</strong></div><div class="dash-bar-track"><div class="dash-bar-fill" id="pbBarTidakDzuhur" style="width:0%;background:linear-gradient(90deg,#8b5cf6,#c4b5fd)"></div></div><small id="pbSubTidakDzuhur">0 siswa</small></div>
               </div>
             </div>
           </div>
@@ -1507,6 +1525,30 @@
               </tbody>
             </table>
           </div>
+        </div>
+      </div>
+
+      <!-- ABSENSI PEMBIASAAN -->
+      <div id="sec-absensiPembiasaan" class="content-section d-none">
+        <div class="card shadow-sm border-0 mb-3" style="border-top:4px solid #214cff!important;border-radius:16px">
+          <div class="card-body py-3"><h3 class="fw-bold mb-0" style="color:#17336c">Absensi Pembiasaan Digital</h3></div>
+        </div>
+        <div class="card p-3 p-md-4 shadow-sm border-0 mb-3 no-print">
+          <div class="row g-2 align-items-end">
+            <div class="col-6 col-md-3"><label class="form-label fw-semibold small">Pilih Tanggal</label><input type="date" id="pembiasaanTanggal" class="form-control form-control-sm" onchange="loadAbsensiPembiasaan()"></div>
+            <div class="col-6 col-md-3"><label class="form-label fw-semibold small">Filter Kelas</label><select id="pembiasaanKelas" class="form-select form-select-sm" onchange="loadAbsensiPembiasaan()"><option value="">Semua Kelas</option></select></div>
+            <div class="col-12 col-md-6 d-flex justify-content-end gap-2"><button class="btn btn-outline-primary btn-sm" onclick="rekapPembiasaan('harian')"><i class="bi bi-calendar-date"></i> Rekap Harian</button><button class="btn btn-outline-info btn-sm" onclick="rekapPembiasaan('bulanan')"><i class="bi bi-calendar-month"></i> Rekap Bulanan</button></div>
+          </div>
+        </div>
+        <div class="card p-3 shadow-sm border-0 mb-3 no-print">
+          <div class="fw-bold mb-2"><i class="bi bi-whatsapp text-success me-1"></i> Format Notifikasi WhatsApp Wali Siswa</div>
+          <div class="small text-muted mb-2">Placeholder tersedia: {nama}, {nisn}, {kelas}, {tanggal}, {status}, {ibadah}.</div>
+          <div class="row g-2"><div class="col-md-6"><label class="form-label small">Format Sholat Dhuha</label><textarea id="pembiasaanTemplateDhuha" class="form-control form-control-sm" rows="4" placeholder="Assalamu’alaikum... {nama} ... {status} {ibadah}"></textarea></div><div class="col-md-6"><label class="form-label small">Format Sholat Dzuhur</label><textarea id="pembiasaanTemplateDzuhur" class="form-control form-control-sm" rows="4" placeholder="Assalamu’alaikum... {nama} ... {status} {ibadah}"></textarea></div></div>
+          <div class="text-end mt-2"><button class="btn btn-success btn-sm" onclick="saveTemplatePembiasaan()"><i class="bi bi-save"></i> Simpan Format Pesan</button></div>
+        </div>
+        <div class="card p-3 shadow-sm border-0">
+          <div class="small text-muted mb-2">Centang jika siswa melaksanakan sholat. Hilangkan centang jika tidak melaksanakan. Setiap perubahan langsung disimpan dan notifikasi WhatsApp dikirim ke wali.</div>
+          <div class="table-responsive"><table class="table table-hover align-middle"><thead class="table-light"><tr><th>NISN</th><th>Nama Siswa</th><th>Kelas</th><th class="text-center">Sholat Dhuha</th><th class="text-center">Sholat Dzuhur</th></tr></thead><tbody id="tblAbsensiPembiasaan"><tr><td colspan="5" class="text-center text-muted">Memuat data...</td></tr></tbody></table></div>
         </div>
       </div>
 
@@ -2143,7 +2185,7 @@
             <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_master">Data Master</label><select class="form-select form-select-sm rbac-mode" id="rbac_master" data-menu="master"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div>
             <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_jurnal">Jurnal Guru</label><select class="form-select form-select-sm rbac-mode" id="rbac_jurnal" data-menu="jurnal"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div>
             <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_honor">Honor Guru</label><select class="form-select form-select-sm rbac-mode" id="rbac_honor" data-menu="honor"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div>
-            <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_absensi">Absensi Pelajaran</label><select class="form-select form-select-sm rbac-mode" id="rbac_absensi" data-menu="absensi"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div>
+            <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_absensi">Absensi Pelajaran</label><select class="form-select form-select-sm rbac-mode" id="rbac_absensi" data-menu="absensi"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_absensiPembiasaan">Absensi Pembiasaan</label><select class="form-select form-select-sm rbac-mode" id="rbac_absensiPembiasaan" data-menu="absensiPembiasaan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div>
             <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_kesiswaan">Kesiswaan</label><select class="form-select form-select-sm rbac-mode" id="rbac_kesiswaan" data-menu="kesiswaan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div>
             <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_sarpras">SarPras</label><select class="form-select form-select-sm rbac-mode" id="rbac_sarpras" data-menu="sarpras"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div>
             <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_pengaturan">Pengaturan User</label><select class="form-select form-select-sm rbac-mode" id="rbac_pengaturan" data-menu="pengaturan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat & mengedit</option></select></div>
@@ -2451,6 +2493,7 @@
     jurnal: ['Membuka Jurnal Guru', 'Menyiapkan catatan kegiatan pembelajaran.'],
     honor: ['Menghitung Data Honor', 'Mengolah data mengajar dan menyiapkan rekap honor guru.'],
     absensi: ['Membuka Absensi Pelajaran', 'Menyiapkan data kehadiran dan jadwal pembelajaran.'],
+    absensiPembiasaan: ['Membuka Absensi Pembiasaan', 'Mencatat pembiasaan sholat Dhuha dan Dzuhur siswa.'],
     kesiswaan: ['Membuka Kesiswaan', 'Menyiapkan data dan administrasi peserta didik.'],
     sarpras: ['Membuka Sarana & Prasarana', 'Menyiapkan inventaris dan kondisi fasilitas sekolah.'],
     pengaturan: ['Membuka Pengaturan', 'Menyiapkan konfigurasi aplikasi dan hak akses pengguna.'],
@@ -2907,7 +2950,8 @@
     if (targetKey === 'whatsapp') loadWaGateway();
     if (targetKey === 'whatsapp') loadAbsensiGerbang();
     if (targetKey === 'ppdb') loadPPDB();
-    if (targetKey === 'dashboard') refreshDashboard();
+    if (targetKey === 'dashboard') { refreshDashboard(); refreshStatistikPembiasaan(); }
+    if (targetKey === 'absensiPembiasaan') loadAbsensiPembiasaanPage();
     if (targetKey === 'absensiQr') { updateQrAttendanceClock(); setQrAttendanceMode((document.getElementById('qrAttendanceMode')||{}).value||'masuk'); }
     if (targetKey === 'pengumuman') loadPengumuman();
     if (targetKey === 'profil' && schoolMap) {
@@ -3495,7 +3539,7 @@
   }
 
   function setGuruRbacDefaults(detail) {
-    var defaults = {dashboard:'view', master:'view', jurnal:'edit', honor:'view', absensi:'edit', website:'view'};
+    var defaults = {dashboard:'view', master:'view', jurnal:'edit', honor:'view', absensi:'edit', absensiPembiasaan:'edit', website:'view'};
     document.querySelectorAll('.mg-rbac-mode').forEach(function(sel) {
       var key = sel.getAttribute('data-menu');
       sel.value = detail && detail[key] ? detail[key] : (defaults[key] || 'off');
@@ -4298,6 +4342,52 @@
   // Satu permintaan aktif per siswa; perubahan terbaru dikirim setelah permintaan sebelumnya selesai.
   var absensiSaveQueues = Object.create(null);
 
+
+  // ==========================================
+  // ABSENSI PEMBIASAAN
+  // ==========================================
+  function todayLocalInput_(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+  var pembiasaanRowsCache=[];
+  function loadAbsensiPembiasaanPage(){
+    var date=document.getElementById('pembiasaanTanggal'); if(!date.value) date.value=todayLocalInput_();
+    google.script.run.withSuccessHandler(function(data){
+      var sel=document.getElementById('pembiasaanKelas'), keep=sel.value;
+      sel.innerHTML='<option value="">Semua Kelas</option>';
+      (data.kelas||[]).forEach(function(k){var name=String(k[1]||'').trim();if(name){var o=document.createElement('option');o.value=name;o.textContent=name;sel.appendChild(o);}});
+      sel.value=keep;
+      loadAbsensiPembiasaan(); 
+    }).withFailureHandler(function(e){appNotify('Gagal memuat daftar kelas: '+(e.message||e));}).getMasterData();
+    google.script.run.withSuccessHandler(function(t){document.getElementById('pembiasaanTemplateDhuha').value=t.dhuha||'';document.getElementById('pembiasaanTemplateDzuhur').value=t.dzuhur||'';}).getTemplateAbsensiPembiasaan();
+  }
+  function loadAbsensiPembiasaan(){
+    var date=document.getElementById('pembiasaanTanggal').value||todayLocalInput_(), kelas=document.getElementById('pembiasaanKelas').value;
+    var body=document.getElementById('tblAbsensiPembiasaan');body.innerHTML='<tr><td colspan="5" class="text-center">Memuat data siswa...</td></tr>';
+    google.script.run.withSuccessHandler(function(list){
+      pembiasaanRowsCache=list||[];
+      if(!list||!list.length){body.innerHTML='<tr><td colspan="5" class="text-center text-muted">Tidak ada siswa pada kelas tersebut.</td></tr>';return;}
+      body.innerHTML=list.map(function(s){return '<tr data-nisn="'+escapeHtml(s.nisn)+'" data-nama="'+escapeHtml(s.nama)+'"><td>'+escapeHtml(s.nisn)+'</td><td>'+escapeHtml(s.nama)+'</td><td>'+escapeHtml(s.kelas)+'</td>'+['dhuha','dzuhur'].map(function(f){var checked=s[f]==='Ya';return '<td class="text-center"><div class="form-check d-inline-flex"><input class="form-check-input" type="checkbox" '+(checked?'checked':'')+' aria-label="'+f+'" onchange="ubahStatusPembiasaan(this,\''+f+'\')"></div><div class="small text-'+(s[f]?'success':'secondary')+'">'+(s[f]||'Belum diisi')+'</div></td>';}).join('')+'</tr>';}).join('');
+    }).withFailureHandler(function(e){body.innerHTML='<tr><td colspan="5" class="text-danger text-center">'+escapeHtml(e.message||e)+'</td></tr>';}).getAbsensiPembiasaan(date,kelas);
+  }
+  function ubahStatusPembiasaan(input,field){
+    var row=input.closest('tr'), value=input.checked?'Ya':'Tidak', item={tanggal:document.getElementById('pembiasaanTanggal').value,nisn:row.dataset.nisn,dhuha:field==='dhuha'?value:'',dzuhur:field==='dzuhur'?value:'',changedField:field};
+    // Ambil nilai kolom lainnya agar data tersimpan utuh tanpa mengubah status sebelumnya.
+    var cached=pembiasaanRowsCache.find(function(x){return x.nisn===item.nisn;})||{};
+    item.dhuha=field==='dhuha'?value:(cached.dhuha||'Tidak');item.dzuhur=field==='dzuhur'?value:(cached.dzuhur||'Tidak');
+    input.disabled=true;
+    google.script.run.withSuccessHandler(function(res){input.disabled=false;cached[field]=value;var cell=input.closest('td');cell.querySelector('.small').textContent=value;cell.querySelector('.small').className='small '+(value==='Ya'?'text-success':'text-danger');if(res&&res.whatsapp){var failed=res.whatsapp.filter(function(x){return !x.success;});if(failed.length)appNotify('Absensi tersimpan, tetapi notifikasi WA gagal: '+(failed[0].message||'periksa koneksi/token'));}}).withFailureHandler(function(e){input.disabled=false;input.checked=!input.checked;appNotify('Gagal menyimpan absensi: '+(e.message||e));}).simpanAbsensiPembiasaan(item);
+  }
+  function saveTemplatePembiasaan(){
+    google.script.run.withSuccessHandler(function(r){appNotify(r.message||'Format tersimpan.');}).withFailureHandler(function(e){appNotify(e.message||e);}).simpanTemplateAbsensiPembiasaan({dhuha:document.getElementById('pembiasaanTemplateDhuha').value,dzuhur:document.getElementById('pembiasaanTemplateDzuhur').value});
+  }
+  function rekapPembiasaan(mode){
+    var date=document.getElementById('pembiasaanTanggal').value||todayLocalInput_(), kelas=document.getElementById('pembiasaanKelas').value;
+    if(mode==='bulanan'){var bulan=date.substring(0,7);google.script.run.withSuccessHandler(function(list){var rows=(list||[]).map(function(s){return [s.nisn,s.nama,s.kelas,s.dhuhaYa,s.dhuhaTidak,s.dzuhurYa,s.dzuhurTidak];});generatePdfTable('Rekap Absensi Pembiasaan Bulanan - '+bulan,['NISN','Nama Siswa','Kelas','Dhuha Ya','Dhuha Tidak','Dzuhur Ya','Dzuhur Tidak'],rows);}).getRekapAbsensiPembiasaanBulanan(bulan,kelas);return;}
+    google.script.run.withSuccessHandler(function(list){var rows=(list||[]).map(function(s){return [s.nisn,s.nama,s.kelas,s.dhuha||'Belum diisi',s.dzuhur||'Belum diisi'];});generatePdfTable('Rekap Absensi Pembiasaan Harian - '+date,['NISN','Nama Siswa','Kelas','Sholat Dhuha','Sholat Dzuhur'],rows);}).getAbsensiPembiasaan(date,kelas);
+  }
+  function refreshStatistikPembiasaan(){
+    google.script.run.withSuccessHandler(function(s){if(!s)return;[['Dhuha','dhuha'],['TidakDhuha','tidakDhuha'],['Dzuhur','dzuhur'],['TidakDzuhur','tidakDzuhur']].forEach(function(pair){var key=pair[0],v=s[pair[1]]||{count:0,pct:0};var p=document.getElementById('pbPct'+key),b=document.getElementById('pbBar'+key),sub=document.getElementById('pbSub'+key);if(p)p.textContent=v.pct+'%';if(b)b.style.width=v.pct+'%';if(sub)sub.textContent=v.count+' dari '+(s.total||0)+' siswa';});}).getStatistikAbsensiPembiasaan(todayLocalInput_());
+  }
+
   // ==========================================
   // ABSENSI PELAJARAN & REKAPITULASI
   // ==========================================
@@ -4710,9 +4800,9 @@
     setAllRbacModes('off');
     var defaults = {};
     if (role === 'Administrator') {
-      ['dashboard','profil','struktur','master','jurnal','honor','absensi','kesiswaan','sarpras','pengaturan','website'].forEach(function(k){ defaults[k]='edit'; });
+      ['dashboard','profil','struktur','master','jurnal','honor','absensi','absensiPembiasaan','kesiswaan','sarpras','pengaturan','website'].forEach(function(k){ defaults[k]='edit'; });
     } else if (role === 'Guru') {
-      defaults = {dashboard:'view', master:'view', jurnal:'edit', honor:'view', absensi:'edit', website:'view'};
+      defaults = {dashboard:'view', master:'view', jurnal:'edit', honor:'view', absensi:'edit', absensiPembiasaan:'edit', website:'view'};
     } else if (role === 'Siswa') {
       defaults = {dashboard:'view', kesiswaan:'view', website:'view'};
     } else {
@@ -5423,6 +5513,7 @@
     {key:'jurnal',label:'Jurnal Guru',fullLabel:'Jurnal Guru',desc:'Layanan pencatatan jurnal kegiatan guru.',icon:'bi-journal-text',action:'login'},
     {key:'honor',label:'Honor Guru',fullLabel:'Honor Guru',desc:'Informasi dan pengelolaan honor guru.',icon:'bi-wallet2',action:'login'},
     {key:'absensi',label:'Absensi',fullLabel:'Absensi Pelajaran',desc:'Pengelolaan kehadiran pembelajaran.',icon:'bi-calendar-check',action:'login'},
+    {key:'absensiPembiasaan',label:'Pembiasaan',fullLabel:'Absensi Pembiasaan',desc:'Pencatatan pembiasaan sholat siswa.',icon:'bi-moon-stars',action:'login'},
     {key:'kesiswaan',label:'Kesiswaan',fullLabel:'Kesiswaan',desc:'Layanan administrasi kesiswaan.',icon:'bi-person-badge',action:'login'},
     {key:'sarpras',label:'Sarpras',fullLabel:'Sarana & Prasarana',desc:'Informasi inventaris dan fasilitas sekolah.',icon:'bi-box-seam',action:'login'},
     {key:'website',label:'Website',fullLabel:'Link Terkait',desc:'Tautan dan sumber informasi sekolah.',icon:'bi-globe',action:'login'},
