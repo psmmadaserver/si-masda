@@ -4365,21 +4365,28 @@
     google.script.run.withSuccessHandler(function(list){
       pembiasaanRowsCache=list||[];
       if(!list||!list.length){body.innerHTML='<tr><td colspan="5" class="text-center text-muted">Tidak ada siswa pada kelas tersebut.</td></tr>';return;}
-      body.innerHTML=list.map(function(s){return '<tr data-nisn="'+escapeHtml(s.nisn)+'" data-nama="'+escapeHtml(s.nama)+'"><td>'+escapeHtml(s.nisn)+'</td><td>'+escapeHtml(s.nama)+'</td><td>'+escapeHtml(s.kelas)+'</td>'+['dhuha','dzuhur'].map(function(f){var value=s[f]||'Tidak';return '<td class="text-center"><div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">'+['Ya','Tidak'].map(function(choice){var id='pb_'+f+'_'+String(s.nisn).replace(/[^a-zA-Z0-9_-]/g,'')+'_'+choice;return '<label class="form-check form-check-inline mb-0"><input id="'+id+'" class="form-check-input" type="checkbox" '+(value===choice?'checked':'')+' aria-label="'+f+' '+choice+'" onchange="ubahStatusPembiasaan(this,\''+f+'\',\''+choice+'\')"><span class="form-check-label small">'+choice+'</span></label>';}).join('')+'</div><div class="small mt-1 '+(value==='Ya'?'text-success':'text-danger')+'">'+value+'</div></td>';}).join('')+'</tr>';}).join('');
+      body.innerHTML=list.map(function(s){return '<tr data-nisn="'+escapeHtml(s.nisn)+'" data-nama="'+escapeHtml(s.nama)+'"><td>'+escapeHtml(s.nisn)+'</td><td>'+escapeHtml(s.nama)+'</td><td>'+escapeHtml(s.kelas)+'</td>'+['dhuha','dzuhur'].map(function(f){var value=s[f]||'';return '<td class="text-center"><div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">'+['Ya','Tidak'].map(function(choice){var id='pb_'+f+'_'+String(s.nisn).replace(/[^a-zA-Z0-9_-]/g,'')+'_'+choice;return '<label class="form-check form-check-inline mb-0"><input id="'+id+'" class="form-check-input" type="checkbox" '+(value===choice?'checked':'')+' aria-label="'+f+' '+choice+'" onchange="ubahStatusPembiasaan(this,\''+f+'\',\''+choice+'\')"><span class="form-check-label small">'+choice+'</span></label>';}).join('')+'</div></td>';}).join('')+'</tr>';}).join('');
     }).withFailureHandler(function(e){body.innerHTML='<tr><td colspan="5" class="text-danger text-center">'+escapeHtml(e.message||e)+'</td></tr>';}).getAbsensiPembiasaan(date,kelas);
   }
   function ubahStatusPembiasaan(input,field,value){
     var row=input.closest('tr'), nisn=row.dataset.nisn;
     var cached=pembiasaanRowsCache.find(function(x){return x.nisn===nisn;})||{};
-    var oldValue=cached[field]||'Tidak';
-    // Status Ya/Tidak harus selalu salah satu; klik status yang sudah aktif tidak membatalkan pilihan.
+    var oldValue=cached[field]||'';
+    // Pilihan awal kosong; setelah Ya/Tidak dipilih, hanya pilihan tersebut yang aktif.
     if(!input.checked){input.checked=true;return;}
-    if(value!== 'Ya' && value!=='Tidak')return;
+    if(value!=='Ya' && value!=='Tidak')return;
     if(value===oldValue){input.checked=true;return;}
     var cell=input.closest('td'), checks=cell.querySelectorAll('input[type="checkbox"]');
     checks.forEach(function(c){c.disabled=true;c.checked=c.getAttribute('aria-label')===field+' '+value;});
-    var item={tanggal:document.getElementById('pembiasaanTanggal').value,nisn:nisn,dhuha:field==='dhuha'?value:(cached.dhuha||'Tidak'),dzuhur:field==='dzuhur'?value:(cached.dzuhur||'Tidak'),changedField:field};
-    google.script.run.withSuccessHandler(function(res){cached[field]=value;checks.forEach(function(c){c.disabled=false;});var label=cell.querySelector('.small');label.textContent=value;label.className='small mt-1 '+(value==='Ya'?'text-success':'text-danger');if(res&&res.whatsapp){var failed=res.whatsapp.filter(function(x){return !x.success;});if(failed.length)appNotify('Absensi tersimpan, tetapi notifikasi WA gagal: '+(failed[0].message||'periksa koneksi/token'));}}).withFailureHandler(function(e){checks.forEach(function(c){c.disabled=false;c.checked=c.getAttribute('aria-label')===field+' '+oldValue;});appNotify('Gagal menyimpan absensi: '+(e.message||e));}).simpanAbsensiPembiasaan(item);
+    var item={tanggal:document.getElementById('pembiasaanTanggal').value,nisn:nisn,dhuha:field==='dhuha'?value:(cached.dhuha||''),dzuhur:field==='dzuhur'?value:(cached.dzuhur||''),changedField:field};
+    google.script.run.withSuccessHandler(function(res){
+      cached[field]=value; checks.forEach(function(c){c.disabled=false;});
+      if(res&&res.whatsapp){var failed=res.whatsapp.filter(function(x){return !x.success;});if(failed.length)appNotify('Absensi tersimpan, tetapi notifikasi WA gagal: '+(failed[0].message||'periksa koneksi/token'));}
+      refreshStatistikPembiasaan();
+    }).withFailureHandler(function(e){
+      checks.forEach(function(c){c.disabled=false;c.checked=c.getAttribute('aria-label')===field+' '+oldValue;});
+      appNotify('Gagal menyimpan absensi: '+(e.message||e));
+    }).simpanAbsensiPembiasaan(item);
   }
   function saveTemplatePembiasaan(){
     google.script.run.withSuccessHandler(function(r){appNotify(r.message||'Format tersimpan.');}).withFailureHandler(function(e){appNotify(e.message||e);}).simpanTemplateAbsensiPembiasaan({dhuha:document.getElementById('pembiasaanTemplateDhuha').value,dzuhur:document.getElementById('pembiasaanTemplateDzuhur').value});
