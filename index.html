@@ -941,6 +941,7 @@
           <li class="nav-item" data-menu="pengumuman"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('pengumuman', event)"><i class="bi bi-megaphone me-2"></i> Pengumuman</a></li>
           <li class="nav-item" data-menu="kesiswaan"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('kesiswaan', event)"><i class="bi bi-person-badge me-2"></i> Kesiswaan</a></li>
           <li class="nav-item" data-menu="sarpras"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('sarpras', event)"><i class="bi bi-box-seam me-2"></i> SarPras</a></li>
+          <li class="nav-item" data-menu="laporanBos"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('laporanBos', event)"><i class="bi bi-file-earmark-pdf me-2"></i> Laporan BOS</a></li>
           <li class="nav-item" data-menu="pengaturan"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('pengaturan', event)"><i class="bi bi-gear me-2"></i> Pengaturan User</a></li>
           <li class="nav-item" data-menu="website"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('website', event)"><i class="bi bi-globe me-2"></i> Link Terkait</a></li>
           <li class="nav-item mt-4"><a class="nav-link text-danger" href="javascript:void(0)" onclick="logout(event)"><i class="bi bi-box-arrow-right me-2"></i> Keluar</a></li>
@@ -1664,6 +1665,31 @@
               </tbody>
             </table>
             <div id="sarprasPrintSignatures" aria-hidden="true"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LAPORAN BOS -->
+      <div id="sec-laporanBos" class="content-section d-none">
+        <div class="card border-0 shadow-sm mb-3" style="border-top:4px solid #244cff!important;border-radius:16px;">
+          <div class="p-3 p-md-4">
+            <h3 class="fw-bold mb-0" style="color:#102e63;">Rincian Realisasi Keuangan Madrasah</h3>
+          </div>
+        </div>
+        <div class="card border-0 shadow-sm p-3 p-md-4">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <div><h5 class="fw-bold mb-1">Arsip Laporan BOS</h5><div class="small text-muted">Pilih nama laporan untuk melihat dokumen PDF.</div></div>
+            <div class="no-print">
+              <input type="file" id="laporanBosFile" accept="application/pdf,.pdf" class="d-none" onchange="uploadLaporanBOS(this)">
+              <button type="button" class="btn btn-primary" onclick="document.getElementById('laporanBosFile').click()"><i class="bi bi-cloud-arrow-up me-1"></i> Upload PDF</button>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="laporanBosSelect" class="form-label fw-semibold">Nama Laporan</label>
+            <select id="laporanBosSelect" class="form-select" onchange="tampilkanLaporanBOS()"><option value="">-- Pilih Nama Laporan --</option></select>
+          </div>
+          <div id="laporanBosViewer" class="border rounded-3 bg-light p-2" style="min-height:300px;">
+            <div class="text-center text-muted py-5"><i class="bi bi-file-earmark-pdf fs-1 d-block mb-2"></i>Pilih nama laporan untuk menampilkan file PDF.</div>
           </div>
         </div>
       </div>
@@ -2426,7 +2452,7 @@
     'honor': 'Honor Guru',
     'absensi': 'Absensi',
     'kesiswaan': 'Kesiswaan',
-    'sarpras': 'SarPras',
+    'sarpras': 'SarPras',\n    'laporanBos': 'Laporan BOS',
     'pengaturan': 'Pengaturan',
     'website': 'Website Lainnya'
   };
@@ -2889,6 +2915,7 @@
       });
     }
     applyMenuEditMode(targetKey);
+    if (targetKey === 'laporanBos') loadLaporanBOS();
 
     var activeNavItem = document.querySelector('#sidebarNavList .nav-item[data-menu="' + targetKey + '"] .nav-link');
     if (activeNavItem) activeNavItem.classList.add('active');
@@ -4633,6 +4660,75 @@
   // ==========================================
   // SARPRAS
   // ==========================================
+  // ==========================================
+  // LAPORAN BOS - ARSIP PDF DI GOOGLE DRIVE
+  // ==========================================
+  function loadLaporanBOS() {
+    var select = document.getElementById('laporanBosSelect');
+    if (!select) return;
+    select.innerHTML = '<option value="">Memuat daftar laporan...</option>';
+    google.script.run.withSuccessHandler(function(list) {
+      var items = Array.isArray(list) ? list : [];
+      select.innerHTML = '<option value="">-- Pilih Nama Laporan --</option>';
+      items.forEach(function(item) {
+        var opt = document.createElement('option');
+        opt.value = item.id;
+        opt.textContent = item.nama;
+        opt.dataset.url = item.url || '';
+        select.appendChild(opt);
+      });
+      if (!items.length) select.innerHTML = '<option value="">-- Belum ada laporan diunggah --</option>';
+      tampilkanLaporanBOS();
+    }).withFailureHandler(function(err) {
+      select.innerHTML = '<option value="">Gagal memuat laporan</option>';
+      appNotify('Gagal memuat Laporan BOS: ' + (err && err.message ? err.message : err), 'error');
+    }).getLaporanBOS();
+  }
+
+  function uploadLaporanBOS(input) {
+    var file = input && input.files && input.files[0];
+    if (!file) return;
+    var nama = window.prompt('Masukkan nama laporan yang akan ditampilkan:');
+    if (nama === null) { input.value = ''; return; }
+    nama = nama.trim();
+    if (!nama) { appNotify('Nama laporan wajib diisi.'); input.value = ''; return; }
+    if (file.type !== 'application/pdf' && !/\\.pdf$/i.test(file.name)) {
+      appNotify('File harus berformat PDF.'); input.value = ''; return;
+    }
+    if (file.size > 12 * 1024 * 1024) {
+      appNotify('Ukuran PDF maksimal 12 MB.'); input.value = ''; return;
+    }
+    var reader = new FileReader();
+    reader.onload = function(ev) {
+      var base64 = String(ev.target.result || '').split(',')[1] || '';
+      appNotify('Mengunggah file PDF...');
+      google.script.run.withSuccessHandler(function(res) {
+        appNotify((res && res.message) || 'Laporan BOS berhasil diunggah.');
+        input.value = '';
+        loadLaporanBOS();
+      }).withFailureHandler(function(err) {
+        appNotify('Upload gagal: ' + (err && err.message ? err.message : err), 'error');
+        input.value = '';
+      }).uploadLaporanBOS({nama:nama, fileName:file.name, mimeType:'application/pdf', base64:base64});
+    };
+    reader.onerror = function() { appNotify('File tidak dapat dibaca.', 'error'); input.value = ''; };
+    reader.readAsDataURL(file);
+  }
+
+  function tampilkanLaporanBOS() {
+    var select = document.getElementById('laporanBosSelect');
+    var viewer = document.getElementById('laporanBosViewer');
+    if (!select || !viewer) return;
+    var opt = select.options[select.selectedIndex];
+    var id = select.value;
+    if (!id) {
+      viewer.innerHTML = '<div class="text-center text-muted py-5"><i class="bi bi-file-earmark-pdf fs-1 d-block mb-2"></i>Pilih nama laporan untuk menampilkan file PDF.</div>';
+      return;
+    }
+    var url = opt && opt.dataset.url ? opt.dataset.url : 'https://drive.google.com/file/d/' + encodeURIComponent(id) + '/preview';
+    viewer.innerHTML = '<iframe title="Pratinjau Laporan BOS" src="' + escapeHtml(url) + '" style="width:100%;height:75vh;min-height:500px;border:0;border-radius:8px;" allow="autoplay"></iframe>';
+  }
+
   function loadSarprasData() {
     google.script.run.withSuccessHandler(function(list) {
       globalSarprasData = list || [];
