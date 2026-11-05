@@ -779,6 +779,107 @@
 @media(max-width:640px){.qr-attendance-top,.qr-scanner-panel{padding:19px 16px;border-radius:22px}.qr-attendance-clock-grid{grid-template-columns:1fr}.qr-scanner-controls{align-items:stretch}.qr-scanner-controls label{width:100%;margin:4px 0 0}.qr-scanner-controls .form-select{width:100%;min-width:0}.qr-scanner-controls .qr-status-label{margin-left:0}.qr-camera-stage{min-height:270px;border-radius:6px}.qr-camera-corners{inset:25px 6%}.qr-camera-overlay{font-size:.88rem;bottom:14px}}
 </style>
 
+
+
+<style id="masda-absensi-status-pill">
+/* Tombol status glossy pada tabel Absensi Pelajaran */
+#sec-absensi .att-pill-wrap{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  margin:2px 0;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+#sec-absensi .att-cb{
+  position:absolute!important;
+  width:1px!important;
+  height:1px!important;
+  padding:0!important;
+  margin:-1px!important;
+  overflow:hidden!important;
+  clip:rect(0,0,0,0)!important;
+  white-space:nowrap!important;
+  border:0!important;
+  opacity:0!important;
+}
+#sec-absensi .att-pill{
+  position:relative;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:104px;
+  min-height:34px;
+  padding:5px 15px;
+  overflow:hidden;
+  border:2px solid transparent;
+  border-radius:999px;
+  color:#fff!important;
+  font-size:13px;
+  line-height:1.1;
+  font-weight:800;
+  letter-spacing:.15px;
+  text-shadow:0 1px 2px rgba(0,0,0,.22);
+  box-shadow:inset 0 2px 3px rgba(255,255,255,.55),
+             inset 0 -3px 4px rgba(0,0,0,.15),
+             0 3px 6px rgba(15,35,65,.20);
+  transition:transform .16s ease,filter .16s ease,box-shadow .16s ease;
+  user-select:none;
+}
+#sec-absensi .att-pill::before{
+  content:"";
+  position:absolute;
+  left:7%;
+  top:2px;
+  width:86%;
+  height:42%;
+  border-radius:999px;
+  background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(255,255,255,.08));
+  pointer-events:none;
+}
+#sec-absensi .att-pill-wrap:hover .att-pill{
+  filter:brightness(1.06);
+  transform:translateY(-1px);
+  box-shadow:inset 0 2px 3px rgba(255,255,255,.6),
+             inset 0 -3px 4px rgba(0,0,0,.16),
+             0 5px 9px rgba(15,35,65,.24);
+}
+#sec-absensi .att-cb:focus-visible + .att-pill{
+  outline:3px solid rgba(35,112,255,.35);
+  outline-offset:3px;
+}
+#sec-absensi .att-pill-alpha{
+  background:linear-gradient(180deg,#ff7770 0%,#ff2424 48%,#df0000 100%);
+  border-color:#b90000;
+}
+#sec-absensi .att-pill-izin{
+  /* Izin: ungu-magenta glossy, dibedakan jelas dari Hadir yang hijau toska */
+  background:linear-gradient(180deg,#f5a5ff 0%,#d946ef 48%,#9d00a8 100%);
+  border-color:#85008f;
+  color:#fff!important;
+  text-shadow:0 1px 3px rgba(75,0,85,.55);
+}
+#sec-absensi .att-pill-sakit{
+  background:linear-gradient(180deg,#fff28a 0%,#ffc928 48%,#ff9200 100%);
+  border-color:#e17c00;
+  color:#fff!important;
+  text-shadow:0 1px 3px rgba(115,65,0,.55);
+}
+#sec-absensi .att-pill-bolos{
+  background:linear-gradient(180deg,#72c7ff 0%,#168cff 48%,#064ce0 100%);
+  border-color:#0640bb;
+}
+#sec-absensi .att-pill-hadir{
+  background:linear-gradient(180deg,#65edc2 0%,#08bd8b 48%,#00845e 100%);
+  border-color:#006b4c;
+}
+@media(max-width:768px){
+  #sec-absensi .att-pill{min-width:88px;min-height:31px;padding:4px 11px;font-size:12px}
+  #sec-absensi .table-responsive{overflow-x:auto}
+}
+</style>
+
 </head>
 <body>
 <div id="appNotificationStack" aria-live="polite" aria-atomic="false"></div>
@@ -2408,8 +2509,12 @@
     var firstAvailableMenu = getFirstAvailableMenu();
     var requestedHomeMenu = '';
     try { requestedHomeMenu = sessionStorage.getItem('MASDA_HOME_TARGET_MENU') || ''; sessionStorage.removeItem('MASDA_HOME_TARGET_MENU'); } catch(e) {}
-    if (requestedHomeMenu && userAksesList.indexOf(requestedHomeMenu.toLowerCase()) >= 0) switchNav(requestedHomeMenu);
+    if (requestedHomeMenu && hasAccess(requestedHomeMenu)) switchNav(requestedHomeMenu);
     else if (firstAvailableMenu) switchNav(firstAvailableMenu);
+    else {
+      document.querySelectorAll('.content-section').forEach(function(sec) { sec.classList.add('d-none'); });
+      appNotify('Akun siswa belum diberi izin untuk membuka menu apa pun. Silakan hubungi Administrator.', 'warning');
+    }
     return true;
   }
 
@@ -2777,7 +2882,7 @@
       if (res && res.success) {
         try { sessionStorage.setItem(MASDA_SESSION_KEY, res.sessionToken); } catch(e) {}
         activateUserSession(res); hideMasdaLoader(500);
-        setTimeout(function(){ switchNav('absensiQr'); }, 600);
+        setTimeout(function(){ if (hasAccess('absensiQr')) switchNav('absensiQr'); }, 600);
       } else { hideMasdaLoader(0); alertBox.innerHTML = '<div class="alert alert-danger py-2 small">' + escapeHtml(res.message || 'Login siswa gagal') + '</div>'; }
     }).withFailureHandler(function(err){hideMasdaLoader(0);alertBox.innerHTML='<div class="alert alert-danger py-2 small">'+escapeHtml(err.message || err)+'</div>';}).loginSiswaDenganNisn(nisn);
   }
@@ -2825,9 +2930,13 @@
   }
 
   function hasAccess(menuKey) {
-    // Administrator selalu memiliki akses penuh, termasuk menu baru pada sesi lama.
+    // Administrator selalu memiliki akses penuh. Untuk akun lain, detail RBAC
+    // menjadi sumber utama agar nilai OFF mengalahkan daftar akses lama yang stale.
     if (currentUser && String(currentUser.role || '').trim().toLowerCase() === 'administrator') return true;
-    return userAksesList.indexOf(String(menuKey || '').toLowerCase()) > -1 || userAksesList.indexOf('all') > -1;
+    var key = String(menuKey || '').toLowerCase();
+    var detail = window.userAksesDetail || {};
+    if (Object.prototype.hasOwnProperty.call(detail, key)) return String(detail[key]).toLowerCase() !== 'off';
+    return userAksesList.indexOf(key) > -1 || userAksesList.indexOf('all') > -1;
   }
 
   function applyRBACMenuVisibility() {
@@ -2844,11 +2953,11 @@
 
   function getFirstAvailableMenu() {
     if (hasAccess('dashboard')) return 'dashboard';
-    var allKeys = ['dashboard', 'profil', 'struktur', 'master', 'hariEfektif', 'jurnal', 'honor', 'absensi', 'kesiswaan', 'sarpras', 'pengaturan', 'website', 'whatsapp', 'absensiQr','ppdb','pengumuman'];
+    var allKeys = ['dashboard', 'profil', 'struktur', 'master', 'hariEfektif', 'jurnal', 'honor', 'absensi', 'absensiPembiasaan', 'kesiswaan', 'sarpras', 'laporanBos', 'pengaturan', 'website', 'whatsapp', 'absensiQr', 'ppdb', 'pengumuman'];
     for (var i = 0; i < allKeys.length; i++) {
       if (hasAccess(allKeys[i])) return allKeys[i];
     }
-    return 'dashboard';
+    return ''; // Tidak ada menu yang diizinkan.
   }
 
   function canEditMenu(menuKey) {
@@ -3816,7 +3925,8 @@
     showMasterModal('modalSiswa');
   }
 
-  var STUDENT_RBAC_DEFAULT = {dashboard:'view',kesiswaan:'view',website:'view',absensiQr:'edit'};
+  // Default deny: menu siswa baru tidak aktif sebelum admin memberi izin.
+  var STUDENT_RBAC_DEFAULT = {};
   function setStudentRbacModes(saved) {
     var detail = {}, akses = '';
     if (saved) { akses = saved.akses || ''; try { detail = typeof saved.aksesDetail === 'string' ? JSON.parse(saved.aksesDetail || '{}') : (saved.aksesDetail || {}); } catch(e) { detail = {}; } }
@@ -4431,6 +4541,17 @@
   // ==========================================
   // ABSENSI PELAJARAN & REKAPITULASI
   // ==========================================
+  // Kelas visual status Absensi Pelajaran.
+  function getAbsensiPillClass(status) {
+    var s = String(status || 'Alpha').trim().toLowerCase();
+    if (s === 'alpha') return 'att-pill-alpha';
+    if (s === 'izin') return 'att-pill-izin';
+    if (s === 'sakit') return 'att-pill-sakit';
+    if (s === 'bolos') return 'att-pill-bolos';
+    if (s === 'hadir') return 'att-pill-hadir';
+    return 'att-pill-alpha';
+  }
+
   function loadAbsensiSiswa() {
     var k = document.getElementById('absensiSelectKelas').value;
     var t = document.getElementById('absensiSelectTanggal').value;
@@ -4455,7 +4576,7 @@
         html += '  <td>' + s.nisn + '</td><td>' + s.nama + '</td>';
         ['jam1','jam2','jam3','jam4'].forEach(function(jam){
           var status=String(s[jam]||'Alpha'), isChecked=['Hadir','Izin','Sakit'].indexOf(status)>=0;
-          html += '  <td class="text-center"><div class="d-flex flex-column align-items-center gap-1"><input type="checkbox" title="'+escapeHtml(status)+'" data-status="'+escapeHtml(status)+'" onchange="onAbsensiJamChange(this)" class="form-check-input att-cb '+jam+'" '+(isChecked?'checked':'')+'><small class="status-label text-'+(status==='Hadir'?'success':(status==='Izin'?'primary':(status==='Sakit'?'warning':(status==='Bolos'?'danger':'secondary'))))+'">'+escapeHtml(status)+'</small></div></td>';
+          html += '  <td class="text-center"><label class="att-pill-wrap" title="Klik untuk mengubah Hadir/Bolos"><input type="checkbox" title="'+escapeHtml(status)+'" data-status="'+escapeHtml(status)+'" onchange="onAbsensiJamChange(this)" class="form-check-input att-cb '+jam+'" '+(isChecked?'checked':'')+'><span class="status-label att-pill '+getAbsensiPillClass(status)+'">'+escapeHtml(status)+'</span></label></td>';
         });
         html += '</tr>';
       });
@@ -4470,7 +4591,8 @@
     var label = input.parentElement.querySelector('.status-label');
     if (label) {
       label.textContent = status;
-      label.className = 'status-label small text-' + (status === 'Hadir' ? 'success' : 'danger');
+      label.className = 'status-label att-pill ' + getAbsensiPillClass(status);
+      label.title = 'Perubahan menunggu disimpan…';
     }
 
     var row = input.closest('tr[data-nisn]');
