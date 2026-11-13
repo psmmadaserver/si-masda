@@ -5709,7 +5709,7 @@
   }
   function printGuruQrCard(nip){
     var g=(globalMasterData.guru||[]).find(function(x){return String(x[0])===String(nip);});if(!g){appNotify('Data guru tidak ditemukan.','error');return;}
-    var token=String(g[14]||'');if(!token){appNotify('QR Token belum dibuat. Simpan ulang data guru terlebih dahulu.','error');return;}
+    var token=String(g[14]||g[0]||'').trim();if(!token){appNotify('NIP guru belum diisi. Lengkapi NIP pada Master Guru terlebih dahulu.','error');return;}
     var w=window.open('','_blank','width=520,height=680');if(!w){appNotify('Izinkan pop-up untuk mencetak kartu QR.','error');return;}
     w.document.write('<!doctype html><html><head><title>Kartu Guru</title><style>body{font-family:Arial;text-align:center;padding:30px}.card{border:2px solid #1748c9;border-radius:18px;padding:24px;width:320px;margin:auto}#qr{display:flex;justify-content:center;margin:20px}h2{margin:8px 0}small{color:#555}</style></head><body><div class="card"><h2>MAS DARUL AMIN</h2><p>KARTU ABSENSI GURU</p><div id="qr"></div><h3>'+String(g[1]||'').replace(/[<>]/g,'')+'</h3><small>NIP: '+String(g[0]||'').replace(/[<>]/g,'')+'</small><p><small>Gunakan QR ini untuk absensi masuk dan pulang melalui siMADA.</small></p></div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script>new QRCode(document.getElementById("qr"),{text:'+JSON.stringify(token)+',width:220,height:220});setTimeout(function(){window.print()},700)<\/script></body></html>');w.document.close();
   }
@@ -6060,7 +6060,7 @@
   }
   function printGuruQrCard(nip){
     var g=(globalMasterData.guru||[]).find(function(x){return String(x[0])===String(nip);});if(!g){appNotify('Data guru tidak ditemukan.','error');return;}
-    var token=String(g[14]||'');if(!token){appNotify('QR Token belum dibuat. Simpan ulang data guru terlebih dahulu.','error');return;}
+    var token=String(g[14]||g[0]||'').trim();if(!token){appNotify('NIP guru belum diisi. Lengkapi NIP pada Master Guru terlebih dahulu.','error');return;}
     var w=window.open('','_blank','width=520,height=680');if(!w){appNotify('Izinkan pop-up untuk mencetak kartu QR.','error');return;}
     w.document.write('<!doctype html><html><head><title>Kartu Guru</title><style>body{font-family:Arial;text-align:center;padding:30px}.card{border:2px solid #1748c9;border-radius:18px;padding:24px;width:320px;margin:auto}#qr{display:flex;justify-content:center;margin:20px}h2{margin:8px 0}small{color:#555}</style></head><body><div class="card"><h2>MAS DARUL AMIN</h2><p>KARTU ABSENSI GURU</p><div id="qr"></div><h3>'+String(g[1]||'').replace(/[<>]/g,'')+'</h3><small>NIP: '+String(g[0]||'').replace(/[<>]/g,'')+'</small><p><small>Gunakan QR ini untuk absensi masuk dan pulang melalui siMADA.</small></p></div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script>new QRCode(document.getElementById("qr"),{text:'+JSON.stringify(token)+',width:220,height:220});setTimeout(function(){window.print()},700)<\/script></body></html>');w.document.close();
   }
