@@ -1,6 +1,6 @@
 /* siMADA PWA service worker. API dan data dinamis tidak pernah disimpan ke cache. */
 'use strict';
-const CACHE_NAME = 'simada-shell-v4-vivid-gradient-compact-nav';
+const CACHE_NAME = 'simada-shell-v5-floating-pill-active-tab';
 const APP_SHELL = [
   '/',
   '/index.html',
