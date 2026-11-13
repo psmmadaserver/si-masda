@@ -1,6 +1,6 @@
 /* siMADA PWA service worker. API dan data dinamis tidak pernah disimpan ke cache. */
 'use strict';
-const CACHE_NAME = 'simada-shell-v5-floating-pill-terlambat-v1';
+const CACHE_NAME = 'simada-shell-v5-absensi-guru-nip-wa-template-v2';
 const APP_SHELL = [
   '/',
   '/index.html',

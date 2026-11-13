@@ -1670,12 +1670,6 @@
             <div class="col-12 col-md-6 d-flex justify-content-end gap-2"><button class="btn btn-outline-primary btn-sm" onclick="rekapPembiasaan('harian')"><i class="bi bi-calendar-date"></i> Rekap Harian</button><button class="btn btn-outline-info btn-sm" onclick="rekapPembiasaan('bulanan')"><i class="bi bi-calendar-month"></i> Rekap Bulanan</button></div>
           </div>
         </div>
-        <div class="card p-3 shadow-sm border-0 mb-3 no-print">
-          <div class="fw-bold mb-2"><i class="bi bi-whatsapp text-success me-1"></i> Format Notifikasi WhatsApp Wali Siswa</div>
-          <div class="small text-muted mb-2">Placeholder tersedia: {nama}, {nisn}, {kelas}, {tanggal}, {status}, {ibadah}.</div>
-          <div class="row g-2"><div class="col-md-6"><label class="form-label small">Format Sholat Dhuha</label><textarea id="pembiasaanTemplateDhuha" class="form-control form-control-sm" rows="4" placeholder="Assalamu’alaikum... {nama} ... {status} {ibadah}"></textarea></div><div class="col-md-6"><label class="form-label small">Format Sholat Dzuhur</label><textarea id="pembiasaanTemplateDzuhur" class="form-control form-control-sm" rows="4" placeholder="Assalamu’alaikum... {nama} ... {status} {ibadah}"></textarea></div></div>
-          <div class="text-end mt-2"><button class="btn btn-success btn-sm" onclick="saveTemplatePembiasaan()"><i class="bi bi-save"></i> Simpan Format Pesan</button></div>
-        </div>
         <div class="card p-3 shadow-sm border-0">
           <div class="small text-muted mb-2">Pilih salah satu status pada setiap jenis sholat: <b>Ya</b> atau <b>Tidak</b>. Kedua pilihan saling eksklusif sehingga satu siswa tidak dapat memiliki dua status sekaligus. Setiap perubahan status disimpan dan notifikasi WhatsApp dikirim ke wali.</div>
           <div class="table-responsive"><table class="table table-hover align-middle"><thead class="table-light"><tr><th>NISN</th><th>Nama Siswa</th><th>Kelas</th><th class="text-center">Sholat Dhuha</th><th class="text-center">Sholat Dzuhur</th></tr></thead><tbody id="tblAbsensiPembiasaan"><tr><td colspan="5" class="text-center text-muted">Memuat data...</td></tr></tbody></table></div>
@@ -1883,6 +1877,14 @@
               <div class="rounded-4 p-3 mb-3" style="background:#f2fffc;border:1px solid #9af5e4"><b class="small">VARIABEL OTOMATIS YANG TERSEDIA:</b><div class="mt-1"><span class="wa-variable">{nama}</span><span class="wa-variable">{nisn}</span><span class="wa-variable">{kelas}</span><span class="wa-variable">{tanggal}</span><span class="wa-variable">{jam}</span><span class="wa-variable">{status}</span><span class="wa-variable">{Madrasah}</span></div></div>
               <label class="wa-field">Format Pesan Saat Siswa Absen MASUK</label><textarea id="waTemplateMasuk" class="form-control mb-3" rows="6"></textarea>
               <label class="wa-field">Format Pesan Saat Siswa Absen PULANG</label><textarea id="waTemplatePulang" class="form-control mb-3" rows="6"></textarea>
+              <hr class="my-4"><h6 class="fw-bold text-primary mb-2">Template Notifikasi Absensi Guru</h6>
+              <div class="small text-muted mb-2">Variabel: {nama}, {nip}, {tanggal}, {jam}, {status}, {jarak}, {metode}, {petugas}, {madrasah}.</div>
+              <label class="wa-field">Format Pesan Saat Guru Absen MASUK</label><textarea id="waTemplateGuruMasuk" class="form-control mb-3" rows="6"></textarea>
+              <label class="wa-field">Format Pesan Saat Guru Absen PULANG</label><textarea id="waTemplateGuruPulang" class="form-control mb-3" rows="6"></textarea>
+              <hr class="my-4"><h6 class="fw-bold text-success mb-2">Template Notifikasi Absensi Pembiasaan Wali Siswa</h6>
+              <div class="small text-muted mb-2">Variabel: {nama}, {nisn}, {kelas}, {tanggal}, {status}, {ibadah}.</div>
+              <label class="wa-field">Format Sholat Dhuha</label><textarea id="waTemplateDhuha" class="form-control mb-3" rows="4"></textarea>
+              <label class="wa-field">Format Sholat Dzuhur</label><textarea id="waTemplateDzuhur" class="form-control mb-3" rows="4"></textarea>
               <div class="mb-3"><label class="wa-field">Nama perangkat / pengirim</label><input id="waDeviceLabel" class="form-control" placeholder="Contoh: WhatsApp Tata Usaha"></div>
               <label class="wa-field">Token API Fonnte</label><input id="waToken" type="password" class="form-control" placeholder="Tempel token API (kosongkan jika tidak ingin mengganti)"><div id="waTokenStatus" class="wa-muted mt-1 mb-3">Token tersimpan di Script Properties.</div>
               <div class="d-flex justify-content-end"><button class="wa-btn" onclick="saveWaGateway()"><i class="bi bi-check2-circle me-1"></i>Simpan Template &amp; Pengaturan</button></div>
@@ -4603,15 +4605,6 @@
       appNotify('Gagal memuat daftar kelas: '+(e && e.message ? e.message : e));
     }).getDaftarKelasPembiasaan();
 
-    google.script.run.withSuccessHandler(function(t){
-      t=t||{};
-      var dhuha=document.getElementById('pembiasaanTemplateDhuha');
-      var dzuhur=document.getElementById('pembiasaanTemplateDzuhur');
-      if(dhuha) dhuha.value=t.dhuha||'';
-      if(dzuhur) dzuhur.value=t.dzuhur||'';
-    }).withFailureHandler(function(e){
-      console.warn('Gagal memuat template notifikasi pembiasaan:',e);
-    }).getTemplateAbsensiPembiasaan();
   }
   function loadAbsensiPembiasaan(){
     var date=document.getElementById('pembiasaanTanggal').value||todayLocalInput_(), kelas=document.getElementById('pembiasaanKelas').value;
@@ -5430,6 +5423,10 @@
   var waTestMode='masuk';
   var waDefaultMasuk='Assalamu’alaikum Wr. Wb.\nYth. Bapak/Ibu Wali dari *{nama}* (NISN: {nisn} / Kelas: {kelas}).\n\nMenginformasikan bahwa putra/putri Bapak/Ibu telah melakukan *ABSEN MASUK* di *{Madrasah}* pada:\n📅 Tanggal: {tanggal}\n⏰ Waktu: {jam} WIB\n✅ Status: {status}\n\nTerima kasih.\n— siMADA';
   var waDefaultPulang='Assalamu’alaikum Wr. Wb.\nYth. Bapak/Ibu Wali dari *{nama}* (NISN: {nisn} / Kelas: {kelas}).\n\nMenginformasikan bahwa putra/putri Bapak/Ibu telah melakukan *ABSEN PULANG* dari *{Madrasah}* pada:\n📅 Tanggal: {tanggal}\n⏰ Waktu: {jam} WIB\n✅ Status: {status}\n\nTerima kasih.\n— siMADA';
+  var waDefaultGuruMasuk='🔔 *NOTIFIKASI ABSENSI GURU*\n\nNama: *{nama}*\nNIP: {nip}\nTanggal: {tanggal}\nJam Masuk: {jam} WIB\nStatus: *{status}*\nJarak: {jarak} meter\nMetode: {metode}\nPetugas: {petugas}\n\n{madrasah} — siMADA';
+  var waDefaultGuruPulang='🔔 *NOTIFIKASI ABSENSI PULANG GURU*\n\nNama: *{nama}*\nNIP: {nip}\nTanggal: {tanggal}\nJam Pulang: {jam} WIB\nStatus: *{status}*\nJarak: {jarak} meter\nMetode: {metode}\nPetugas: {petugas}\n\n{madrasah} — siMADA';
+  var waDefaultDhuha='Assalamu’alaikum Wr. Wb.\nYth. Bapak/Ibu Wali dari *{nama}*.\n\nKami informasikan bahwa ananda pada tanggal {tanggal} *{status} {ibadah}*.\nKelas: {kelas}\n— siMADA';
+  var waDefaultDzuhur=waDefaultDhuha;
   function showWaTab(tab){document.querySelectorAll('[data-wa-tab]').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-wa-tab')===tab);});document.querySelectorAll('[data-wa-panel]').forEach(function(p){p.classList.toggle('active',p.getAttribute('data-wa-panel')===tab);});if(tab==='history')loadWaHistory();if(tab==='template')loadWaTestStudents();}
   function initHariEfektifYearSelect(){
     var sel=document.getElementById('heTahun'); if(!sel||sel.options.length)return;
@@ -5479,7 +5476,7 @@
       document.getElementById('waQrDescription').textContent=c.configured?'Tekan Tampilkan Kode QR WhatsApp untuk meminta QR dari API Fonnte. Jika perangkat sudah terhubung, API akan memberi tahu bahwa QR tidak diperlukan.':'Buka dashboard Fonnte, buat perangkat dan simpan token perangkat pada tab Template Pesan & Uji Coba sebelum meminta QR.';
       var qrOut=document.getElementById('waQrOutput');if(qrOut)qrOut.innerHTML='';
     }).getWhatsAppGatewayConfig();
-    google.script.run.withSuccessHandler(function(t){document.getElementById('waTemplateMasuk').value=t.masuk||waDefaultMasuk;document.getElementById('waTemplatePulang').value=t.pulang||waDefaultPulang;}).getWhatsAppTemplates();
+    google.script.run.withSuccessHandler(function(t){t=t||{};document.getElementById('waTemplateMasuk').value=t.masuk||waDefaultMasuk;document.getElementById('waTemplatePulang').value=t.pulang||waDefaultPulang;document.getElementById('waTemplateGuruMasuk').value=t.guruMasuk||waDefaultGuruMasuk;document.getElementById('waTemplateGuruPulang').value=t.guruPulang||waDefaultGuruPulang;document.getElementById('waTemplateDhuha').value=t.dhuha||waDefaultDhuha;document.getElementById('waTemplateDzuhur').value=t.dzuhur||waDefaultDzuhur;}).getWhatsAppTemplates();
     loadWaTestStudents();
   }
   function showWhatsAppQr(){
@@ -5491,8 +5488,8 @@
     }).withFailureHandler(function(e){out.innerHTML='<div class="alert alert-danger small mb-0">Gagal meminta QR: '+escapeHtml(e&&e.message?e.message:e)+'</div>';}).getWhatsAppGatewayQr();
   }
   function saveWaQuickSettings(){var cfg={deviceLabel:document.getElementById('waDeviceLabel').value,sendMasuk:document.getElementById('waSendMasuk').checked,sendPulang:document.getElementById('waSendPulang').checked};google.script.run.withSuccessHandler(function(r){appNotify(r.message||'Pengaturan otomatis tersimpan.','success');loadWaGateway();}).withFailureHandler(function(e){appNotify('Gagal menyimpan: '+(e.message||e),'error');}).saveWhatsAppGatewayConfig(cfg);}
-  function saveWaGateway(){var cfg={provider:'Fonnte',deviceLabel:document.getElementById('waDeviceLabel').value,token:document.getElementById('waToken').value,sendMasuk:document.getElementById('waSendMasuk').checked,sendPulang:document.getElementById('waSendPulang').checked};var templates={masuk:document.getElementById('waTemplateMasuk').value,pulang:document.getElementById('waTemplatePulang').value};google.script.run.withSuccessHandler(function(r){google.script.run.withSuccessHandler(function(){appNotify(r.message||'Template dan pengaturan tersimpan.','success');document.getElementById('waToken').value='';loadWaGateway();}).withFailureHandler(function(e){appNotify('Pengaturan tersimpan, tetapi template gagal disimpan: '+(e.message||e),'error');}).saveWhatsAppTemplates(templates);}).withFailureHandler(function(e){appNotify('Gagal menyimpan: '+(e.message||e),'error');}).saveWhatsAppGatewayConfig(cfg);}
-  function resetWaTemplates(){document.getElementById('waTemplateMasuk').value=waDefaultMasuk;document.getElementById('waTemplatePulang').value=waDefaultPulang;}
+  function saveWaGateway(){var cfg={provider:'Fonnte',deviceLabel:document.getElementById('waDeviceLabel').value,token:document.getElementById('waToken').value,sendMasuk:document.getElementById('waSendMasuk').checked,sendPulang:document.getElementById('waSendPulang').checked};var templates={masuk:document.getElementById('waTemplateMasuk').value,pulang:document.getElementById('waTemplatePulang').value,guruMasuk:document.getElementById('waTemplateGuruMasuk').value,guruPulang:document.getElementById('waTemplateGuruPulang').value,dhuha:document.getElementById('waTemplateDhuha').value,dzuhur:document.getElementById('waTemplateDzuhur').value};google.script.run.withSuccessHandler(function(r){google.script.run.withSuccessHandler(function(){appNotify(r.message||'Template dan pengaturan tersimpan.','success');document.getElementById('waToken').value='';loadWaGateway();}).withFailureHandler(function(e){appNotify('Pengaturan tersimpan, tetapi template gagal disimpan: '+(e.message||e),'error');}).saveWhatsAppTemplates(templates);}).withFailureHandler(function(e){appNotify('Gagal menyimpan: '+(e.message||e),'error');}).saveWhatsAppGatewayConfig(cfg);}
+  function resetWaTemplates(){document.getElementById('waTemplateMasuk').value=waDefaultMasuk;document.getElementById('waTemplatePulang').value=waDefaultPulang;document.getElementById('waTemplateGuruMasuk').value=waDefaultGuruMasuk;document.getElementById('waTemplateGuruPulang').value=waDefaultGuruPulang;document.getElementById('waTemplateDhuha').value=waDefaultDhuha;document.getElementById('waTemplateDzuhur').value=waDefaultDzuhur;}
   function loadWaTestStudents(){var sel=document.getElementById('waTestStudent');if(!sel)return;google.script.run.withSuccessHandler(function(data){var arr=(data&&data.siswa)||[];sel.innerHTML='<option value="">Pilih siswa...</option>'+arr.map(function(s){return '<option value="'+escapeHtml(String(s[0]||''))+'" data-phone="'+escapeHtml(String(s[4]||''))+'">'+escapeHtml(String(s[1]||''))+' — '+escapeHtml(String(s[2]||''))+' — NISN '+escapeHtml(String(s[0]||''))+'</option>';}).join('');var count=arr.filter(function(s){return String(s[4]||'').trim();}).length;document.getElementById('waGuardianCount').textContent='Siswa memiliki No. WA Wali: '+count+' / '+arr.length+' Siswa';sel.onchange=function(){var o=sel.options[sel.selectedIndex];document.getElementById('waTestPhone').value=o?o.getAttribute('data-phone')||'':'';};}).getMasterData();}
   function setWaTestMode(mode){waTestMode=mode;document.getElementById('waTestMasukBtn').className=mode==='masuk'?'btn btn-outline-success flex-fill':'btn btn-light border flex-fill';document.getElementById('waTestPulangBtn').className=mode==='pulang'?'btn btn-outline-success flex-fill':'btn btn-light border flex-fill';}
   function testWaSelectedStudent(){var sel=document.getElementById('waTestStudent'),nisn=sel.value,phone=document.getElementById('waTestPhone').value.trim(),out=document.getElementById('waTestResult');if(!nisn){appNotify('Pilih siswa terlebih dahulu.','error');return;}if(!phone){appNotify('Nomor WhatsApp wali belum diisi.','error');return;}out.innerHTML='<div class="small text-secondary">Mengirim pesan uji...</div>';google.script.run.withSuccessHandler(function(r){out.innerHTML='<div class="alert '+(r.success?'alert-success':'alert-warning')+' small">'+escapeHtml(r.message|| (r.success?'Pesan berhasil dikirim.':'Pengiriman belum berhasil.'))+'</div>';loadWaHistory();}).withFailureHandler(function(e){out.innerHTML='<div class="alert alert-danger small">'+escapeHtml(e.message||e)+'</div>';}).testWhatsAppTemplate(nisn,phone,waTestMode);}
