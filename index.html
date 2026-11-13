@@ -1571,14 +1571,11 @@
               <label class="form-label fw-semibold small">Bulan & Tahun</label>
               <input type="month" id="honorBulan" class="form-control form-control-sm">
             </div>
-            <div class="col-12 col-md-3">
-              <label class="form-label fw-semibold small">Tarif Per Kehadiran (Rp)</label>
-              <input type="number" id="honorTarif" class="form-control form-control-sm" placeholder="Contoh: 50000" value="50000">
+            <div class="col-12 col-md-4">
+              <div class="small text-muted pb-1">Tarif otomatis diambil dari Master Guru → Tarif/Jam.</div>
+              <button type="button" class="btn btn-primary btn-sm w-100" id="btnHitungHonor" onclick="loadHonorGuru()"><i class="bi bi-arrow-clockwise me-1"></i> Hitung / Perbarui Rekap</button>
             </div>
-            <div class="col-12 col-md-3">
-              <button type="button" class="btn btn-primary btn-sm w-100" onclick="loadHonorGuru()"><i class="bi bi-arrow-clockwise me-1"></i> Hitung Honor</button>
-            </div>
-            <div class="col-12 col-md-3">
+            <div class="col-12 col-md-4">
               <button type="button" class="btn btn-outline-danger btn-sm w-100" onclick="exportPdfHonor()"><i class="bi bi-file-pdf me-1"></i> Export PDF</button>
             </div>
           </div>
@@ -1597,14 +1594,14 @@
             <div class="col-6 col-xl-3"><div class="honor-stat-card"><div class="honor-stat-icon mb-3"><i class="bi bi-award"></i></div><div class="honor-stat-label">Tj. Jabatan</div><div class="honor-stat-value" id="teacherHonorJabatan">Rp 0</div><div class="small text-muted">Per bulan</div></div></div>
             <div class="col-6 col-xl-3"><div class="honor-stat-card"><div class="honor-stat-icon mb-3"><i class="bi bi-wallet2"></i></div><div class="honor-stat-label">Total Honor</div><div class="honor-stat-value text-primary" id="teacherHonorTotalSmall">Rp 0</div><div class="small text-muted">Akumulasi periode</div></div></div>
           </div>
-          <div class="card honor-chart-card p-4"><div class="row align-items-center g-4"><div class="col-12 col-md-6"><h6 class="fw-bold mb-1">Komposisi Honor</h6><p class="small text-muted mb-3">Proporsi honor berdasarkan komponen</p><div class="honor-donut" id="teacherHonorDonut"><div class="honor-donut-center"><div class="small text-muted">Total Honor</div><div class="fw-bold" id="teacherHonorDonutTotal">Rp 0</div></div></div></div><div class="col-12 col-md-6"><h6 class="fw-bold mb-3">Rincian Komponen</h6><div id="teacherHonorLegend"></div><div class="small text-muted mt-3">* Honor kehadiran dihitung dari jumlah jurnal valid × tarif per kehadiran.</div></div></div></div>
+          <div class="card honor-chart-card p-4"><div class="row align-items-center g-4"><div class="col-12 col-md-6"><h6 class="fw-bold mb-1">Komposisi Honor</h6><p class="small text-muted mb-3">Proporsi honor berdasarkan komponen</p><div class="honor-donut" id="teacherHonorDonut"><div class="honor-donut-center"><div class="small text-muted">Total Honor</div><div class="fw-bold" id="teacherHonorDonutTotal">Rp 0</div></div></div></div><div class="col-12 col-md-6"><h6 class="fw-bold mb-3">Rincian Komponen</h6><div id="teacherHonorLegend"></div><div class="small text-muted mt-3">* Honor kehadiran dihitung dari jumlah jurnal valid × Tarif/Jam masing-masing guru di Master Guru.</div></div></div></div>
         </div>
 
         <div id="honorTableWrap" class="card p-3 p-md-4 shadow-sm border-0">
           <div class="table-responsive">
             <table class="table table-bordered align-middle">
               <thead class="table-light">
-                <tr><th>NIP / ID</th><th>Nama Guru</th><th class="text-center">Total Kehadiran Valid (Jurnal)</th><th class="text-end">Tarif / Hadir</th><th class="text-center">Hari Transport</th><th class="text-end">Tj Transpot / Hari</th><th class="text-end">Tj Jabatan</th><th class="text-end">Total Honor</th><th>Keterangan / Tanda Tangan</th></tr>
+                <tr><th>NIP / ID</th><th>Nama Guru</th><th class="text-center">Total Kehadiran Valid (Jurnal)</th><th class="text-end">Tarif / Jam</th><th class="text-center">Hari Transport</th><th class="text-end">Tj Transpot / Hari</th><th class="text-end">Tj Jabatan</th><th class="text-end">Total Honor</th><th>Keterangan / Tanda Tangan</th></tr>
               </thead>
               <tbody id="tblHonor">
                 <tr><td colspan="9" class="text-center text-muted">Silakan tentukan bulan dan klik "Hitung Honor"</td></tr>
@@ -2527,15 +2524,12 @@
     if (permitCard) permitCard.classList.toggle('d-none', String(res.role).toLowerCase() !== 'siswa');
     var honorControls = document.getElementById('honorAdminControls');
     var honorBulan = document.getElementById('honorBulan');
-    var honorTarif = document.getElementById('honorTarif');
     var isTeacherLogin = String(res.role).toLowerCase() === 'guru';
     if (honorControls) honorControls.classList.toggle('d-none', isTeacherLogin);
     if (isTeacherLogin) {
       if (honorBulan) { honorBulan.value = getLocalTodayStr().substring(0, 7); honorBulan.readOnly = true; }
-      if (honorTarif) honorTarif.readOnly = true;
     } else {
       if (honorBulan) honorBulan.readOnly = false;
-      if (honorTarif) honorTarif.readOnly = false;
     }
     loadProfilData();
     loadAllAppData();
@@ -2577,6 +2571,7 @@
   var globalPenggunaData = [];
   var globalStrukturData = [];
   var currentHonorData = []; // Tampung data honor per hitung
+  var honorSnapshotByPeriod = Object.create(null); // Pembanding hasil refresh per periode
   var schoolMap = null, schoolMarker = null, schoolCircle = null;
   var sarprasChart = null;
   var currentZoomLevel = 1.0;
@@ -4452,17 +4447,27 @@
   // ==========================================
   function loadHonorGuru() {
     var bulanTahun = document.getElementById('honorBulan').value;
-    var tarif = parseFloat(document.getElementById('honorTarif').value) || 0;
     var tbody = document.getElementById('tblHonor');
+    var btn = document.getElementById('btnHitungHonor');
     var isGuru = currentUser && String(currentUser.role).toLowerCase() === 'guru';
     if (!bulanTahun) { appNotify('Silakan pilih Bulan & Tahun terlebih dahulu!'); return; }
-    tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">Sedang menghitung honor...</td></tr>';
+    if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Memperbarui...'; }
+    tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">Sedang memperbarui rekap honor...</td></tr>';
     var runner = google.script.run.withFailureHandler(function(err) {
+      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="bi bi-arrow-clockwise me-1"></i> Hitung / Perbarui Rekap'; }
       tbody.innerHTML = '<tr><td colspan="9" class="text-center text-danger">' + (err.message || err) + '</td></tr>';
+      appNotify('Gagal memperbarui rekap honor: ' + (err.message || err), 'error');
     }).withSuccessHandler(function(data) {
-      currentHonorData = data || [];
+      var freshData = Array.isArray(data) ? data : [];
+      var snapshot = JSON.stringify(freshData.map(function(x) {
+        return [x.nip,x.nama,Number(x.kehadiran)||0,Number(x.tarif)||0,Number(x.hariTransport)||0,Number(x.transport)||0,Number(x.jabatan)||0];
+      }));
+      var previousSnapshot = honorSnapshotByPeriod[bulanTahun];
+      var hadPrevious = Object.prototype.hasOwnProperty.call(honorSnapshotByPeriod, bulanTahun);
+      honorSnapshotByPeriod[bulanTahun] = snapshot;
+      currentHonorData = freshData;
       if (isGuru) {
-        renderTeacherHonorDashboard(currentHonorData[0] || null, tarif, bulanTahun);
+        renderTeacherHonorDashboard(currentHonorData[0] || null, bulanTahun);
         document.getElementById('teacherHonorDashboard').classList.remove('d-none');
         document.getElementById('honorTableWrap').classList.add('d-none');
       } else {
@@ -4474,14 +4479,17 @@
         html = '<tr><td colspan="9" class="text-center text-muted">Belum ada data honor untuk bulan ini.</td></tr>';
       } else {
         currentHonorData.forEach(function(item) {
+          var tarif = Number(item.tarif) || 0;
           var transport = Number(item.transport) || 0;
           var jabatan = Number(item.jabatan) || 0;
-          var total = (Number(item.kehadiran) || 0) * tarif + (Number(item.hariTransport) || 0) * transport + jabatan;
+          var kehadiran = Number(item.kehadiran) || 0;
+          var hariTransport = Number(item.hariTransport) || 0;
+          var total = kehadiran * tarif + hariTransport * transport + jabatan;
           grandTotal += total;
-          html += '<tr><td>' + item.nip + '</td><td class="fw-semibold">' + item.nama + '</td>';
-          html += '<td class="text-center"><span class="badge bg-primary">' + item.kehadiran + ' Hadir</span></td>';
+          html += '<tr><td>' + (item.nip || '-') + '</td><td class="fw-semibold">' + (item.nama || '-') + '</td>';
+          html += '<td class="text-center"><span class="badge bg-primary">' + kehadiran + ' Hadir</span></td>';
           html += '<td class="text-end">' + formatRupiah(tarif) + '</td>';
-          html += '<td class="text-center">' + (Number(item.hariTransport) || 0) + ' hari</td>';
+          html += '<td class="text-center">' + hariTransport + ' hari</td>';
           html += '<td class="text-end">' + formatRupiah(transport) + '</td>';
           html += '<td class="text-end">' + formatRupiah(jabatan) + '</td>';
           html += '<td class="text-end fw-bold text-dark">' + formatRupiah(total) + '</td><td style="min-width:150px;height:48px"></td></tr>';
@@ -4489,12 +4497,15 @@
       }
       tbody.innerHTML = html;
       document.getElementById('honorGrandTotal').innerText = formatRupiah(grandTotal);
+      if (btn) { btn.disabled = false; btn.innerHTML = '<i class="bi bi-arrow-clockwise me-1"></i> Hitung / Perbarui Rekap'; }
+      if (hadPrevious && previousSnapshot === snapshot) appNotify('Data honor sudah terbaru.', 'success');
+      else appNotify('Rekap honor berhasil diperbarui dari data jurnal dan Master Guru.', 'success');
     });
     if (isGuru) runner.getHonorGuruSaya(bulanTahun, currentUser.username);
     else runner.getRekapHonorGuru(bulanTahun);
   }
 
-  function renderTeacherHonorDashboard(item, tarif, bulanTahun) {
+  function renderTeacherHonorDashboard(item, bulanTahun) {
     var el = function(id){ return document.getElementById(id); };
     if (!item) {
       ['teacherHonorKehadiran','teacherHonorHariTransport'].forEach(function(id){el(id).innerText='0';});
@@ -4506,7 +4517,7 @@
       return;
     }
     var kehadiran = Number(item.kehadiran)||0, hari = Number(item.hariTransport)||0;
-    var transport = hari * (Number(item.transport)||0), jabatan = Number(item.jabatan)||0, honorHadir = kehadiran * (Number(tarif)||0);
+    var transport = hari * (Number(item.transport)||0), jabatan = Number(item.jabatan)||0, tarif = Number(item.tarif)||0, honorHadir = kehadiran * tarif;
     var total = honorHadir + transport + jabatan;
     el('teacherHonorName').innerText = item.nama || (currentUser && currentUser.nama) || 'Honor Guru';
     el('teacherHonorPeriod').innerText = 'Periode ' + bulanTahun;
@@ -4531,15 +4542,15 @@
       appNotify('Tidak ada data honor yang bisa di-export. Klik Hitung Honor terlebih dahulu.'); return;
     }
     var bulan = document.getElementById('honorBulan').value;
-    var tarif = parseFloat(document.getElementById('honorTarif').value) || 0;
     var rows = currentHonorData.map(function(item) {
+      var tarif = Number(item.tarif) || 0;
       var transport = Number(item.transport) || 0, jabatan = Number(item.jabatan) || 0;
       return [item.nip, item.nama, item.kehadiran + 'x Hadir', formatRupiah(tarif),
         (Number(item.hariTransport) || 0) + ' hari', formatRupiah(transport), formatRupiah(jabatan),
         formatRupiah((Number(item.kehadiran) || 0) * tarif + (Number(item.hariTransport) || 0) * transport + jabatan), ''];
     });
     generatePdfTable('Rekapitulasi Honor Guru - ' + bulan,
-      ['NIP', 'Nama Guru', 'Valid Hadir/Jam', 'Tarif/Jam', 'Hari Transport', 'Tj Transpot/Hari', 'Tj Jabatan', 'Total Honor', 'Keterangan / Tanda Tangan'], rows);
+      ['NIP', 'Nama Guru', 'Valid Hadir/Jam', 'Tarif/Jam (Master Guru)', 'Hari Transport', 'Tj Transpot/Hari', 'Tj Jabatan', 'Total Honor', 'Keterangan / Tanda Tangan'], rows);
   }
 
   // Antrean penyimpanan per siswa agar perubahan cepat Jam 1-4 tidak saling menimpa.
