@@ -887,6 +887,7 @@
 #sec-absensi .att-pill-sakit{--att-text:#9a5700;background:rgba(245,158,11,.16);border-color:#d97706}
 #sec-absensi .att-pill-bolos{--att-text:#124eaa;background:rgba(37,99,235,.12);border-color:#2563eb}
 #sec-absensi .att-pill-hadir{--att-text:#087653;background:rgba(16,185,129,.13);border-color:#059669}
+#sec-absensi .att-pill-terlambat{--att-text:#9a5700;background:rgba(245,158,11,.18);border-color:#d97706;box-shadow:inset 0 0 0 1px rgba(217,119,6,.08)}
 
 /* Tombol pilihan Ya/Tidak pada tabel Absensi Pembiasaan */
 #sec-absensiPembiasaan .pb-choice{position:relative;display:inline-flex;align-items:center;margin:2px 0;cursor:pointer;-webkit-tap-highlight-color:transparent}
@@ -4667,6 +4668,7 @@
     if (s === 'sakit') return 'att-pill-sakit';
     if (s === 'bolos') return 'att-pill-bolos';
     if (s === 'hadir') return 'att-pill-hadir';
+    if (s === 'terlambat') return 'att-pill-terlambat';
     return 'att-pill-alpha';
   }
 
@@ -4693,7 +4695,7 @@
         html += '<tr data-nisn="' + s.nisn + '" data-nama="' + s.nama + '">';
         html += '  <td>' + s.nisn + '</td><td>' + s.nama + '</td>';
         ['jam1','jam2','jam3','jam4'].forEach(function(jam){
-          var status=String(s[jam]||'Alpha'), isChecked=['Hadir','Izin','Sakit'].indexOf(status)>=0;
+          var status=String(s[jam]||'Alpha'), isChecked=['Hadir','Izin','Sakit','Terlambat'].indexOf(status)>=0;
           html += '  <td class="text-center"><label class="att-pill-wrap" title="Klik untuk mengubah Hadir/Bolos"><input type="checkbox" title="'+escapeHtml(status)+'" data-status="'+escapeHtml(status)+'" onchange="onAbsensiJamChange(this)" class="form-check-input att-cb '+jam+'" '+(isChecked?'checked':'')+'><span class="status-label att-pill '+getAbsensiPillClass(status)+'">'+escapeHtml(status)+'</span></label></td>';
         });
         html += '</tr>';
