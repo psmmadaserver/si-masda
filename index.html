@@ -3015,6 +3015,7 @@
     if (targetKey === 'whatsapp') loadAbsensiGerbang();
     if (targetKey === 'ppdb') loadPPDB();
     if (targetKey === 'dashboard') { refreshDashboard(); refreshStatistikPembiasaan(); }
+    if (targetKey === 'absensi') loadAbsensiKelasOptions();
     if (targetKey === 'absensiPembiasaan') loadAbsensiPembiasaanPage();
     if (targetKey === 'absensiQr') { updateQrAttendanceClock(); setQrAttendanceMode((document.getElementById('qrAttendanceMode')||{}).value||'masuk'); }
     if (targetKey === 'pengumuman') loadPengumuman();
@@ -4413,6 +4414,29 @@
   // ==========================================
   function todayLocalInput_(){var d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
   var pembiasaanRowsCache=[];
+
+  // Dropdown kelas dimuat melalui endpoint referensi khusus, bukan getMasterData().
+  // Dengan demikian izin menu Data Master tidak menjadi prasyarat modul absensi.
+  function loadAbsensiKelasOptions(){
+    google.script.run.withSuccessHandler(function(data){
+      var rows=data||[], current=document.getElementById('absensiSelectKelas').value;
+      var options='<option value="">-- Pilih Kelas --</option>';
+      var allOptions='<option value="">-- Semua Kelas --</option>';
+      rows.forEach(function(k){
+        var name=String(k[1]||'').trim(); if(!name)return;
+        var safe=escapeHtml(name);
+        options+='<option value="'+safe+'">'+safe+'</option>';
+        allOptions+='<option value="'+safe+'">'+safe+'</option>';
+      });
+      var sel=document.getElementById('absensiSelectKelas');
+      if(sel){sel.innerHTML=options;if(rows.some(function(k){return String(k[1]||'').trim()===current;}))sel.value=current;}
+      ['rekapHarianKelas','rekapBulananKelas'].forEach(function(id){
+        var el=document.getElementById(id), keep=el?el.value:'';
+        if(el){el.innerHTML=allOptions;if(rows.some(function(k){return String(k[1]||'').trim()===keep;}))el.value=keep;}
+      });
+    }).withFailureHandler(function(e){appNotify('Gagal memuat daftar kelas: '+(e.message||e));}).getDaftarKelasAbsensi();
+  }
+
   function loadAbsensiPembiasaanPage(){
     var date=document.getElementById('pembiasaanTanggal'); if(!date.value) date.value=todayLocalInput_();
     google.script.run.withSuccessHandler(function(data){
@@ -4421,7 +4445,7 @@
       (data.kelas||[]).forEach(function(k){var name=String(k[1]||'').trim();if(name){var o=document.createElement('option');o.value=name;o.textContent=name;sel.appendChild(o);}});
       sel.value=keep;
       loadAbsensiPembiasaan(); 
-    }).withFailureHandler(function(e){appNotify('Gagal memuat daftar kelas: '+(e.message||e));}).getMasterData();
+    }).withFailureHandler(function(e){appNotify('Gagal memuat daftar kelas: '+(e.message||e));}).getDaftarKelasPembiasaan();
     google.script.run.withSuccessHandler(function(t){document.getElementById('pembiasaanTemplateDhuha').value=t.dhuha||'';document.getElementById('pembiasaanTemplateDzuhur').value=t.dzuhur||'';}).getTemplateAbsensiPembiasaan();
   }
   function loadAbsensiPembiasaan(){
