@@ -560,49 +560,45 @@
     }
 
 
-    /* Navigasi smartphone: kapsul transparan, selalu di atas konten dan aman dari area sistem Android. */
+    /* Latar halaman bernuansa gradient lembut untuk seluruh halaman aplikasi; kartu/form tetap mempertahankan warna aslinya. */
+    #mainApp > .row > .col-md-9 { background:linear-gradient(145deg,rgba(225,241,255,.72),rgba(237,242,255,.70) 42%,rgba(220,250,241,.78)); min-height:calc(100vh - 64px); }
+    @media (max-width: 767.98px) {
+      #mainApp:not(.d-none) { padding-bottom: calc(94px + env(safe-area-inset-bottom, 0px)); background:linear-gradient(145deg,#e8f5ff 0%,#eef4ff 38%,#e8fbf5 72%,#dff7f3 100%); }
+    }
+
+    /* Navigasi bawah bergaya floating-tab: item aktif terangkat seperti contoh pengguna.
+       Warna dasar tetap putih/transparan seperti versi sebelumnya. */
     .mobile-bottom-nav { display:none; }
     @media (max-width: 767.98px) {
-      html, body { min-height:100%; }
-      body { padding-bottom:calc(104px + env(safe-area-inset-bottom, 0px)) !important; }
-      #mainApp:not(.d-none) { padding-bottom:calc(112px + env(safe-area-inset-bottom, 0px)) !important; }
-      #mainApp .content-section { padding-bottom:18px; scroll-padding-bottom:120px; }
       .mobile-bottom-nav {
-        position:fixed !important; left:12px; right:12px;
-        bottom:calc(9px + env(safe-area-inset-bottom, 0px)); z-index:1045;
-        display:flex; align-items:center; justify-content:space-around; gap:3px;
-        width:auto; min-height:62px; max-height:68px;
-        padding:6px 9px; box-sizing:border-box;
-        overflow-x:auto; overflow-y:hidden; overscroll-behavior-x:contain;
+        position:fixed; left:0; right:0; bottom:0; z-index:1025;
+        display:flex; align-items:flex-end; gap:3px; min-height:76px;
+        padding:8px 8px calc(8px + env(safe-area-inset-bottom, 0px));
+        overflow-x:auto; overflow-y:visible; overscroll-behavior-x:contain;
         -webkit-overflow-scrolling:touch; scrollbar-width:none;
-        background:rgba(255,255,255,.78);
-        border:1px solid rgba(255,255,255,.52);
-        border-radius:24px;
-        box-shadow:0 5px 24px rgba(30,50,80,.12);
-        backdrop-filter:blur(22px) saturate(1.35);
-        -webkit-backdrop-filter:blur(22px) saturate(1.35);
-        transform:translateZ(0); isolation:isolate;
+        background:rgba(255,255,255,.96); border-top:1px solid rgba(148,163,184,.20);
+        box-shadow:0 -8px 28px rgba(15,23,42,.10); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+        isolation:isolate;
       }
       .mobile-bottom-nav::-webkit-scrollbar { display:none; }
       .mobile-bottom-nav .mobile-bottom-item {
-        appearance:none; border:0 !important; outline:0; background:transparent;
-        color:#64748b; flex:1 0 48px; min-width:48px; min-height:48px;
-        padding:5px 3px; margin:0; border-radius:17px;
-        display:flex; align-items:center; justify-content:center;
-        transition:background .18s ease,color .18s ease,transform .18s ease;
-        -webkit-tap-highlight-color:transparent;
+        appearance:none; position:relative; z-index:1; border:0; background:transparent; color:#64748b;
+        flex:0 0 64px; min-width:64px; min-height:58px; padding:5px 2px 2px;
+        border-radius:18px; display:flex; flex-direction:column; align-items:center; justify-content:flex-end; gap:5px;
+        font-size:9px; font-weight:650; line-height:1.1; white-space:nowrap;
+        transition:color .22s ease,transform .25s cubic-bezier(.2,.8,.2,1); -webkit-tap-highlight-color:transparent;
       }
-      .mobile-bottom-nav .mobile-bottom-item i { font-size:1.42rem; line-height:1; }
-      .mobile-bottom-nav .mobile-bottom-item.active {
-        color:#0759b8;
-        background:linear-gradient(145deg,rgba(14,165,233,.17),rgba(16,185,129,.15));
-        box-shadow:none;
+      .mobile-bottom-nav .mobile-bottom-item i { width:44px; height:44px; display:grid; place-items:center; font-size:1.38rem; line-height:1; border-radius:50%; transition:all .22s ease; }
+      .mobile-bottom-nav .mobile-bottom-item.active { color:#0759b8; transform:translateY(-13px); }
+      .mobile-bottom-nav .mobile-bottom-item.active i {
+        background:linear-gradient(145deg,rgba(14,165,233,.18),rgba(16,185,129,.16));
+        color:#0759b8; box-shadow:0 5px 14px rgba(15,91,160,.13),inset 0 0 0 1px rgba(14,116,190,.10);
+        outline:5px solid rgba(255,255,255,.96);
       }
-      .mobile-bottom-nav .mobile-bottom-item:active { transform:scale(.94); }
-      /* Jangan biarkan menu tertutup saat halaman panjang digulir sampai paling bawah. */
-      #mainApp > .row.g-0 > .col-md-9.col-lg-10 { padding-bottom:10px; }
+      .mobile-bottom-nav .mobile-bottom-item.active::after { content:''; position:absolute; bottom:-7px; left:50%; width:6px; height:6px; border-radius:50%; background:#1684d8; transform:translateX(-50%); }
+      .mobile-bottom-nav .mobile-bottom-item:active { transform:translateY(-10px) scale(.96); }
     }
-    @media (prefers-reduced-motion:reduce) { .mobile-bottom-nav .mobile-bottom-item { transition:none!important; } }
+    @media (prefers-reduced-motion:reduce) { .mobile-bottom-nav .mobile-bottom-item,.mobile-bottom-nav .mobile-bottom-item i { transition:none!important; } }
   </style>
 
 <style>
@@ -2951,38 +2947,15 @@
       } else {
         var fallback = document.createElement('i'); fallback.className = 'bi bi-circle'; button.appendChild(fallback);
       }
+      var shortLabels = {dashboard:'Beranda',profil:'Profil',struktur:'Struktur',master:'Data',hariEfektif:'Hari Efektif',jurnal:'Jurnal',honor:'Honor',whatsapp:'WhatsApp',absensiQr:'QR Siswa',absensi:'Absensi',absensiPembiasaan:'Pembiasaan',ppdb:'PPDB',pengumuman:'Info',kesiswaan:'Siswa',sarpras:'Sarpras',laporanBos:'BOS',pengaturan:'Pengaturan',website:'Link'};
+      var caption = document.createElement('span');
+      caption.className = 'mobile-bottom-label';
+      caption.textContent = shortLabels[key] || label;
+      button.appendChild(caption);
       button.addEventListener('click', function(ev) { switchNav(key, ev); });
       bottom.appendChild(button);
     });
   }
-
-  // Menjaga ikon navigasi bawah tetap sinkron saat daftar menu/RBAC berubah,
-  // setelah login, saat kembali dari background, dan ketika ukuran layar berubah.
-  var mobileBottomSyncTimer = null;
-  function scheduleMobileBottomNavSync() {
-    if (mobileBottomSyncTimer) clearTimeout(mobileBottomSyncTimer);
-    mobileBottomSyncTimer = setTimeout(function() {
-      var app = document.getElementById('mainApp');
-      if (!app || app.classList.contains('d-none') || !currentUser) return;
-      var active = document.querySelector('#sidebarNavList .nav-item[data-menu] .nav-link.active');
-      var item = active ? active.closest('.nav-item[data-menu]') : null;
-      syncMobileBottomNav(item ? item.getAttribute('data-menu') : '');
-    }, 80);
-  }
-  window.addEventListener('resize', scheduleMobileBottomNavSync, {passive:true});
-  window.addEventListener('orientationchange', function(){ setTimeout(scheduleMobileBottomNavSync, 250); }, {passive:true});
-  window.addEventListener('pageshow', scheduleMobileBottomNavSync);
-  document.addEventListener('visibilitychange', function(){ if (!document.hidden) scheduleMobileBottomNavSync(); });
-  document.addEventListener('DOMContentLoaded', function() {
-    var sideNav = document.getElementById('sidebarNavList');
-    if (sideNav && window.MutationObserver) {
-      var navObserver = new MutationObserver(scheduleMobileBottomNavSync);
-      navObserver.observe(sideNav, {subtree:true, childList:true, attributes:true, attributeFilter:['class','style']});
-    }
-    scheduleMobileBottomNavSync();
-  });
-  // Fallback ringan: pulihkan navigasi bila browser Android melewatkan repaint.
-  setInterval(scheduleMobileBottomNavSync, 5000);
 
   function applyRBACMenuVisibility() {
     var navItems = document.querySelectorAll('#sidebarNavList .nav-item[data-menu]');
