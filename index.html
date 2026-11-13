@@ -4438,15 +4438,44 @@
   }
 
   function loadAbsensiPembiasaanPage(){
-    var date=document.getElementById('pembiasaanTanggal'); if(!date.value) date.value=todayLocalInput_();
+    var date=document.getElementById('pembiasaanTanggal');
+    if(!date.value) date.value=todayLocalInput_();
+
+    // Endpoint V3 mengembalikan array baris kelas secara langsung:
+    // [[id, namaKelas, ...], ...]. Tetap dukung format object {kelas:[]} 
+    // agar kompatibel dengan deployment lama tanpa mengubah kontrak backend.
     google.script.run.withSuccessHandler(function(data){
-      var sel=document.getElementById('pembiasaanKelas'), keep=sel.value;
+      var sel=document.getElementById('pembiasaanKelas');
+      if(!sel) return;
+      var keep=sel.value;
+      var rows=Array.isArray(data) ? data : ((data && Array.isArray(data.kelas)) ? data.kelas : []);
       sel.innerHTML='<option value="">Semua Kelas</option>';
-      (data.kelas||[]).forEach(function(k){var name=String(k[1]||'').trim();if(name){var o=document.createElement('option');o.value=name;o.textContent=name;sel.appendChild(o);}});
-      sel.value=keep;
-      loadAbsensiPembiasaan(); 
-    }).withFailureHandler(function(e){appNotify('Gagal memuat daftar kelas: '+(e.message||e));}).getDaftarKelasPembiasaan();
-    google.script.run.withSuccessHandler(function(t){document.getElementById('pembiasaanTemplateDhuha').value=t.dhuha||'';document.getElementById('pembiasaanTemplateDzuhur').value=t.dzuhur||'';}).getTemplateAbsensiPembiasaan();
+      rows.forEach(function(k){
+        var name=String(Array.isArray(k) ? (k[1] || k[0] || '') : (k.namaKelas || k.kelas || k.nama || '')).trim();
+        if(!name) return;
+        var o=document.createElement('option');
+        o.value=name;
+        o.textContent=name;
+        sel.appendChild(o);
+      });
+      // Pertahankan kelas terpilih jika masih tersedia; selain itu gunakan Semua Kelas.
+      sel.value=rows.some(function(k){
+        return String(Array.isArray(k) ? (k[1] || k[0] || '') : (k.namaKelas || k.kelas || k.nama || '')).trim()===keep;
+      }) ? keep : '';
+      loadAbsensiPembiasaan();
+    }).withFailureHandler(function(e){
+      appNotify('Gagal memuat daftar kelas: '+(e && e.message ? e.message : e));
+    }).getDaftarKelasPembiasaan();
+
+    google.script.run.withSuccessHandler(function(t){
+      t=t||{};
+      var dhuha=document.getElementById('pembiasaanTemplateDhuha');
+      var dzuhur=document.getElementById('pembiasaanTemplateDzuhur');
+      if(dhuha) dhuha.value=t.dhuha||'';
+      if(dzuhur) dzuhur.value=t.dzuhur||'';
+    }).withFailureHandler(function(e){
+      console.warn('Gagal memuat template notifikasi pembiasaan:',e);
+    }).getTemplateAbsensiPembiasaan();
   }
   function loadAbsensiPembiasaan(){
     var date=document.getElementById('pembiasaanTanggal').value||todayLocalInput_(), kelas=document.getElementById('pembiasaanKelas').value;
