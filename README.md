@@ -21,3 +21,14 @@ Paket ini menggunakan `index.html` asli Si MasDA dari file sumber yang dikirimka
 - Fungsi eksternal WhatsApp tetap membutuhkan token/provider valid yang diatur melalui aplikasi. QR scanner membutuhkan HTTPS dan izin kamera browser.
 - Sintaks lokal tidak membuktikan integrasi produksi. Uji semua modul sebelum dipakai untuk data penting.
 - Jangan memublikasikan `kode.gs`, token provider WhatsApp, atau kredensial.
+
+
+## Fitur PWA dan navigasi smartphone (V5)
+
+- Pada layar smartphone, navigasi bawah menampilkan ikon saja dan mengikuti menu yang diizinkan oleh RBAC akun yang sedang login.
+- Sidebar/offcanvas lama tetap tersedia melalui tombol hamburger dan tetap digunakan pada tampilan desktop.
+- PWA menggunakan `manifest.webmanifest`, `service-worker.js`, serta ikon di folder `icons/`.
+- Deploy seluruh folder project ini ke Vercel pada domain HTTPS. Jangan memindahkan `manifest.webmanifest`, `service-worker.js`, atau folder `icons/` dari root project.
+- Setelah deploy, buka URL aplikasi di Chrome Android. Tombol unduh pada header akan memanggil prompt instalasi jika browser sudah memenuhi kriteria; jika belum, ikuti menu Chrome (⋮) > Install app / Tambahkan ke layar utama.
+- Data dan API siMADA tetap memerlukan koneksi internet. Service worker hanya menyimpan app shell dan aset PWA, bukan data pengguna, sesi, maupun respons API.
+- Backend `kode.gs` dan database tidak diubah pada pembaruan ini.

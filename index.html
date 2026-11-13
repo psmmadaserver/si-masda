@@ -60,6 +60,14 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0b4aa2">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="siMADA">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png">
+  <link rel="apple-touch-icon" href="/icons/icon-192.png">
   <title>siMADA — Sistem Manajemen MAS Darul Amin</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -550,6 +558,35 @@
       #tblMasterSiswa td .btn, #tblMasterJadwal td .btn { padding:2px 5px !important; }
     }
 
+
+    /* Navigasi bawah smartphone: otomatis mengikuti menu yang lolos RBAC. */
+    .mobile-bottom-nav { display:none; }
+    @media (max-width: 767.98px) {
+      #mainApp:not(.d-none) { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+      .mobile-bottom-nav {
+        position:fixed; left:0; right:0; bottom:0; z-index:1025;
+        display:flex; align-items:stretch; gap:4px; min-height:66px;
+        padding:7px 8px calc(7px + env(safe-area-inset-bottom, 0px));
+        overflow-x:auto; overflow-y:hidden; overscroll-behavior-x:contain;
+        -webkit-overflow-scrolling:touch; scrollbar-width:none;
+        background:rgba(255,255,255,.96); border-top:1px solid rgba(148,163,184,.25);
+        box-shadow:0 -8px 28px rgba(15,23,42,.10); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+      }
+      .mobile-bottom-nav::-webkit-scrollbar { display:none; }
+      .mobile-bottom-nav .mobile-bottom-item {
+        appearance:none; border:0; background:transparent; color:#64748b;
+        flex:0 0 58px; min-width:58px; min-height:50px; padding:4px 2px;
+        border-radius:14px; display:flex; align-items:center; justify-content:center;
+        transition:background .18s ease,color .18s ease,transform .18s ease; -webkit-tap-highlight-color:transparent;
+      }
+      .mobile-bottom-nav .mobile-bottom-item i { font-size:1.42rem; line-height:1; }
+      .mobile-bottom-nav .mobile-bottom-item.active {
+        color:#0759b8; background:linear-gradient(145deg,rgba(14,165,233,.14),rgba(16,185,129,.13));
+        box-shadow:inset 0 0 0 1px rgba(14,116,190,.08);
+      }
+      .mobile-bottom-nav .mobile-bottom-item:active { transform:scale(.94); }
+    }
+    @media (prefers-reduced-motion:reduce) { .mobile-bottom-nav .mobile-bottom-item { transition:none!important; } }
   </style>
 
 <style>
@@ -928,6 +965,7 @@
     </div>
     <div class="d-flex align-items-center gap-2">
       <small class="badge bg-info text-dark" id="mobileUserRoleBadge">Administrator</small>
+      <button class="mobile-logout-btn" id="pwaInstallButton" type="button" onclick="installSiMADAApp()" aria-label="Install siMADA" title="Install siMADA"><i class="bi bi-download"></i></button>
       <button class="mobile-logout-btn" type="button" onclick="logout(event)" aria-label="Keluar" title="Keluar"><i class="bi bi-box-arrow-right"></i></button>
     </div>
   </div>
@@ -1893,6 +1931,7 @@
 
     </div>
   </div>
+  <nav id="mobileBottomNav" class="mobile-bottom-nav no-print" aria-label="Navigasi utama smartphone"></nav>
 </div>
 
 <!-- MODAL GURU -->
@@ -2866,16 +2905,49 @@
     return userAksesList.indexOf(key) > -1 || userAksesList.indexOf('all') > -1;
   }
 
+  function syncMobileBottomNav(activeKey) {
+    var bottom = document.getElementById('mobileBottomNav');
+    var side = document.getElementById('sidebarNavList');
+    if (!bottom || !side) return;
+    var activeLink = side.querySelector('.nav-item[data-menu] .nav-link.active');
+    var activeItem = activeLink ? activeLink.closest('.nav-item[data-menu]') : null;
+    var current = activeKey || (activeItem ? activeItem.getAttribute('data-menu') : '');
+    bottom.innerHTML = '';
+    side.querySelectorAll('.nav-item[data-menu]').forEach(function(item) {
+      if (item.classList.contains('d-none')) return;
+      var key = item.getAttribute('data-menu');
+      if (!key || !hasAccess(key)) return;
+      var source = item.querySelector('.nav-link');
+      if (!source) return;
+      var icon = source.querySelector('i');
+      var label = (source.textContent || '').replace(/\s+/g, ' ').trim();
+      var button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'mobile-bottom-item' + (key === current ? ' active' : '');
+      button.setAttribute('data-menu', key);
+      button.setAttribute('aria-label', label || key);
+      button.setAttribute('title', label || key);
+      button.setAttribute('aria-current', key === current ? 'page' : 'false');
+      if (icon) {
+        var iconCopy = icon.cloneNode(true);
+        iconCopy.className = (iconCopy.className || '').replace(/\bme-\d+\b/g, '').trim();
+        button.appendChild(iconCopy);
+      } else {
+        var fallback = document.createElement('i'); fallback.className = 'bi bi-circle'; button.appendChild(fallback);
+      }
+      button.addEventListener('click', function(ev) { switchNav(key, ev); });
+      bottom.appendChild(button);
+    });
+  }
+
   function applyRBACMenuVisibility() {
     var navItems = document.querySelectorAll('#sidebarNavList .nav-item[data-menu]');
     navItems.forEach(function(item) {
       var menuKey = item.getAttribute('data-menu');
-      if (hasAccess(menuKey)) {
-        item.classList.remove('d-none');
-      } else {
-        item.classList.add('d-none');
-      }
+      if (hasAccess(menuKey)) item.classList.remove('d-none');
+      else item.classList.add('d-none');
     });
+    syncMobileBottomNav();
   }
 
   function getFirstAvailableMenu() {
@@ -2956,6 +3028,11 @@
 
     var activeNavItem = document.querySelector('#sidebarNavList .nav-item[data-menu="' + targetKey + '"] .nav-link');
     if (activeNavItem) activeNavItem.classList.add('active');
+    syncMobileBottomNav(targetKey);
+    var activeBottomItem = document.querySelector('#mobileBottomNav .mobile-bottom-item[data-menu="' + targetKey + '"]');
+    if (activeBottomItem && window.matchMedia('(max-width: 767.98px)').matches) {
+      activeBottomItem.scrollIntoView({ behavior:'smooth', block:'nearest', inline:'center' });
+    }
 
     var sidebarEl = document.getElementById('sidebarMenu');
     var bsOffcanvas = sidebarEl ? bootstrap.Offcanvas.getInstance(sidebarEl) : null;
@@ -5552,6 +5629,7 @@
       if(!win){appNotify('Jendela cetak diblokir browser. Izinkan pop-up untuk aplikasi ini.', 'error');return;}
       win.document.open();
       win.document.write(`<!doctype html><html><head><meta charset="utf-8"><title>Cetak Semua ID Card siMADA</title><style>@page{size:A4;margin:8mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;color:#111}.grid{display:grid;grid-template-columns:repeat(3,2.25in);gap:7mm 5mm;justify-content:center}.card{width:2.25in;height:3.55in;position:relative;overflow:hidden;border-radius:12px;padding:10px;break-inside:avoid;page-break-inside:avoid;color:#fff;background:linear-gradient(160deg,#071d43,#0753a2 62%,#081b42)}.logo{position:absolute;top:10px;left:10px;width:28px;height:28px;object-fit:contain;background:#fff;border-radius:6px;padding:2px;z-index:3}.school{position:relative;z-index:3;margin-left:34px;font-size:8px;font-weight:bold;text-transform:uppercase;max-width:calc(100% - 38px)}.school small{display:block;font-size:6px;margin-top:3px}.photo{position:absolute;left:0;right:0;bottom:0;width:100%;height:78%;object-fit:contain;object-position:center bottom;border:0;border-radius:0;background:transparent;mask-image:linear-gradient(to bottom,#000 0%,#000 82%,rgba(0,0,0,.9) 90%,rgba(0,0,0,.55) 96%,rgba(0,0,0,0) 100%)}.placeholder{background:linear-gradient(#cbd5e1,#64748b)}.name{position:absolute;right:6px;bottom:52px;writing-mode:vertical-rl;transform:rotate(180deg);font-size:10px;font-weight:bold;max-height:66%;z-index:3}.tag{position:absolute;right:7px;bottom:9px;writing-mode:vertical-rl;transform:rotate(180deg);font-size:7px;z-index:3}.bottom{position:absolute;left:9px;bottom:9px;z-index:4;display:flex;align-items:flex-end;gap:6px}.qr{background:#fff;border-radius:4px;padding:3px;line-height:0}.qr img,.qr canvas{width:60px!important;height:60px!important}.meta{font-size:7px;line-height:1.6}.green{background:linear-gradient(150deg,#007343 0 12%,#fff 12% 86%,#007343 86%);color:#092b20;border:2px solid #087647}.green .photo,.purple .photo{position:relative;display:block;width:1.35in;height:1.45in;margin:10px auto 4px;border-radius:10px;mask-image:none;border:2px solid #087647}.green .name,.purple .name{position:relative;right:auto;bottom:auto;writing-mode:initial;transform:none;text-align:center;font-size:10px}.green .tag,.purple .tag{position:relative;right:auto;bottom:auto;writing-mode:initial;transform:none;text-align:center}.green .bottom,.purple .bottom{position:absolute;left:8px;bottom:8px;display:flex}.purple{background:linear-gradient(155deg,#f8f3ff,#fff 55%,#e9d5ff);color:#271044;border:2px solid #7c3aed}.purple .photo{border:3px solid #7c3aed;border-radius:50%;width:1.35in;height:1.35in}.blue:after{content:"";position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2790%27 height=%2790%27 viewBox=%270 0 90 90%27%3E%3Cg fill=%27none%27 stroke=%27white%27 stroke-opacity=%27.14%27%3E%3Cpath d=%27M45 4 57 16 45 28 33 16Z M16 33 28 45 16 57 4 45Z M74 33 86 45 74 57 62 45Z M45 62 57 74 45 86 33 74Z%27/%3E%3C/g%3E%3C/svg%3E");pointer-events:none;z-index:2}.blue .photo{z-index:1}.qr img{object-fit:contain}@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.card{box-shadow:none}} </style></head><body><div class="grid">${cardHtml}</div>
+
 </body></html>`);
       win.onload = function() { setTimeout(function() { win.print(); }, 700); };
       win.document.close();
@@ -5838,6 +5916,43 @@
   }
 
 
+</script>
+
+<script>
+// PWA siMADA: registrasi service worker dan alur instalasi Android.
+(function () {
+  'use strict';
+  var deferredInstallPrompt = null;
+  var installButton = document.getElementById('pwaInstallButton');
+  function isStandalone() { return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true; }
+  window.addEventListener('beforeinstallprompt', function (event) {
+    event.preventDefault(); deferredInstallPrompt = event;
+    if (installButton) installButton.classList.remove('d-none');
+  });
+  window.addEventListener('appinstalled', function () {
+    deferredInstallPrompt = null;
+    if (installButton) installButton.classList.add('d-none');
+    if (typeof appNotify === 'function') appNotify('siMADA berhasil dipasang pada perangkat.', 'success');
+  });
+  window.installSiMADAApp = async function () {
+    if (isStandalone()) { if (typeof appNotify === 'function') appNotify('siMADA sudah berjalan sebagai aplikasi.', 'info'); return; }
+    if (deferredInstallPrompt) {
+      deferredInstallPrompt.prompt();
+      try { await deferredInstallPrompt.userChoice; } catch (e) {}
+      deferredInstallPrompt = null; return;
+    }
+    var msg = 'Untuk memasang siMADA: buka menu browser (⋮), lalu pilih “Tambahkan ke layar utama” atau “Install app”. Pastikan aplikasi dibuka melalui alamat HTTPS.';
+    if (typeof appNotify === 'function') appNotify(msg, 'info'); else window.alert(msg);
+  };
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/service-worker.js', { scope:'/' })
+        .then(function (registration) { console.info('[siMADA PWA] Service worker aktif:', registration.scope); })
+        .catch(function (error) { console.warn('[siMADA PWA] Registrasi service worker gagal:', error); });
+    }, { once:true });
+  }
+  if (installButton && isStandalone()) installButton.classList.add('d-none');
+})();
 </script>
 </body>
 </html>
