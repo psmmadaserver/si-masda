@@ -560,32 +560,47 @@
     }
 
 
-    /* Navigasi bawah smartphone: otomatis mengikuti menu yang lolos RBAC. */
+    /* Navigasi smartphone: kapsul transparan, selalu di atas konten dan aman dari area sistem Android. */
     .mobile-bottom-nav { display:none; }
     @media (max-width: 767.98px) {
-      #mainApp:not(.d-none) { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+      html, body { min-height:100%; }
+      body { padding-bottom:calc(104px + env(safe-area-inset-bottom, 0px)) !important; }
+      #mainApp:not(.d-none) { padding-bottom:calc(112px + env(safe-area-inset-bottom, 0px)) !important; }
+      #mainApp .content-section { padding-bottom:18px; scroll-padding-bottom:120px; }
       .mobile-bottom-nav {
-        position:fixed; left:0; right:0; bottom:0; z-index:1025;
-        display:flex; align-items:stretch; gap:4px; min-height:66px;
-        padding:7px 8px calc(7px + env(safe-area-inset-bottom, 0px));
+        position:fixed !important; left:12px; right:12px;
+        bottom:calc(9px + env(safe-area-inset-bottom, 0px)); z-index:1045;
+        display:flex; align-items:center; justify-content:space-around; gap:3px;
+        width:auto; min-height:62px; max-height:68px;
+        padding:6px 9px; box-sizing:border-box;
         overflow-x:auto; overflow-y:hidden; overscroll-behavior-x:contain;
         -webkit-overflow-scrolling:touch; scrollbar-width:none;
-        background:rgba(255,255,255,.96); border-top:1px solid rgba(148,163,184,.25);
-        box-shadow:0 -8px 28px rgba(15,23,42,.10); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+        background:rgba(255,255,255,.78);
+        border:1px solid rgba(255,255,255,.52);
+        border-radius:24px;
+        box-shadow:0 5px 24px rgba(30,50,80,.12);
+        backdrop-filter:blur(22px) saturate(1.35);
+        -webkit-backdrop-filter:blur(22px) saturate(1.35);
+        transform:translateZ(0); isolation:isolate;
       }
       .mobile-bottom-nav::-webkit-scrollbar { display:none; }
       .mobile-bottom-nav .mobile-bottom-item {
-        appearance:none; border:0; background:transparent; color:#64748b;
-        flex:0 0 58px; min-width:58px; min-height:50px; padding:4px 2px;
-        border-radius:14px; display:flex; align-items:center; justify-content:center;
-        transition:background .18s ease,color .18s ease,transform .18s ease; -webkit-tap-highlight-color:transparent;
+        appearance:none; border:0 !important; outline:0; background:transparent;
+        color:#64748b; flex:1 0 48px; min-width:48px; min-height:48px;
+        padding:5px 3px; margin:0; border-radius:17px;
+        display:flex; align-items:center; justify-content:center;
+        transition:background .18s ease,color .18s ease,transform .18s ease;
+        -webkit-tap-highlight-color:transparent;
       }
       .mobile-bottom-nav .mobile-bottom-item i { font-size:1.42rem; line-height:1; }
       .mobile-bottom-nav .mobile-bottom-item.active {
-        color:#0759b8; background:linear-gradient(145deg,rgba(14,165,233,.14),rgba(16,185,129,.13));
-        box-shadow:inset 0 0 0 1px rgba(14,116,190,.08);
+        color:#0759b8;
+        background:linear-gradient(145deg,rgba(14,165,233,.17),rgba(16,185,129,.15));
+        box-shadow:none;
       }
       .mobile-bottom-nav .mobile-bottom-item:active { transform:scale(.94); }
+      /* Jangan biarkan menu tertutup saat halaman panjang digulir sampai paling bawah. */
+      #mainApp > .row.g-0 > .col-md-9.col-lg-10 { padding-bottom:10px; }
     }
     @media (prefers-reduced-motion:reduce) { .mobile-bottom-nav .mobile-bottom-item { transition:none!important; } }
   </style>
@@ -2940,6 +2955,34 @@
       bottom.appendChild(button);
     });
   }
+
+  // Menjaga ikon navigasi bawah tetap sinkron saat daftar menu/RBAC berubah,
+  // setelah login, saat kembali dari background, dan ketika ukuran layar berubah.
+  var mobileBottomSyncTimer = null;
+  function scheduleMobileBottomNavSync() {
+    if (mobileBottomSyncTimer) clearTimeout(mobileBottomSyncTimer);
+    mobileBottomSyncTimer = setTimeout(function() {
+      var app = document.getElementById('mainApp');
+      if (!app || app.classList.contains('d-none') || !currentUser) return;
+      var active = document.querySelector('#sidebarNavList .nav-item[data-menu] .nav-link.active');
+      var item = active ? active.closest('.nav-item[data-menu]') : null;
+      syncMobileBottomNav(item ? item.getAttribute('data-menu') : '');
+    }, 80);
+  }
+  window.addEventListener('resize', scheduleMobileBottomNavSync, {passive:true});
+  window.addEventListener('orientationchange', function(){ setTimeout(scheduleMobileBottomNavSync, 250); }, {passive:true});
+  window.addEventListener('pageshow', scheduleMobileBottomNavSync);
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) scheduleMobileBottomNavSync(); });
+  document.addEventListener('DOMContentLoaded', function() {
+    var sideNav = document.getElementById('sidebarNavList');
+    if (sideNav && window.MutationObserver) {
+      var navObserver = new MutationObserver(scheduleMobileBottomNavSync);
+      navObserver.observe(sideNav, {subtree:true, childList:true, attributes:true, attributeFilter:['class','style']});
+    }
+    scheduleMobileBottomNavSync();
+  });
+  // Fallback ringan: pulihkan navigasi bila browser Android melewatkan repaint.
+  setInterval(scheduleMobileBottomNavSync, 5000);
 
   function applyRBACMenuVisibility() {
     var navItems = document.querySelectorAll('#sidebarNavList .nav-item[data-menu]');
