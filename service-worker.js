@@ -1,6 +1,6 @@
 /* siMADA PWA service worker. API dan data dinamis tidak pernah disimpan ke cache. */
 'use strict';
-const CACHE_NAME = 'simada-shell-v1';
+const CACHE_NAME = 'simada-shell-v2-logo';
 const APP_SHELL = [
   '/',
   '/index.html',
