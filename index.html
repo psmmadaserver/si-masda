@@ -1481,10 +1481,9 @@
       <div id="sec-jurnal" class="content-section d-none">
         <h4 class="fw-bold mb-3 mb-md-4">Absensi Guru QR + GPS & Jurnal Mengajar</h4>
         <div class="card border-0 shadow-sm rounded-4 mb-4 no-print"><div class="card-body p-3 p-md-4">
-          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3"><div><h5 class="fw-bold mb-1"><i class="bi bi-qr-code-scan text-primary me-2"></i>Absensi Guru Kartu QR</h5><div class="small text-muted">Guru dapat scan kartu sendiri, atau datang ke TU/petugas yang diberi akses untuk dipindai. GPS dan radius mengikuti Profil Madrasah; lokasi yang divalidasi adalah perangkat yang melakukan pemindaian.</div></div><span class="badge rounded-pill text-bg-info">Khusus Guru</span></div>
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3"><div><h5 class="fw-bold mb-1"><i class="bi bi-qr-code-scan text-primary me-2"></i>Absensi Guru Kartu QR</h5></div><span class="badge rounded-pill text-bg-info">Khusus Guru</span></div>
           <div class="row g-3 align-items-end"><div class="col-12 col-md-4"><label class="form-label small fw-semibold">Jenis Absensi</label><select id="guruQrJenis" class="form-select"><option value="masuk">Absen Masuk</option><option value="pulang">Absen Pulang</option></select></div><div class="col-12 col-md-8 d-flex gap-2 flex-wrap"><button type="button" class="btn btn-primary" onclick="startGuruQrScanner()"><i class="bi bi-camera-video me-1"></i>Mulai Scan Kartu</button><button type="button" class="btn btn-outline-secondary" onclick="stopGuruQrScanner()"><i class="bi bi-camera-video-off me-1"></i>Matikan Kamera</button></div></div>
-          <div id="guruQrReader" class="mt-3" style="max-width:520px"></div><div id="guruQrStatus" class="alert alert-light border mt-3 mb-0">Pilih Absen Masuk/Pulang, lalu scan kartu guru. Bisa dilakukan mandiri atau oleh petugas TU yang diberi hak akses.</div>
-          <div class="small text-muted mt-2">Catatan: Guru boleh scan sendiri dari HP masing-masing. Alternatifnya, guru membawa kartu ke TU/petugas yang memiliki hak Operator Absensi Guru QR. Dalam mode petugas, GPS diambil dari perangkat TU/petugas yang memindai. WhatsApp dikirim ke nomor guru pada Master Guru; nama petugas dan metode scan ikut dicatat.</div>
+          <div id="guruQrReader" class="mt-3" style="max-width:520px"></div><div id="guruQrStatus" class="alert mt-3 mb-0 d-none"></div>
         </div></div>
         
         <div class="card p-3 p-md-4 shadow-sm border-0 mb-4 no-print">
@@ -1498,7 +1497,7 @@
             </div>
             <div class="col-12 col-md-2">
               <label class="form-label fw-semibold small">Hari</label>
-              <select id="jurHari" class="form-select form-select-sm" onchange="updateJurnalScheduleValidation()">
+              <select id="jurHari" class="form-select form-select-sm" onchange="updateJurnalGuruOptions()">
                 <option value="Senin">Senin</option>
                 <option value="Selasa">Selasa</option>
                 <option value="Rabu">Rabu</option>
@@ -3720,7 +3719,7 @@
     document.getElementById('msKelas').innerHTML = kOpts;
     document.getElementById('mjKelas').innerHTML = kOpts;
     document.getElementById('mjGuru').innerHTML = gOpts;
-    document.getElementById('jurGuru').innerHTML = gOpts;
+    updateJurnalGuruOptions();
     document.getElementById('absensiSelectKelas').innerHTML = kOpts;
     document.getElementById('rekapHarianKelas').innerHTML = kAllOpts;
     document.getElementById('rekapBulananKelas').innerHTML = kAllOpts;
@@ -4286,8 +4285,23 @@
     var dt = document.getElementById('jurTanggal').value;
     if (dt) {
       document.getElementById('jurHari').value = getDayNameFromDateStr(dt);
-      updateJurnalScheduleValidation();
+      updateJurnalGuruOptions();
     }
+  }
+
+  function updateJurnalGuruOptions() {
+    var hari = document.getElementById('jurHari').value;
+    var select = document.getElementById('jurGuru');
+    if (!select) return;
+    var previous = select.value;
+    var names = {};
+    (globalMasterData.jadwal || []).forEach(function(j) {
+      if (String(j[1] || '').trim().toLowerCase() === String(hari || '').trim().toLowerCase() && String(j[5] || '').trim()) names[String(j[5]).trim()] = true;
+    });
+    var list = Object.keys(names).sort(function(a,b){return a.localeCompare(b);});
+    select.innerHTML = '<option value="">' + (list.length ? '-- Pilih Guru Terjadwal --' : '-- Tidak Ada Jadwal Hari Ini --') + '</option>' + list.map(function(n){return '<option value="'+escapeHtml(n)+'">'+escapeHtml(n)+'</option>';}).join('');
+    if (names[previous]) select.value = previous;
+    updateJurnalScheduleValidation();
   }
 
   function updateJurnalScheduleValidation() {
@@ -4354,15 +4368,21 @@
     var data = {
       tanggal: document.getElementById('jurTanggal').value,
       hari: document.getElementById('jurHari').value,
-      guru: document.getElementById('jurGuru').value,
+      guru: (currentUser && String(currentUser.role || '').toLowerCase() === 'guru' && currentUser.nama) ? currentUser.nama : document.getElementById('jurGuru').value,
+      guruPengampu: document.getElementById('jurGuru').value,
       mapel: document.getElementById('jurMapel').value,
       kelas: document.getElementById('jurKelas').value,
       jam: document.getElementById('jurJam').value,
       materi: document.getElementById('jurMateri').value.trim()
     };
 
-    if (!data.tanggal || !data.guru || !data.mapel || !data.kelas || !data.jam || !data.materi) {
+    if (!data.tanggal || !data.guruPengampu || !data.mapel || !data.kelas || !data.jam || !data.materi) {
       appNotify('Semua isian formulir Jurnal Wajib diisi!');
+      return;
+    }
+    if (data.materi.length < 50) {
+      appNotify('Lengkapi Materi Pelajaran anda (minimal 50 huruf).', 'warning');
+      document.getElementById('jurMateri').focus();
       return;
     }
 
