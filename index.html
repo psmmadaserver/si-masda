@@ -2582,6 +2582,8 @@
 
   var globalMasterData = { guru: [], kelas: [], siswa: [], jadwal: [] };
   var globalJurnalData = [];
+  var jurnalScheduleData = [];
+  var jurnalQrCanInput = true;
   var globalSarprasData = [];
   var globalPrintSchoolProfile = {};
   var globalPenggunaData = [];
@@ -4279,6 +4281,37 @@
       renderTableJurnal(globalJurnalData);
       populateJurnalExportClassFilter();
     }).getJurnalData();
+    loadJurnalFormOptions();
+  }
+
+  function loadJurnalFormOptions() {
+    var tanggal = document.getElementById('jurTanggal').value || getLocalTodayStr();
+    google.script.run.withSuccessHandler(function(res) {
+      res = res || {};
+      jurnalScheduleData = Array.isArray(res.schedules) ? res.schedules : [];
+      jurnalQrCanInput = res.canInput !== false;
+      document.getElementById('jurHari').value = res.hari || getDayNameFromDateStr(tanggal);
+      var notice = document.getElementById('jurScheduleNotice');
+      if (notice) {
+        notice.className = 'alert ' + (jurnalQrCanInput ? 'alert-info' : 'alert-warning') + ' py-2 small';
+        notice.textContent = res.message || 'Jadwal jurnal berhasil dimuat.';
+        notice.classList.remove('d-none');
+      }
+      setJurnalFormEnabled(jurnalQrCanInput);
+      updateJurnalGuruOptions();
+    }).withFailureHandler(function(err) {
+      jurnalScheduleData = [];
+      jurnalQrCanInput = false;
+      setJurnalFormEnabled(false);
+      var notice = document.getElementById('jurScheduleNotice');
+      if (notice) { notice.className = 'alert alert-danger py-2 small'; notice.textContent = 'Gagal memuat referensi jurnal: ' + (err.message || err); notice.classList.remove('d-none'); }
+    }).getJurnalFormOptions(tanggal);
+  }
+
+  function setJurnalFormEnabled(enabled) {
+    ['jurGuru','jurMapel','jurKelas','jurJam','jurMateri','btnSimpanJurnal'].forEach(function(id) {
+      var el = document.getElementById(id); if (el) el.disabled = !enabled;
+    });
   }
 
   function renderTableJurnal(list) {
@@ -4308,7 +4341,7 @@
     var dt = document.getElementById('jurTanggal').value;
     if (dt) {
       document.getElementById('jurHari').value = getDayNameFromDateStr(dt);
-      updateJurnalGuruOptions();
+      loadJurnalFormOptions();
     }
   }
 
@@ -4318,7 +4351,7 @@
     if (!select) return;
     var previous = select.value;
     var names = {};
-    (globalMasterData.jadwal || []).forEach(function(j) {
+    (jurnalScheduleData || []).forEach(function(j) {
       if (String(j[1] || '').trim().toLowerCase() === String(hari || '').trim().toLowerCase() && String(j[5] || '').trim()) names[String(j[5]).trim()] = true;
     });
     var list = Object.keys(names).sort(function(a,b){return a.localeCompare(b);});
@@ -4339,7 +4372,7 @@
       return;
     }
 
-    var schedules = globalMasterData.jadwal.filter(function(j) {
+    var schedules = jurnalScheduleData.filter(function(j) {
       return String(j[1]).toLowerCase() === String(hari).toLowerCase() && String(j[5]).toLowerCase() === String(guru).toLowerCase();
     });
 
@@ -4375,7 +4408,7 @@
     var guru = document.getElementById('jurGuru').value;
     var mapel = document.getElementById('jurMapel').value;
     var kelas = document.getElementById('jurKelas').value;
-    var schedules = (globalMasterData.jadwal || []).filter(function(j) {
+    var schedules = (jurnalScheduleData || []).filter(function(j) {
       return String(j[1]).toLowerCase() === String(hari).toLowerCase() &&
         String(j[5]).toLowerCase() === String(guru).toLowerCase() &&
         String(j[2]).toLowerCase() === String(kelas).toLowerCase() &&
@@ -4388,6 +4421,7 @@
   }
 
   function submitJurnal() {
+    if (!jurnalQrCanInput) { appNotify('Anda harus melakukan Absen Masuk QR terlebih dahulu sebelum mengisi jurnal.', 'warning'); return; }
     var data = {
       tanggal: document.getElementById('jurTanggal').value,
       hari: document.getElementById('jurHari').value,
