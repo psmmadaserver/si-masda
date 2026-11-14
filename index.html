@@ -1239,6 +1239,110 @@
 }
 </style>
 
+<style id="simada-login-transparency-logo-refinement">
+/* Penyempurnaan halaman awal: logo besar diperbesar dengan fade gradient,
+   kartu login lebih tembus pandang, dan seluruh teks memakai biru gelap. */
+#publicHomePage .masda-home-backdrop-logo{
+  left:0.5%!important;
+  right:auto!important;
+  bottom:-1%!important;
+  width:clamp(360px,43vw,700px)!important;
+  height:clamp(360px,43vw,700px)!important;
+  opacity:.78!important;
+  transform:rotate(14deg)!important;
+  filter:drop-shadow(0 22px 24px rgba(3,24,58,.24))!important;
+  mask-image:linear-gradient(132deg,rgba(0,0,0,.08) 0%,rgba(0,0,0,.22) 16%,rgba(0,0,0,.58) 38%,rgba(0,0,0,.94) 68%,#000 100%)!important;
+  -webkit-mask-image:linear-gradient(132deg,rgba(0,0,0,.08) 0%,rgba(0,0,0,.22) 16%,rgba(0,0,0,.58) 38%,rgba(0,0,0,.94) 68%,#000 100%)!important;
+}
+#publicHomePage .masda-home-backdrop-logo img{
+  opacity:.92!important;
+  filter:saturate(.88)!important;
+}
+/* Kartu form: tetap mempertahankan bingkai neon, tetapi permukaan jauh lebih transparan. */
+#publicHomePage .masda-home-login-shell{
+  background:rgba(218,235,250,.24)!important;
+  border-color:rgba(255,255,255,.16)!important;
+  box-shadow:0 22px 58px rgba(2,20,49,.20),inset 0 1px 0 rgba(255,255,255,.24)!important;
+  backdrop-filter:blur(13px) saturate(125%)!important;
+  -webkit-backdrop-filter:blur(13px) saturate(125%)!important;
+}
+#publicHomePage .masda-home-login-shell:after{
+  background:rgba(224,239,252,.13)!important;
+  border-color:rgba(0,105,180,.16)!important;
+}
+/* Identitas dan judul pada form */
+#publicHomePage .masda-login-brand-copy strong,
+#publicHomePage .masda-login-welcome-title,
+#publicHomePage #loginPage #loginSchoolName{
+  color:#102f5d!important;
+  text-shadow:none!important;
+}
+#publicHomePage .masda-login-brand-copy small,
+#publicHomePage #loginPage .login-card>.text-center>p{
+  color:#294b73!important;
+}
+#publicHomePage .masda-login-welcome-title span{
+  background:linear-gradient(90deg,rgba(16,47,93,.08),#b88a18)!important;
+}
+#publicHomePage #loginPage .form-label{
+  color:#17365f!important;
+  text-shadow:none!important;
+}
+#publicHomePage #loginPage .form-control{
+  color:#102f55!important;
+  caret-color:#102f55!important;
+  background:rgba(229,240,252,.34)!important;
+  border:1px solid rgba(31,83,139,.48)!important;
+  border-bottom:2px solid rgba(0,133,183,.78)!important;
+  box-shadow:inset 0 1px 3px rgba(12,43,83,.06)!important;
+}
+#publicHomePage #loginPage .form-control::placeholder{
+  color:rgba(24,56,94,.62)!important;
+}
+#publicHomePage #loginPage .form-control:focus{
+  background:rgba(239,247,255,.48)!important;
+  border-color:#1766b2!important;
+  box-shadow:0 0 0 3px rgba(23,102,178,.13)!important;
+}
+#publicHomePage #loginPage #btnLogin,
+#publicHomePage #loginPage #btnStudentLogin{
+  color:#102f5d!important;
+  background:rgba(208,229,249,.38)!important;
+  border:1px solid rgba(0,139,190,.85)!important;
+  text-shadow:none!important;
+}
+#publicHomePage #loginPage #btnLogin:hover,
+#publicHomePage #loginPage #btnStudentLogin:hover{
+  color:#09264e!important;
+  background:rgba(218,239,255,.58)!important;
+}
+#publicHomePage #loginPage .login-portal-switch{color:#294b73!important}
+#publicHomePage #loginPage .login-portal-switch button{color:#0c4b91!important}
+#publicHomePage #loginPage #loginAlert{color:#7f1d1d!important}
+@media(max-width:900px){
+  #publicHomePage .masda-home-backdrop-logo{
+    left:-2%!important;
+    width:clamp(320px,43vw,540px)!important;
+    height:clamp(320px,43vw,540px)!important;
+  }
+}
+@media(max-width:760px){
+  #publicHomePage .masda-home-backdrop-logo{
+    left:-10%!important;bottom:0!important;top:auto!important;
+    width:clamp(220px,64vw,340px)!important;
+    height:clamp(220px,64vw,340px)!important;
+    opacity:.53!important;
+    transform:rotate(12deg)!important;
+  }
+  #publicHomePage .masda-home-login-shell{
+    background:rgba(218,235,250,.28)!important;
+    backdrop-filter:blur(12px) saturate(125%)!important;
+    -webkit-backdrop-filter:blur(12px) saturate(125%)!important;
+  }
+  #publicHomePage .masda-home-login-shell:after{background:rgba(224,239,252,.12)!important}
+}
+</style>
+
 </head>
 <body>
 <div id="appNotificationStack" aria-live="polite" aria-atomic="false"></div>
