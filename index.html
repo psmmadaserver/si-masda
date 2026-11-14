@@ -1542,9 +1542,26 @@
         </div>
 
         <div class="card p-3 p-md-4 shadow-sm border-0">
-          <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
             <h6 class="fw-bold mb-0">Riwayat Jurnal Mengajar & Status Absensi</h6>
-            <button type="button" class="btn btn-outline-danger btn-sm no-print" onclick="exportPdfJurnal()"><i class="bi bi-file-pdf me-1"></i> Export PDF</button>
+            <div class="d-flex flex-wrap align-items-end gap-2 no-print">
+              <div style="min-width:150px">
+                <label for="filterJurnalKelas" class="form-label small fw-semibold mb-1">Filter Kelas</label>
+                <select id="filterJurnalKelas" class="form-select form-select-sm">
+                  <option value="">Semua Kelas</option>
+                </select>
+              </div>
+              <div>
+                <label for="filterJurnalMulai" class="form-label small fw-semibold mb-1">Tanggal Mulai</label>
+                <input type="date" id="filterJurnalMulai" class="form-control form-control-sm">
+              </div>
+              <div>
+                <label for="filterJurnalSelesai" class="form-label small fw-semibold mb-1">Tanggal Selesai</label>
+                <input type="date" id="filterJurnalSelesai" class="form-control form-control-sm">
+              </div>
+              <button type="button" class="btn btn-outline-secondary btn-sm" onclick="resetFilterJurnalExport()" title="Reset filter"><i class="bi bi-arrow-counterclockwise"></i></button>
+              <button type="button" class="btn btn-outline-danger btn-sm" onclick="exportPdfJurnal()"><i class="bi bi-file-pdf me-1"></i> Export PDF</button>
+            </div>
           </div>
           <div class="table-responsive">
             <table class="table table-bordered align-middle">
@@ -3691,6 +3708,7 @@
       renderTableSiswa(data.siswa || []);
       renderTableJadwal(data.jadwal || []);
       populateAllDropdowns();
+      populateJurnalExportClassFilter();
     }).getMasterData();
   }
 
@@ -4259,6 +4277,7 @@
     google.script.run.withSuccessHandler(function(list) {
       globalJurnalData = list || [];
       renderTableJurnal(globalJurnalData);
+      populateJurnalExportClassFilter();
     }).getJurnalData();
   }
 
@@ -4270,7 +4289,8 @@
     }
     var html = '';
     list.forEach(function(j) {
-      var statusBadge = j[6] && (j[6].indexOf('Hadir') > -1 || j[6].indexOf('Jurnal Tercatat') > -1) ? 'bg-success' : 'bg-danger';
+      var statusText = String(j[6] || '-');
+      var statusBadge = /Terlambat/i.test(statusText) ? 'bg-warning text-dark' : (/Hadir/i.test(statusText) ? 'bg-success' : (/Jurnal Tercatat/i.test(statusText) ? 'bg-secondary' : 'bg-danger'));
       var guruPengampu = j[9] || j[2] || '-';
       var guruPengisi = j[10] || j[2] || '-';
       html += '<tr>';
@@ -5408,9 +5428,78 @@
     generatePdfTable('Jadwal Pelajaran', ['ID', 'Hari', 'Kelas', 'Jam', 'Mapel', 'Guru'], globalMasterData.jadwal.map(function(j) { return [j[0], j[1], j[2], j[3], j[4], j[5]]; }));
   }
 
+  function populateJurnalExportClassFilter() {
+    var select = document.getElementById('filterJurnalKelas');
+    if (!select) return;
+    var current = select.value;
+    var classes = {};
+    (globalMasterData.kelas || []).forEach(function(k) {
+      var name = String(k[1] || '').trim();
+      if (name) classes[name] = true;
+    });
+    (globalJurnalData || []).forEach(function(j) {
+      var name = String(j[4] || '').trim();
+      if (name) classes[name] = true;
+    });
+    var names = Object.keys(classes).sort(function(a, b) { return a.localeCompare(b, 'id'); });
+    select.innerHTML = '<option value="">Semua Kelas</option>' + names.map(function(name) {
+      return '<option value="' + escapeHtml(name) + '">' + escapeHtml(name) + '</option>';
+    }).join('');
+    if (names.indexOf(current) >= 0) select.value = current;
+  }
+
+  function resetFilterJurnalExport() {
+    var kelas = document.getElementById('filterJurnalKelas');
+    var mulai = document.getElementById('filterJurnalMulai');
+    var selesai = document.getElementById('filterJurnalSelesai');
+    if (kelas) kelas.value = '';
+    if (mulai) mulai.value = '';
+    if (selesai) selesai.value = '';
+  }
+
+  function normalizeJurnalDate(value) {
+    if (!value) return '';
+    if (Object.prototype.toString.call(value) === '[object Date]' && !isNaN(value.getTime())) {
+      return value.getFullYear() + '-' + String(value.getMonth() + 1).padStart(2, '0') + '-' + String(value.getDate()).padStart(2, '0');
+    }
+    var str = String(value).trim();
+    var iso = str.match(/^(\d{4})-(\d{1,2})-(\d{1,2})/);
+    if (iso) return iso[1] + '-' + String(iso[2]).padStart(2, '0') + '-' + String(iso[3]).padStart(2, '0');
+    var dmy = str.match(/^(\d{1,2})[\/-](\d{1,2})[\/-](\d{4})$/);
+    if (dmy) return dmy[3] + '-' + String(dmy[2]).padStart(2, '0') + '-' + String(dmy[1]).padStart(2, '0');
+    var parsed = new Date(str);
+    if (!isNaN(parsed.getTime())) return parsed.getFullYear() + '-' + String(parsed.getMonth() + 1).padStart(2, '0') + '-' + String(parsed.getDate()).padStart(2, '0');
+    return '';
+  }
+
   function exportPdfJurnal() {
-    var rows = globalJurnalData.map(function(j) { return [j[0], j[1], j[10] || j[2], j[9] || j[2], j[3], j[4], j[5], j[6], j[7]]; });
-    generatePdfTable('Riwayat Jurnal Guru', ['ID', 'Tanggal', 'Guru Pengisi', 'Guru Pengampu Jadwal', 'Mapel', 'Kelas', 'Materi', 'Status Absen', 'Jarak GPS'], rows);
+    var kelasEl = document.getElementById('filterJurnalKelas');
+    var mulaiEl = document.getElementById('filterJurnalMulai');
+    var selesaiEl = document.getElementById('filterJurnalSelesai');
+    var kelas = kelasEl ? String(kelasEl.value || '').trim() : '';
+    var mulai = mulaiEl ? mulaiEl.value : '';
+    var selesai = selesaiEl ? selesaiEl.value : '';
+    if (mulai && selesai && mulai > selesai) {
+      alert('Tanggal mulai tidak boleh lebih besar daripada tanggal selesai.');
+      return;
+    }
+    var filtered = (globalJurnalData || []).filter(function(j) {
+      var rowClass = String(j[4] || '').trim();
+      var rowDate = normalizeJurnalDate(j[1]);
+      if (kelas && rowClass !== kelas) return false;
+      if (mulai && (!rowDate || rowDate < mulai)) return false;
+      if (selesai && (!rowDate || rowDate > selesai)) return false;
+      return true;
+    });
+    if (!filtered.length) {
+      alert('Tidak ada data jurnal yang sesuai dengan filter kelas dan tanggal tersebut.');
+      return;
+    }
+    var rows = filtered.map(function(j) { return [j[0], j[1], j[10] || j[2], j[9] || j[2], j[3], j[4], j[5], j[6], j[7]]; });
+    var title = 'Riwayat Jurnal Guru';
+    if (kelas) title += ' - Kelas ' + kelas;
+    if (mulai || selesai) title += ' (' + (mulai || 'Awal') + ' s.d. ' + (selesai || 'Terbaru') + ')';
+    generatePdfTable(title, ['ID', 'Tanggal', 'Guru Pengisi', 'Guru Pengampu Jadwal', 'Mapel', 'Kelas', 'Materi', 'Status Absen', 'Jarak GPS'], rows);
   }
 
   function exportPdfSarprasPerKategori() {

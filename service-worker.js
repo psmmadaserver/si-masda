@@ -1,6 +1,6 @@
 /* siMADA PWA service worker. API dan data dinamis tidak pernah disimpan ke cache. */
 'use strict';
-const CACHE_NAME = 'simada-shell-v5-jurnal-substitusi-qr-honor-v2';
+const CACHE_NAME = 'simada-shell-v5-jurnal-filter-pdf-v1';
 const APP_SHELL = [
   '/',
   '/index.html',
