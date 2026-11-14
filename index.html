@@ -903,6 +903,93 @@
 @media(max-width:768px){#sec-absensi .att-pill{min-width:68px;min-height:24px;padding:3px 7px;font-size:10.5px;border-width:1.6px}#sec-absensi .table-responsive{overflow-x:auto}#sec-absensiPembiasaan .pb-choice span{min-width:54px;min-height:23px;padding:2px 7px;font-size:10.5px;border-width:1.6px}}
 </style>
 
+
+<style id="masda-homepage-redesign">
+/* Halaman awal siMADA — desain responsif, tanpa mengubah layanan autentikasi */
+#publicHomePage.masda-home-redesign{min-height:100vh;background:#f4f8ff;display:flex;flex-direction:column;overflow:hidden}
+.masda-home-header{width:100%;min-height:76px;padding:10px clamp(18px,4vw,64px);display:flex;align-items:center;gap:24px;background:#fff;border-bottom:1px solid #e6edf7;box-shadow:0 3px 14px rgba(15,35,75,.06);position:relative;z-index:5}
+.masda-home-header .public-home-brand{flex:0 0 auto;min-width:210px}
+.masda-home-header .public-home-nav-links{justify-content:center;gap:5px}
+.masda-home-header .public-home-nav-links a{font-size:.74rem}
+.masda-home-contact{display:flex;align-items:center;justify-content:center;gap:8px;flex:0 0 auto;margin-left:auto;padding:9px 12px;border:1px solid #d9e4f3;border-radius:14px;background:linear-gradient(135deg,#fff,#f5f9ff);box-shadow:0 3px 10px rgba(22,55,105,.06);color:#23416e;font-size:.72rem;font-weight:750}
+.masda-home-contact>span{display:inline-flex;align-items:center;gap:7px;padding:4px 8px;white-space:nowrap}
+.masda-home-contact>span+span{border-left:1px solid #dbe5f1}
+.masda-home-contact i{color:#0b8b65}
+.masda-home-hero{position:relative;isolation:isolate;flex:1;min-height:calc(100vh - 76px);display:grid;grid-template-columns:minmax(0,1.15fr) minmax(370px,.85fr);align-items:center;gap:clamp(28px,5vw,80px);padding:clamp(28px,5vh,64px) clamp(24px,7vw,110px);background:radial-gradient(ellipse at 15% 15%,rgba(98,193,255,.55),transparent 42%),radial-gradient(ellipse at 80% 80%,rgba(255,220,85,.38),transparent 35%),linear-gradient(125deg,#d9f0ff 0%,#eef6ff 47%,#d7f5ed 100%)}
+.masda-home-hero:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(110deg,rgba(255,255,255,.24),transparent 55%),radial-gradient(circle at 8% 85%,rgba(22,163,115,.15),transparent 28%)}
+.masda-home-welcome{position:relative;z-index:1;max-width:760px;color:#16345f}
+.masda-home-kicker{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border:1px solid #9dc8ed;border-radius:999px;background:rgba(255,255,255,.65);color:#087b68;font-size:.72rem;font-weight:900;letter-spacing:.08em}
+.masda-home-welcome h1{margin:22px 0 14px;font-size:clamp(2.5rem,5vw,4.7rem);line-height:1.04;letter-spacing:-.055em;font-weight:950;color:#15356a}
+.masda-home-welcome h1 span{color:#07845f}
+.masda-home-welcome h2{font-size:clamp(1rem,1.6vw,1.35rem);font-weight:850;color:#234b78;margin:0 0 14px}
+.masda-home-welcome p{max-width:600px;color:#496687;font-size:clamp(.9rem,1.1vw,1.05rem);line-height:1.85;margin:0}
+.masda-home-highlights{display:flex;flex-wrap:wrap;gap:10px;margin-top:25px}
+.masda-home-highlights span{display:inline-flex;align-items:center;gap:7px;padding:9px 12px;border:1px solid rgba(110,153,190,.32);border-radius:11px;background:rgba(255,255,255,.55);color:#315779;font-size:.72rem;font-weight:800}
+.masda-home-highlights i{color:#07845f}
+.masda-home-backdrop-logo{position:absolute;z-index:0;right:4%;bottom:2%;width:clamp(170px,23vw,360px);height:clamp(170px,23vw,360px);pointer-events:none;display:grid;place-items:center;opacity:.11}
+.masda-home-backdrop-logo img{width:100%;height:100%;object-fit:contain;filter:saturate(.9)}
+.masda-home-login-shell{position:relative;z-index:2;width:100%;max-width:470px;justify-self:end;padding:25px 25px 22px;border:1px solid rgba(255,255,255,.85);border-radius:24px;background:rgba(255,255,255,.91);box-shadow:0 22px 65px rgba(32,65,110,.18);backdrop-filter:blur(12px)}
+.masda-home-login-heading{display:flex;align-items:center;gap:12px;margin:0 0 17px}
+.masda-home-login-mark{width:43px;height:43px;display:grid;place-items:center;flex:0 0 43px;border-radius:14px;background:linear-gradient(135deg,#087f58,#16a56f);color:#fff;font-size:21px;box-shadow:0 6px 15px rgba(8,127,88,.2)}
+.masda-home-login-heading strong{display:block;color:#18345e;font-size:1.1rem;font-weight:900}
+.masda-home-login-heading small{display:block;color:#718198;font-size:.75rem;margin-top:2px}
+#loginPage.masda-embedded-login{display:block!important;width:100%;max-width:none;margin:0;padding:0;background:transparent;min-height:0}
+#loginPage .login-container{width:100%;max-width:none;margin:0;padding:0}
+#loginPage .login-card{padding:0!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important}
+#loginPage .login-card>.text-center{margin-bottom:14px!important}
+#loginPage .login-card>.text-center #loginLogoContainer{display:none}
+#loginPage #loginSchoolName{font-size:1.05rem!important;margin:0!important;color:#18345e!important}
+#loginPage .login-card>.text-center>p{margin:2px 0 6px!important;font-size:.7rem}
+#loginPage .login-portal-badge{margin-top:3px}
+#loginPage .form-label{font-size:.76rem;font-weight:750!important;color:#253d60}
+#loginPage .form-control{min-height:44px;border:1px solid #d8e2f0;background:#f1f5fb;border-radius:11px;padding:10px 13px}
+#loginPage #btnLogin,#loginPage #btnStudentLogin{min-height:46px;border-radius:11px;font-size:.88rem!important;font-weight:850!important}
+#loginPage #btnLogin{background:linear-gradient(100deg,#087f4b,#0b9b60)!important;box-shadow:0 7px 16px rgba(8,127,75,.2)!important}
+#loginPage #btnStudentLogin{background:linear-gradient(100deg,#0b9b60,#087f4b)!important;color:#fff!important}
+#loginPage .login-portal-switch{margin-top:13px}
+#loginPage .login-portal-switch button{color:#087f58}
+#loginPage #loginAlert{font-size:.82rem}
+.masda-home-redesign .public-home-dynamic-content{margin:24px auto}
+.masda-home-redesign .public-home-footer{background:#f4f8ff;padding:15px 12px;color:#718198;font-size:.72rem}
+@media(max-width:1050px){
+ .masda-home-header{gap:12px;padding-left:18px;padding-right:18px}
+ .masda-home-header .public-home-brand{min-width:175px}
+ .masda-home-header .public-home-nav-links a{padding:8px 7px;font-size:.68rem}
+ .masda-home-contact{gap:2px;padding:7px;font-size:.65rem}
+ .masda-home-hero{padding-left:4vw;padding-right:4vw;gap:24px;grid-template-columns:minmax(0,1fr) minmax(340px,.9fr)}
+}
+@media(max-width:760px){
+ #publicHomePage.masda-public-home{min-height:100vh}
+ .masda-home-header{min-height:64px;padding:9px 14px;gap:10px;flex-wrap:wrap}
+ .masda-home-header .public-home-brand{min-width:0;flex:1}
+ .masda-home-header .public-home-nav-links{display:none!important}
+ .masda-home-contact{margin-left:auto;max-width:58%;flex-wrap:wrap;justify-content:flex-end;padding:5px 8px;font-size:.59rem;gap:0}
+ .masda-home-contact>span{padding:3px 5px}
+ .masda-home-contact>span+span{border-left:0}
+ .masda-home-hero{display:flex;flex-direction:column;align-items:stretch;gap:0;min-height:0;padding:30px 16px 34px;background:radial-gradient(circle at 82% 5%,rgba(255,255,255,.7),transparent 35%),linear-gradient(145deg,#a9dcff 0%,#d9efff 52%,#c7f1e2 100%)}
+ .masda-home-welcome{min-height:250px;padding:10px 8px 45px}
+ .masda-home-kicker{font-size:.6rem;padding:7px 11px}
+ .masda-home-welcome h1{font-size:clamp(2rem,9vw,3rem);margin:16px 0 9px}
+ .masda-home-welcome h2{font-size:.95rem;margin-bottom:8px}
+ .masda-home-welcome p{font-size:.78rem;line-height:1.65;max-width:440px}
+ .masda-home-highlights{display:none}
+ .masda-home-backdrop-logo{right:5%;bottom:auto;top:125px;width:145px;height:145px;opacity:.13}
+ .masda-home-login-shell{width:100%;max-width:480px;align-self:center;margin:-36px auto 0;padding:21px 19px 19px;border-radius:22px;box-shadow:0 17px 42px rgba(32,65,110,.18)}
+ .masda-home-login-heading{margin-bottom:13px}
+ #loginPage .login-card>.text-center{margin-bottom:10px!important}
+ #loginPage .form-control{min-height:43px}
+ .masda-home-redesign .public-home-footer{padding:13px 10px}
+}
+@media(max-width:390px){
+ .masda-home-header .public-home-brand strong{font-size:.76rem}
+ .masda-home-header .public-home-brand small{font-size:.53rem}
+ .masda-home-contact{max-width:61%;font-size:.54rem}
+ .masda-home-welcome{min-height:235px}
+ .masda-home-welcome h1{font-size:2rem}
+ .masda-home-login-shell{padding:18px 15px}
+}
+</style>
+
 </head>
 <body>
 <div id="appNotificationStack" aria-live="polite" aria-atomic="false"></div>
@@ -920,21 +1007,40 @@
 
 
 <!-- HALAMAN AWAL PUBLIK siMADA -->
-<section id="publicHomePage" class="masda-public-home">
-  <div class="public-home-topbar"><div class="topbar-contact"><span id="homePhoneWrap"><i class="bi bi-telephone-fill"></i><span id="homeSchoolPhone"></span></span><span id="homeEmailWrap"><i class="bi bi-envelope-fill"></i><span id="homeSchoolEmail"></span></span></div></div>
-  <header class="public-home-nav">
-    <a href="#publicHomePage" class="public-home-brand text-decoration-none" onclick="event.preventDefault();window.scrollTo({top:0,behavior:'smooth'})"><div id="homeLogoContainer" class="public-home-logo"><i class="bi bi-building-fill"></i></div><div><strong id="homeSchoolName">MAS DARUL AMIN</strong><small>MADRASAH ALIYAH TERPADU</small></div></a>
+<section id="publicHomePage" class="masda-public-home masda-home-redesign">
+  <header class="public-home-nav masda-home-header">
+    <a href="#publicHomePage" class="public-home-brand text-decoration-none" onclick="event.preventDefault();window.scrollTo({top:0,behavior:'smooth'})">
+      <div id="homeLogoContainer" class="public-home-logo"><i class="bi bi-building-fill"></i></div>
+      <div><strong id="homeSchoolName">MAS DARUL AMIN</strong><small>MADRASAH ALIYAH TERPADU</small></div>
+    </a>
     <nav id="publicHomeNavLinks" class="public-home-nav-links" aria-label="Menu publik Madrasah"></nav>
-    <div class="public-home-login-wrap"><button type="button" id="publicHomeLoginToggle" class="public-home-login-btn" aria-expanded="false" onclick="togglePublicHomeLoginMenu()"><i class="bi bi-box-arrow-in-right me-2"></i>Login <i class="bi bi-chevron-up ms-1"></i></button><div id="publicHomeLoginMenu" class="public-home-login-menu d-none"><div class="menu-label">PILIH PORTAL MASUK</div><button type="button" onclick="showPublicHomeLogin('admin')"><span class="portal-icon"><i class="bi bi-shield-check"></i></span><span><strong>Login Guru / Admin</strong><small>Manajemen, presensi kelas, &amp; jurnal KBM</small></span></button><button type="button" onclick="showPublicHomeLogin('student')"><span class="portal-icon"><i class="bi bi-mortarboard"></i></span><span><strong>Login Siswa (NISN)</strong><small>Absen mandiri, jadwal, &amp; riwayat siswa</small></span></button></div></div>
+    <div class="masda-home-contact" aria-label="Kontak Madrasah">
+      <span id="homePhoneWrap"><i class="bi bi-telephone-fill"></i><span id="homeSchoolPhone"></span></span>
+      <span id="homeEmailWrap"><i class="bi bi-envelope-fill"></i><span id="homeSchoolEmail"></span></span>
+    </div>
   </header>
-  <div class="public-home-hero public-home-announcement-hero"><div class="public-home-hero-copy" id="publicHomeFeaturedAnnouncement"><span class="public-home-eyebrow"><i class="bi bi-megaphone-fill me-1"></i> PENGUMUMAN Madrasah</span><h1>Pengumuman <span>Madrasah</span></h1><p class="hero-quote">Memuat pengumuman terbaru dari MAS Darul Amin...</p><p class="hero-description">Informasi resmi Madrasah akan ditampilkan di sini.</p></div><div class="public-home-hero-art public-home-featured-image" id="publicHomeFeaturedImage" aria-label="Gambar pengumuman"></div></div>
-  <section id="publicHomeDynamicContent" class="public-home-dynamic-content d-none" aria-live="polite"><div class="public-home-dynamic-inner"><button type="button" class="public-home-content-back" onclick="closePublicHomeContent()"><i class="bi bi-arrow-left me-1"></i> Kembali ke Beranda</button><div id="publicHomeContentBody"></div></div></section>
-  <footer class="public-home-footer"><span id="homeFooterSchoolName">MAS DARUL AMIN</span> · Madrasah Aliyah Terpadu · Portal informasi dan layanan Madrasah</footer>
-</section>
 
-<!-- HALAMAN LOGIN -->
-<div id="loginPage" class="container d-none">
-  <div class="login-home-back"><button type="button" onclick="backToPublicHome()"><i class="bi bi-arrow-left me-2"></i>Kembali ke Beranda Madrasah</button></div>
+  <main class="masda-home-hero">
+    <div class="masda-home-backdrop-logo" id="homeHeroLogoWatermark" aria-hidden="true"></div>
+    <div class="masda-home-welcome">
+      <div class="masda-home-kicker"><i class="bi bi-mortarboard-fill"></i> PORTAL RESMI MADRASAH</div>
+      <h1>Selamat Datang di<br><span id="homeWelcomeSchoolName">MAS Darul Amin</span></h1>
+      <h2>Sistem Informasi Manajemen Madrasah</h2>
+      <p>Kelola layanan pendidikan, administrasi, kehadiran, dan informasi madrasah melalui satu platform yang terintegrasi.</p>
+      <div class="masda-home-highlights">
+        <span><i class="bi bi-shield-check"></i> Layanan Terintegrasi</span>
+        <span><i class="bi bi-clock-history"></i> Akses Lebih Mudah</span>
+        <span><i class="bi bi-journal-check"></i> Administrasi Digital</span>
+      </div>
+    </div>
+    <div class="masda-home-login-shell">
+      <div class="masda-home-login-heading">
+        <span class="masda-home-login-mark"><i class="bi bi-mortarboard-fill"></i></span>
+        <div><strong>Masuk ke siMADA</strong><small>Silakan masuk menggunakan akun Anda</small></div>
+      </div>
+      
+<div id="loginPage" class="masda-embedded-login">
+
   <div class="login-container">
     <div class="card login-card p-4 bg-white">
       <div class="text-center mb-4">
@@ -1011,6 +1117,13 @@
     </div>
   </div>
 </div>
+
+
+    </div>
+  </main>
+  <section id="publicHomeDynamicContent" class="public-home-dynamic-content d-none" aria-live="polite"><div class="public-home-dynamic-inner"><button type="button" class="public-home-content-back" onclick="closePublicHomeContent()"><i class="bi bi-arrow-left me-1"></i> Kembali ke Beranda</button><div id="publicHomeContentBody"></div></div></section>
+  <footer class="public-home-footer"><span id="homeFooterSchoolName">MAS DARUL AMIN</span> · Madrasah Aliyah Terpadu · Portal informasi dan layanan Madrasah</footer>
+</section>
 
 <!-- DASHBOARD UTAMA -->
 <div id="mainApp" class="container-fluid d-none p-0">
@@ -6225,14 +6338,14 @@
     }).withFailureHandler(function(){publicHomeSelectedMenus=[];renderPublicHomeMenu();renderPublicHomeMenuSettings();}).getPublicHomeMenuConfig();
     google.script.run.withSuccessHandler(function(p){
       p=p||{};var name=String(p['Nama Madrasah']||'MAS DARUL AMIN');
-      ['homeSchoolName','homeFooterSchoolName'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=name;});
+      ['homeSchoolName','homeFooterSchoolName','homeWelcomeSchoolName'].forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=name;});
       var phone=String(p['No. Handphone']||p['No. HP']||p['No HP']||p['No. Telepon']||p['Telepon']||'').trim();
       var email=String(p['Email']||p['Email Madrasah']||'').trim();
       var phoneEl=document.getElementById('homeSchoolPhone'),phoneWrap=document.getElementById('homePhoneWrap');
       var emailEl=document.getElementById('homeSchoolEmail'),emailWrap=document.getElementById('homeEmailWrap');
       if(phoneEl)phoneEl.textContent=phone;if(phoneWrap)phoneWrap.style.display=phone?'':'none';
       if(emailEl)emailEl.textContent=email;if(emailWrap)emailWrap.style.display=email?'':'none';
-      if(p['Logo']){var src=String(p['Logo']).replace(/"/g,'&quot;');var logo=document.getElementById('homeLogoContainer');if(logo)logo.innerHTML='<img src="'+src+'" alt="Logo Madrasah">';}
+      if(p['Logo']){var src=String(p['Logo']).replace(/"/g,'&quot;');var logo=document.getElementById('homeLogoContainer');if(logo)logo.innerHTML='<img src="'+src+'" alt="Logo Madrasah">';var watermark=document.getElementById('homeHeroLogoWatermark');if(watermark)watermark.innerHTML='<img src="'+src+'" alt="">';var welcome=document.getElementById('homeWelcomeSchoolName');if(welcome)welcome.textContent=name;}
     }).getProfil();
   }
   function renderPublicHomeMenu(){
@@ -6250,8 +6363,8 @@
     var boxes=document.querySelectorAll('.public-home-menu-check:checked');var menus=Array.from(boxes).map(function(el){return el.value;});
     google.script.run.withSuccessHandler(function(r){publicHomeSelectedMenus=menus;renderPublicHomeMenu();appNotify((r&&r.message)||'Tampilan halaman awal berhasil disimpan.','success');}).withFailureHandler(function(e){appNotify('Gagal menyimpan tampilan halaman awal: '+(e.message||e),'error');}).savePublicHomeMenuConfig(menus,masdaGetSessionToken_());
   }
-  function showLoginPage(type){var home=document.getElementById('publicHomePage'),login=document.getElementById('loginPage'),main=document.getElementById('mainApp');if(main)main.classList.add('d-none');if(home)home.classList.add('d-none');if(login){login.classList.remove('d-none');login.classList.remove('login-student-mode','login-admin-mode');login.classList.add(type==='student'?'login-student-mode':'login-admin-mode');}var badge=document.getElementById('loginPortalBadge');if(badge)badge.innerHTML=type==='student'?'<i class="bi bi-mortarboard me-1"></i>Portal Siswa':'<i class="bi bi-shield-check me-1"></i>Portal Guru &amp; Staf';var alertBox=document.getElementById('loginAlert');if(alertBox)alertBox.innerHTML='';var menu=document.getElementById('publicHomeLoginMenu');if(menu)menu.classList.add('d-none');window.scrollTo({top:0,behavior:'smooth'});}
-  function backToPublicHome(){var home=document.getElementById('publicHomePage'),login=document.getElementById('loginPage'),main=document.getElementById('mainApp');if(main)main.classList.add('d-none');if(login){login.classList.add('d-none');login.classList.remove('login-student-mode','login-admin-mode');}if(home)home.classList.remove('d-none');closePublicHomeContent();window.scrollTo({top:0,behavior:'smooth'});}
+  function showLoginPage(type){var home=document.getElementById('publicHomePage'),login=document.getElementById('loginPage'),main=document.getElementById('mainApp');if(main)main.classList.add('d-none');if(home)home.classList.remove('d-none');if(login){login.classList.remove('d-none');login.classList.remove('login-student-mode','login-admin-mode');login.classList.add(type==='student'?'login-student-mode':'login-admin-mode');}var badge=document.getElementById('loginPortalBadge');if(badge)badge.innerHTML=type==='student'?'<i class="bi bi-mortarboard me-1"></i>Portal Siswa':'<i class="bi bi-shield-check me-1"></i>Portal Guru &amp; Staf';var alertBox=document.getElementById('loginAlert');if(alertBox)alertBox.innerHTML='';var menu=document.getElementById('publicHomeLoginMenu');if(menu)menu.classList.add('d-none');window.scrollTo({top:0,behavior:'smooth'});}
+  function backToPublicHome(){var home=document.getElementById('publicHomePage'),login=document.getElementById('loginPage'),main=document.getElementById('mainApp');if(main)main.classList.add('d-none');if(login){login.classList.remove('d-none');login.classList.remove('login-student-mode','login-admin-mode');login.classList.add('login-admin-mode');}if(home)home.classList.remove('d-none');closePublicHomeContent();window.scrollTo({top:0,behavior:'smooth'});}
   function togglePublicHomeLoginMenu(){var menu=document.getElementById('publicHomeLoginMenu'),btn=document.getElementById('publicHomeLoginToggle');if(!menu)return;var opening=menu.classList.contains('d-none');menu.classList.toggle('d-none',!opening);if(btn)btn.setAttribute('aria-expanded',opening?'true':'false');}
   function showPublicHomeLogin(type){showLoginPage(type==='student'?'student':'admin');var toggle=document.getElementById('publicHomeLoginToggle');if(toggle)toggle.setAttribute('aria-expanded','false');if(type==='student'){setTimeout(function(){var f=document.getElementById('studentLoginNisn');if(f)f.focus();},120);}else{var u=document.getElementById('loginUser');if(u)u.focus();}}
   function publicHomeSlide(direction){var dots=document.querySelectorAll('.public-home-slide-dots span');if(!dots.length)return;var active=0;dots.forEach(function(d,i){if(d.style.backgroundColor==='rgb(255, 212, 59)')active=i;});var next=(active+(direction<0?dots.length-1:1))%dots.length;dots.forEach(function(d,i){d.style.width=i===next?'22px':'7px';d.style.background=i===next?'#ffd43b':'#ffffff65';});}
