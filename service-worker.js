@@ -1,6 +1,6 @@
 /* siMADA PWA service worker. API dan data dinamis tidak pernah disimpan ke cache. */
 'use strict';
-const CACHE_NAME = 'simada-shell-v5-login-tech-bg-v4-logo-gradient';
+const CACHE_NAME = 'simada-shell-v5-background-gradient-blue-white-v5';
 const APP_SHELL = [
   '/',
   '/index.html',
