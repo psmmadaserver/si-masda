@@ -1,13 +1,14 @@
 /* siMADA PWA service worker. API dan data dinamis tidak pernah disimpan ke cache. */
 'use strict';
-const CACHE_NAME = 'simada-shell-v5-home-redesign-v1';
+const CACHE_NAME = 'simada-shell-v5-login-tech-bg-v2';
 const APP_SHELL = [
   '/',
   '/index.html',
   '/manifest.webmanifest',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
-  '/icons/icon-512-maskable.png'
+  '/icons/icon-512-maskable.png',
+  '/assets/login-tech-bg.jpg'
 ];
 
 self.addEventListener('install', event => {
