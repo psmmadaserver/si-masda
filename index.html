@@ -988,6 +988,78 @@
  .masda-home-welcome h1{font-size:2rem}
  .masda-home-login-shell{padding:18px 15px}
 }
+
+/* ===== siMADA Login Landing Page: final approved blue-gold layout ===== */
+#publicHomePage.masda-public-home{min-height:100vh;background:#eaf5ff;color:#17345f}
+#publicHomePage .masda-home-header{min-height:74px;background:rgba(255,255,255,.97);padding:10px clamp(16px,3.5vw,58px);gap:18px;box-shadow:0 5px 20px rgba(20,55,100,.06)}
+#publicHomePage .public-home-brand{min-width:235px}
+#publicHomePage .public-home-nav-links a{font-size:.75rem;color:#102e5c}
+.masda-home-header-actions{display:flex;align-items:center;justify-content:flex-end;gap:14px;margin-left:auto}
+#publicHomePage .masda-home-contact{display:flex;align-items:center;gap:0;padding:7px 9px;border:1px solid #d9e5f5;border-radius:14px;background:#f8fbff;color:#123768;font-size:.69rem;font-weight:800;box-shadow:0 3px 10px rgba(28,68,120,.05)}
+#publicHomePage .masda-home-contact>span{padding:4px 10px;white-space:nowrap}
+#publicHomePage .masda-home-contact>span+span{border-left:1px solid #dbe5f1}
+#publicHomePage .masda-home-contact i{color:#07845f}
+#publicHomePage .public-home-login-btn{border:2px solid #e5b82e;border-radius:13px;background:linear-gradient(135deg,#174b9b,#082e70);color:#fff;padding:10px 20px;font-size:.82rem;font-weight:900;box-shadow:0 0 0 2px rgba(255,255,255,.8),0 5px 18px rgba(18,61,130,.22);min-width:126px}
+#publicHomePage .public-home-login-btn:hover{background:linear-gradient(135deg,#2364bd,#103d88);transform:translateY(-1px)}
+#publicHomePage .public-home-login-menu{top:calc(100% + 10px);width:258px;padding:10px;background:rgba(239,247,255,.94);border:2px solid #2465c7;border-radius:18px;box-shadow:0 12px 30px rgba(18,56,120,.2);backdrop-filter:blur(12px)}
+#publicHomePage .public-home-login-menu button{align-items:center;margin:3px 0;padding:11px 10px;background:rgba(255,255,255,.72);border:1px solid #d8e7fb;border-radius:12px;color:#123768}
+#publicHomePage .public-home-login-menu button:hover{background:#dcecff;border-color:#4d8ee8}
+#publicHomePage .public-home-login-menu .portal-icon{background:#d7eaff;color:#1454a6;width:34px;height:34px;flex-basis:34px}
+#publicHomePage .public-home-login-menu button:nth-of-type(2) .portal-icon{background:#e4efff;color:#174b9b}
+#publicHomePage .masda-home-hero{position:relative;isolation:isolate;display:grid;grid-template-columns:minmax(0,1fr) minmax(390px,.78fr);align-items:center;gap:34px;min-height:calc(100vh - 74px);padding:35px clamp(22px,7vw,110px) 55px;overflow:hidden;background:radial-gradient(ellipse at 78% 28%,rgba(185,255,223,.72),transparent 38%),radial-gradient(ellipse at 15% 12%,rgba(130,205,255,.75),transparent 42%),linear-gradient(120deg,#b9e4ff 0%,#e8f4ff 49%,#d8f5e8 100%)}
+#publicHomePage .masda-home-hero:before{content:"";position:absolute;z-index:-1;left:-8%;right:-8%;bottom:-130px;height:280px;background:linear-gradient(170deg,#f9d85a 0 8%,#1454a6 9% 34%,#0b367d 35% 55%,#08265c 56% 100%);border-radius:50% 50% 0 0/25% 25% 0 0;transform:rotate(-2deg);box-shadow:0 -8px 22px rgba(255,255,255,.42)}
+#publicHomePage .masda-home-hero:after{content:"";position:absolute;z-index:-1;left:-5%;right:-5%;bottom:35px;height:90px;border-top:3px solid rgba(255,255,255,.32);border-radius:50%;transform:rotate(-3deg)}
+#publicHomePage .masda-home-welcome{display:none}
+#publicHomePage .masda-home-backdrop-logo{display:block;position:absolute;z-index:0;left:2%;right:auto;bottom:4%;top:auto;width:clamp(260px,33vw,560px);height:clamp(260px,33vw,560px);opacity:1;transform:rotate(8deg);filter:drop-shadow(0 24px 22px rgba(10,43,91,.28));pointer-events:none;mask-image:linear-gradient(135deg,rgba(0,0,0,.16) 0%,rgba(0,0,0,.52) 22%,#000 48%,#000 100%);-webkit-mask-image:linear-gradient(135deg,rgba(0,0,0,.16) 0%,rgba(0,0,0,.52) 22%,#000 48%,#000 100%)}
+#publicHomePage .masda-home-backdrop-logo img{width:100%;height:100%;object-fit:contain}
+#publicHomePage .masda-home-login-shell{width:100%;max-width:600px;justify-self:end;padding:28px 32px 25px;border:0;border-radius:25px;background:rgba(255,255,255,.78);box-shadow:0 24px 65px rgba(25,67,115,.17);backdrop-filter:blur(16px);position:relative;isolation:isolate}
+#publicHomePage .masda-home-login-shell:before{content:"";position:absolute;z-index:-2;inset:-3px;border-radius:28px;background:conic-gradient(from var(--login-border-angle,0deg),#d49a00,#fff1a6,#ffd21e,#fff,#d49a00,#9b5a00,#ffd21e);animation:masdaGoldBorder 5s linear infinite}
+#publicHomePage .masda-home-login-shell:after{content:"";position:absolute;z-index:-1;inset:1px;border-radius:23px;background:rgba(255,255,255,.9)}
+@keyframes masdaGoldBorder{to{--login-border-angle:360deg}}
+@property --login-border-angle{syntax:"<angle>";initial-value:0deg;inherits:false}
+#publicHomePage .masda-home-login-heading{display:flex;align-items:center;justify-content:flex-start;gap:13px;margin:0 auto 22px;max-width:460px;padding-left:3px}
+#publicHomePage .masda-login-brand-logo{display:block;width:52px;height:52px;flex:0 0 52px;object-fit:contain;border-radius:12px}
+#publicHomePage .masda-login-brand-copy{min-width:0;border-left:2px solid #d6a526;padding-left:14px}
+#publicHomePage .masda-login-brand-copy strong{display:block;color:#102f63;font-size:clamp(1.55rem,2.4vw,2rem);font-weight:950;letter-spacing:-.055em;line-height:1.05}
+#publicHomePage .masda-login-brand-copy small{display:block;color:#536b8c;font-size:.77rem;font-weight:750;margin-top:5px}
+#publicHomePage .masda-login-welcome-title{display:flex;align-items:center;justify-content:center;gap:14px;margin:0 0 20px;color:#154b99;font-size:1.13rem;font-weight:950}
+#publicHomePage .masda-login-welcome-title span{height:2px;width:clamp(35px,8vw,85px);background:linear-gradient(90deg,transparent,#d5a21b)}
+#publicHomePage .masda-login-welcome-title span:last-child{transform:rotate(180deg)}
+#publicHomePage #loginPage .login-card>.text-center.masda-login-legacy-brand{display:none!important}
+#publicHomePage #loginPage .form-label{font-size:.82rem;color:#17365f;font-weight:850!important}
+#publicHomePage #loginPage .form-control{min-height:48px;background:rgba(244,248,255,.96);border:1px solid #cad9ed;border-radius:12px;color:#172f55;box-shadow:inset 0 1px 2px rgba(20,50,90,.03)}
+#publicHomePage #loginPage .form-control:focus{border-color:#3978cf;box-shadow:0 0 0 3px rgba(59,130,246,.13)}
+#publicHomePage #loginPage #btnLogin,#publicHomePage #loginPage #btnStudentLogin{min-height:49px;border-radius:13px;background:linear-gradient(115deg,#0c3479,#0750ae)!important;color:#fff!important;border:2px solid transparent;outline:2px solid #d9a51c;outline-offset:2px;box-shadow:0 7px 20px rgba(10,54,122,.22)!important;font-weight:900!important;position:relative}
+#publicHomePage #loginPage #btnLogin:hover,#publicHomePage #loginPage #btnStudentLogin:hover{filter:brightness(1.12)}
+#publicHomePage #loginPage .login-portal-switch{margin-top:17px;color:#71819a;font-size:.72rem}
+#publicHomePage #loginPage .login-portal-switch button{color:#0d4b9d;font-weight:900}
+#publicHomePage #loginPage.login-student-mode #studentLoginNisn{border:2px solid #3476cb;background:#f6faff}
+#publicHomePage #loginPage #loginAlert{margin-top:12px}
+@media(max-width:900px){#publicHomePage .masda-home-header{flex-wrap:wrap}#publicHomePage .masda-home-hero{grid-template-columns:minmax(0,1fr) minmax(350px,.95fr);padding-left:4vw;padding-right:4vw}#publicHomePage .masda-home-backdrop-logo{left:-4%;width:36vw;height:36vw}}
+@media(max-width:760px){
+ #publicHomePage .masda-home-header{min-height:64px;padding:8px 12px;gap:8px;flex-wrap:nowrap}
+ #publicHomePage .public-home-brand{min-width:0;flex:1;gap:7px}
+ #publicHomePage .public-home-brand strong{font-size:.82rem}
+ #publicHomePage .public-home-brand small{font-size:.55rem}
+ #publicHomePage .public-home-logo{width:36px;height:36px;flex-basis:36px}
+ #publicHomePage .masda-home-header-actions{gap:7px}
+ #publicHomePage .masda-home-contact{max-width:0;padding:0;border:0;overflow:hidden;opacity:0;pointer-events:none}
+ #publicHomePage .public-home-login-btn{min-width:88px;padding:9px 11px;font-size:.72rem}
+ #publicHomePage .public-home-login-menu{right:0;width:224px}
+ #publicHomePage .masda-home-hero{display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:calc(100svh - 64px);padding:26px 14px 38px;gap:0;background:radial-gradient(ellipse at 70% 15%,rgba(197,255,229,.75),transparent 43%),linear-gradient(145deg,#b9e4ff,#eaf5ff 52%,#d7f3e8)}
+ #publicHomePage .masda-home-backdrop-logo{left:-7%;bottom:1%;top:auto;width:clamp(190px,58vw,290px);height:clamp(190px,58vw,290px);transform:rotate(8deg);opacity:.9}
+ #publicHomePage .masda-home-login-shell{max-width:490px;justify-self:auto;margin:0 auto;padding:23px 19px 20px;border-radius:22px;background:rgba(255,255,255,.84)}
+ #publicHomePage .masda-home-login-heading{gap:10px;margin-bottom:17px}
+ #publicHomePage .masda-login-brand-logo{width:43px;height:43px;flex-basis:43px}
+ #publicHomePage .masda-login-brand-copy{padding-left:10px}
+ #publicHomePage .masda-login-brand-copy strong{font-size:1.5rem}
+ #publicHomePage .masda-login-brand-copy small{font-size:.66rem}
+ #publicHomePage .masda-login-welcome-title{font-size:1rem;margin-bottom:17px}
+ #publicHomePage #loginPage .form-control{min-height:45px}
+ #publicHomePage .masda-home-hero:before{bottom:-160px;height:230px}
+}
+@media(max-width:390px){#publicHomePage .public-home-brand strong{font-size:.73rem}#publicHomePage .public-home-brand small{font-size:.5rem}#publicHomePage .public-home-login-shell{padding:20px 15px 18px}#publicHomePage .masda-login-brand-copy small{font-size:.6rem}}
+
 </style>
 
 </head>
@@ -1014,41 +1086,37 @@
       <div><strong id="homeSchoolName">MAS DARUL AMIN</strong><small>MADRASAH ALIYAH TERPADU</small></div>
     </a>
     <nav id="publicHomeNavLinks" class="public-home-nav-links" aria-label="Menu publik Madrasah"></nav>
-    <div class="masda-home-contact" aria-label="Kontak Madrasah">
-      <span id="homePhoneWrap"><i class="bi bi-telephone-fill"></i><span id="homeSchoolPhone"></span></span>
-      <span id="homeEmailWrap"><i class="bi bi-envelope-fill"></i><span id="homeSchoolEmail"></span></span>
+    <div class="masda-home-header-actions">
+      <div class="masda-home-contact" aria-label="Kontak Madrasah">
+        <span id="homePhoneWrap"><i class="bi bi-telephone-fill"></i><span id="homeSchoolPhone"></span></span>
+        <span id="homeEmailWrap"><i class="bi bi-envelope-fill"></i><span id="homeSchoolEmail"></span></span>
+      </div>
+      <div class="public-home-login-wrap">
+        <button type="button" id="publicHomeLoginToggle" class="public-home-login-btn" aria-expanded="false" aria-controls="publicHomeLoginMenu" onclick="togglePublicHomeLoginMenu()"><i class="bi bi-person-fill me-2"></i>Login <i class="bi bi-chevron-down ms-2"></i></button>
+        <div id="publicHomeLoginMenu" class="public-home-login-menu d-none">
+          <button type="button" onclick="showPublicHomeLogin('admin')"><span class="portal-icon"><i class="bi bi-people-fill"></i></span><span><strong>Admin / Guru</strong><small>Masuk ke portal pengelola</small></span></button>
+          <button type="button" onclick="showPublicHomeLogin('student')"><span class="portal-icon"><i class="bi bi-mortarboard-fill"></i></span><span><strong>Masuk NISN Siswa</strong><small>Masuk menggunakan NISN</small></span></button>
+        </div>
+      </div>
     </div>
   </header>
 
   <main class="masda-home-hero">
     <div class="masda-home-backdrop-logo" id="homeHeroLogoWatermark" aria-hidden="true"></div>
-    <div class="masda-home-welcome">
-      <div class="masda-home-kicker"><i class="bi bi-mortarboard-fill"></i> PORTAL RESMI MADRASAH</div>
-      <h1>Selamat Datang di<br><span id="homeWelcomeSchoolName">MAS Darul Amin</span></h1>
-      <h2>Sistem Informasi Manajemen Madrasah</h2>
-      <p>Kelola layanan pendidikan, administrasi, kehadiran, dan informasi madrasah melalui satu platform yang terintegrasi.</p>
-      <div class="masda-home-highlights">
-        <span><i class="bi bi-shield-check"></i> Layanan Terintegrasi</span>
-        <span><i class="bi bi-clock-history"></i> Akses Lebih Mudah</span>
-        <span><i class="bi bi-journal-check"></i> Administrasi Digital</span>
-      </div>
-    </div>
+    <div class="masda-home-welcome" aria-hidden="true"></div>
     <div class="masda-home-login-shell">
       <div class="masda-home-login-heading">
-        <span class="masda-home-login-mark"><i class="bi bi-mortarboard-fill"></i></span>
-        <div><strong>Masuk ke siMADA</strong><small>Silakan masuk menggunakan akun Anda</small></div>
+        <img id="loginBrandLogo" src="" alt="Logo Madrasah" class="masda-login-brand-logo">
+        <div class="masda-login-brand-copy"><strong>siMADA</strong><small>Sistem Management MAS Darul Amin</small></div>
       </div>
+      <div class="masda-login-welcome-title"><span></span><strong>Selamat Datang!</strong><span></span></div>
       
 <div id="loginPage" class="masda-embedded-login">
 
   <div class="login-container">
     <div class="card login-card p-4 bg-white">
-      <div class="text-center mb-4">
-        <div id="loginLogoContainer" class="mb-2">
-          <div class="bg-primary text-white rounded-circle d-inline-flex p-3">
-            <i class="bi bi-building-fill fs-2"></i>
-          </div>
-        </div>
+      <div class="text-center mb-4 masda-login-legacy-brand">
+        <div id="loginLogoContainer" class="mb-2"></div>
         <h4 class="fw-bold text-dark" id="loginSchoolName">siMADA</h4>
         <p class="text-muted small">MAS Darul Amin</p>
         <div id="loginPortalBadge" class="login-portal-badge"><i class="bi bi-shield-check me-1"></i>Portal Guru &amp; Staf</div>
@@ -6345,7 +6413,7 @@
       var emailEl=document.getElementById('homeSchoolEmail'),emailWrap=document.getElementById('homeEmailWrap');
       if(phoneEl)phoneEl.textContent=phone;if(phoneWrap)phoneWrap.style.display=phone?'':'none';
       if(emailEl)emailEl.textContent=email;if(emailWrap)emailWrap.style.display=email?'':'none';
-      if(p['Logo']){var src=String(p['Logo']).replace(/"/g,'&quot;');var logo=document.getElementById('homeLogoContainer');if(logo)logo.innerHTML='<img src="'+src+'" alt="Logo Madrasah">';var watermark=document.getElementById('homeHeroLogoWatermark');if(watermark)watermark.innerHTML='<img src="'+src+'" alt="">';var welcome=document.getElementById('homeWelcomeSchoolName');if(welcome)welcome.textContent=name;}
+      if(p['Logo']){var src=String(p['Logo']).replace(/"/g,'&quot;');var logo=document.getElementById('homeLogoContainer');if(logo)logo.innerHTML='<img src="'+src+'" alt="Logo Madrasah">';var watermark=document.getElementById('homeHeroLogoWatermark');if(watermark)watermark.innerHTML='<img src="'+src+'" alt="Logo Madrasah">';var loginBrand=document.getElementById('loginBrandLogo');if(loginBrand)loginBrand.src=src;}
     }).getProfil();
   }
   function renderPublicHomeMenu(){
