@@ -1367,6 +1367,7 @@
             <div class="d-flex justify-content-between align-items-center mb-3">
               <div class="d-flex gap-2">
                 <button type="button" class="btn btn-primary btn-sm" onclick="openModalGuru()"><i class="bi bi-plus-lg me-1"></i> Tambah</button>
+                <button type="button" class="btn btn-primary btn-sm" onclick="printAllGuruIdCards()"><i class="bi bi-printer me-1"></i> Cetak Semua ID Card</button>
                 <button type="button" class="btn btn-success btn-sm" onclick="document.getElementById('fileExcelGuru').click()"><i class="bi bi-file-earmark-excel me-1"></i> Upload</button>
                 <input type="file" id="fileExcelGuru" class="d-none" accept=".xlsx, .xls" onchange="uploadExcelGuru(event)">
               </div>
@@ -3768,7 +3769,7 @@
       html+='<td class="text-end text-nowrap">'+formatRupiah(Number(g[4])||0)+'</td><td class="text-end text-nowrap">'+formatRupiah(Number(g[5])||0)+'</td>';
       html+='<td><span class="badge rounded-pill text-bg-light border">'+escapeHtml(g[12]||'Guru')+'</span></td>';
       html+='<td>'+escapeHtml(g[6]||'-')+'</td><td class="text-muted">'+(g[7]?'••••••••':'-')+'</td>';
-      html+='<td class="text-nowrap"><button type="button" class="btn btn-sm btn-outline-success me-1" title="Cetak Kartu QR Guru" data-nip="'+nip+'" onclick="printGuruQrCard(this.dataset.nip)"><i class="bi bi-qr-code"></i></button><button class="btn btn-sm btn-outline-primary me-1" title="Edit data dan hak akses" data-nip="'+nip+'" onclick="editGuru(this.dataset.nip)"><i class="bi bi-pencil"></i></button><button type="button" class="btn btn-sm btn-outline-danger" title="Hapus guru" data-nip="'+nip+'" onclick="deleteGuru(this.dataset.nip)"><i class="bi bi-trash"></i></button></td></tr>';
+      html+='<td class="text-nowrap"><button type="button" class="btn btn-sm btn-outline-info me-1" title="Cetak ID Card Guru" data-nip="'+nip+'" onclick="printGuruIdCard(this.dataset.nip)"><i class="bi bi-person-badge"></i></button><button type="button" class="btn btn-sm btn-outline-success me-1" title="Cetak Kartu QR Guru" data-nip="'+nip+'" onclick="printGuruQrCard(this.dataset.nip)"><i class="bi bi-qr-code"></i></button><button class="btn btn-sm btn-outline-primary me-1" title="Edit data dan hak akses" data-nip="'+nip+'" onclick="editGuru(this.dataset.nip)"><i class="bi bi-pencil"></i></button><button type="button" class="btn btn-sm btn-outline-danger" title="Hapus guru" data-nip="'+nip+'" onclick="deleteGuru(this.dataset.nip)"><i class="bi bi-trash"></i></button></td></tr>';
     });
     tbody.innerHTML=html;
   }
@@ -5902,6 +5903,96 @@
       win.onload = function() { setTimeout(function() { win.print(); }, 700); };
       win.document.close();
     }, 700);
+  }
+
+
+  // --- ID CARD GURU: mengikuti desain ID Card Siswa dengan warna biru-cyan lebih terang ---
+  function guruIdCardEscape(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(c) {
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
+    });
+  }
+  function guruIdCardData(g) {
+    return {
+      nip: String(g[0] || '').trim(),
+      nama: String(g[1] || '').trim(),
+      jabatan: String(g[12] || 'Guru').trim(),
+      foto: String(g[11] || '').trim(),
+      token: String(g[14] || g[0] || '').trim()
+    };
+  }
+  function guruIdCardMarkup(g, logo, schoolName, qrHtml) {
+    var d = guruIdCardData(g);
+    var safeLogo = logo ? '<img class="guru-id-logo" src="' + guruIdCardEscape(logo) + '" alt="Logo">' : '';
+    var photo = d.foto
+      ? '<img class="guru-id-photo" src="' + guruIdCardEscape(d.foto) + '" alt="Foto guru">'
+      : '<div class="guru-id-photo guru-id-photo-empty"></div>';
+    return '<article class="guru-id-card">' + safeLogo +
+      '<div class="guru-id-school">' + guruIdCardEscape(schoolName) +
+      '<small>KARTU IDENTITAS GURU</small></div>' + photo +
+      '<div class="guru-id-name">' + guruIdCardEscape(d.nama) + '</div>' +
+      '<div class="guru-id-role">' + guruIdCardEscape(d.jabatan) + '</div>' +
+      '<div class="guru-id-qr">' + qrHtml + '</div>' +
+      '<div class="guru-id-nip">NIP: ' + guruIdCardEscape(d.nip) + '</div></article>';
+  }
+  function guruIdCardPrintCss() {
+    return '@page{size:A4;margin:8mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;color:#10213f}' +
+      '.guru-id-grid{display:grid;grid-template-columns:repeat(3,2.25in);gap:7mm 5mm;justify-content:center;align-items:start}' +
+      '.guru-id-card{position:relative;width:2.25in;height:3.55in;overflow:hidden;border-radius:15px;padding:12px;color:#fff;background:linear-gradient(155deg,#18c8f2 0%,#168fe8 42%,#164db8 100%);break-inside:avoid;page-break-inside:avoid;isolation:isolate}' +
+      '.guru-id-card:before{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background-image:url("data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%2790%27 height=%2790%27 viewBox=%270 0 90 90%27%3E%3Cg fill=%27none%27 stroke=%27white%27 stroke-opacity=%27.22%27%3E%3Cpath d=%27M45 4 57 16 45 28 33 16Z M16 33 28 45 16 57 4 45Z M74 33 86 45 74 57 62 45Z M45 62 57 74 45 86 33 74Z%27/%3E%3C/g%3E%3C/svg%3E")}' +
+      '.guru-id-logo{position:absolute;z-index:4;top:10px;left:10px;width:30px;height:30px;object-fit:contain;background:#fff;border-radius:7px;padding:2px}' +
+      '.guru-id-school{position:relative;z-index:3;margin-left:35px;max-width:calc(100% - 40px);font-size:9px;line-height:1.2;font-weight:800;text-transform:uppercase;letter-spacing:.3px}.guru-id-school small{display:block;font-size:7px;margin-top:3px}' +
+      '.guru-id-photo{position:absolute;z-index:1;left:0;right:0;bottom:0;width:100%;height:78%;object-fit:contain;object-position:center bottom;background:transparent;border:0;margin:0;mask-image:linear-gradient(to bottom,#000 0%,#000 82%,rgba(0,0,0,.88) 91%,rgba(0,0,0,.4) 97%,transparent 100%);-webkit-mask-image:linear-gradient(to bottom,#000 0%,#000 82%,rgba(0,0,0,.88) 91%,rgba(0,0,0,.4) 97%,transparent 100%)}' +
+      '.guru-id-photo-empty{background:linear-gradient(180deg,rgba(255,255,255,.2),rgba(7,45,110,.55))}' +
+      '.guru-id-name{position:absolute;z-index:3;right:8px;bottom:55px;max-height:66%;writing-mode:vertical-rl;transform:rotate(180deg);font-size:11px;font-weight:800;text-shadow:0 1px 4px #064078;overflow:hidden}' +
+      '.guru-id-role{position:absolute;z-index:3;right:8px;bottom:10px;writing-mode:vertical-rl;transform:rotate(180deg);font-size:7px;font-weight:700;letter-spacing:.6px;text-transform:uppercase}' +
+      '.guru-id-qr{position:absolute;z-index:5;left:10px;bottom:10px;background:#fff;border-radius:5px;padding:4px;line-height:0;box-shadow:0 2px 8px rgba(0,0,0,.2)}.guru-id-qr img,.guru-id-qr canvas{width:68px!important;height:68px!important;display:block}' +
+      '.guru-id-nip{position:absolute;z-index:4;left:88px;bottom:12px;max-width:calc(100% - 100px);font-size:7px;font-weight:700;overflow-wrap:anywhere;text-shadow:0 1px 3px #064078}' +
+      '@media print{body{-webkit-print-color-adjust:exact;print-color-adjust:exact}.guru-id-card{box-shadow:none}}';
+  }
+  function buildGuruIdCardPrintWindow(guruList, title) {
+    var list = (guruList || []).filter(function(g){ return guruIdCardData(g).nip && guruIdCardData(g).token; });
+    if (!list.length) { appNotify('Tidak ada data guru dengan NIP/QR Token yang dapat dicetak.', 'warning'); return; }
+    var profile = globalPrintSchoolProfile || {};
+    var schoolName = String(profile['Nama Madrasah'] || 'MADRASAH ALIYAH DARUL AMIN');
+    var logo = String(profile['Logo'] || (document.getElementById('profLogoBase64') || {}).value || '');
+    var staging = document.createElement('div');
+    staging.style.cssText = 'position:fixed;left:-10000px;top:0;width:1px;height:1px;overflow:hidden';
+    document.body.appendChild(staging);
+    var items = list.map(function(g, i) {
+      var d = guruIdCardData(g), qr = document.createElement('div');
+      qr.id = 'guru-id-card-qr-' + i; staging.appendChild(qr);
+      try { new QRCode(qr, {text:d.token, width:76, height:76, correctLevel:QRCode.CorrectLevel.M}); } catch(e) {}
+      return {g:g, qr:qr};
+    });
+    window.setTimeout(function() {
+      var cards = items.map(function(item) {
+        var qrHtml = item.qr.innerHTML || '<div style="width:68px;height:68px;border:1px solid #111"></div>';
+        return guruIdCardMarkup(item.g, logo, schoolName, qrHtml);
+      }).join('');
+      staging.remove();
+      var w = window.open('', '_blank');
+      if (!w) { appNotify('Jendela cetak diblokir browser. Izinkan pop-up untuk aplikasi ini.', 'error'); return; }
+      w.document.open();
+      w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>' + guruIdCardEscape(title) +
+        '</title><style>' + guruIdCardPrintCss() + '</style></head><body><div class="guru-id-grid">' + cards +
+        '</div><script>window.onload=function(){setTimeout(function(){window.print()},650)};<\/script></body></html>');
+      w.document.close();
+    }, 450);
+  }
+  function printGuruIdCard(nip) {
+    var guru = (globalMasterData.guru || []).find(function(g){ return String(g[0]) === String(nip); });
+    if (!guru) { appNotify('Data guru tidak ditemukan.', 'error'); return; }
+    if (!guruIdCardData(guru).token) { appNotify('NIP/QR Token guru belum tersedia.', 'warning'); return; }
+    buildGuruIdCardPrintWindow([guru], 'ID Card Guru - ' + (guru[1] || ''));
+  }
+  function printAllGuruIdCards() {
+    var gurus = (globalMasterData.guru || []).slice();
+    if (!gurus.length) { appNotify('Data guru kosong. Tidak ada ID Card untuk dicetak.', 'warning'); return; }
+    var valid = gurus.filter(function(g){ return guruIdCardData(g).nip && guruIdCardData(g).token; });
+    if (!valid.length) { appNotify('Tidak ada guru dengan NIP/QR Token yang valid.', 'warning'); return; }
+    if (!window.confirm('Cetak ID Card untuk ' + valid.length + ' guru? Pastikan printer dan ukuran kertas sudah sesuai.')) return;
+    buildGuruIdCardPrintWindow(valid, 'Cetak Semua ID Card Guru siMADA');
   }
 
   function showStudentIdCard(encodedNisn) {
