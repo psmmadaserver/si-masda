@@ -1493,11 +1493,11 @@
           <div class="row g-2 g-md-3">
             <div class="col-12 col-md-2">
               <label class="form-label fw-semibold small">Tanggal</label>
-              <input type="date" id="jurTanggal" class="form-control form-control-sm" onchange="onJurnalTanggalChange()">
+              <input type="date" id="jurTanggal" class="form-control form-control-sm" onchange="onJurnalTanggalChange()" disabled>
             </div>
             <div class="col-12 col-md-2">
               <label class="form-label fw-semibold small">Hari</label>
-              <select id="jurHari" class="form-select form-select-sm" onchange="updateJurnalGuruOptions()">
+              <select id="jurHari" class="form-select form-select-sm" onchange="updateJurnalGuruOptions()" disabled>
                 <option value="Senin">Senin</option>
                 <option value="Selasa">Selasa</option>
                 <option value="Rabu">Rabu</option>
@@ -1509,34 +1509,34 @@
             </div>
             <div class="col-12 col-md-3">
               <label class="form-label fw-semibold small">Nama Guru Pengampu</label>
-              <select id="jurGuru" class="form-select form-select-sm" onchange="updateJurnalScheduleValidation()">
+              <select id="jurGuru" class="form-select form-select-sm" onchange="updateJurnalScheduleValidation()" disabled>
                 <option value="">-- Pilih Guru --</option>
               </select>
             </div>
             <div class="col-12 col-md-2">
               <label class="form-label fw-semibold small">Mata Pelajaran (Jadwal)</label>
-              <select id="jurMapel" class="form-select form-select-sm" onchange="updateJurnalJamOptions()">
+              <select id="jurMapel" class="form-select form-select-sm" disabled onchange="updateJurnalJamOptions()">
                 <option value="">-- Pilih Mapel --</option>
               </select>
             </div>
             <div class="col-12 col-md-3">
               <label class="form-label fw-semibold small">Kelas (Jadwal)</label>
-              <select id="jurKelas" class="form-select form-select-sm" onchange="updateJurnalJamOptions()">
+              <select id="jurKelas" class="form-select form-select-sm" disabled onchange="updateJurnalJamOptions()">
                 <option value="">-- Pilih Kelas --</option>
               </select>
             </div>
             <div class="col-12 col-md-2">
               <label class="form-label fw-semibold small">Jam Pelajaran</label>
-              <select id="jurJam" class="form-select form-select-sm">
+              <select id="jurJam" class="form-select form-select-sm" disabled>
                 <option value="">-- Pilih Jam --</option>
               </select>
             </div>
             <div class="col-12 mt-2">
               <label class="form-label fw-semibold small">Materi Pelajaran / Ringkasan Pembelajaran</label>
-              <textarea id="jurMateri" class="form-control form-control-sm" rows="3" placeholder="Tuliskan pokok materi pelajaran yang disampaikan di kelas..."></textarea>
+              <textarea id="jurMateri" disabled class="form-control form-control-sm" rows="3" placeholder="Tuliskan pokok materi pelajaran yang disampaikan di kelas..."></textarea>
             </div>
             <div class="col-12 mt-2 text-end">
-              <button type="button" id="btnSimpanJurnal" class="btn btn-primary btn-sm px-4" onclick="submitJurnal()"><i class="bi bi-geo-alt-fill me-1"></i> Simpan Jurnal</button>
+              <button type="button" id="btnSimpanJurnal" disabled class="btn btn-primary btn-sm px-4" onclick="submitJurnal()"><i class="bi bi-geo-alt-fill me-1"></i> Simpan Jurnal</button>
             </div>
           </div>
         </div>
@@ -4305,11 +4305,11 @@
       setJurnalFormEnabled(false);
       var notice = document.getElementById('jurScheduleNotice');
       if (notice) { notice.className = 'alert alert-danger py-2 small'; notice.textContent = 'Gagal memuat referensi jurnal: ' + (err.message || err); notice.classList.remove('d-none'); }
-    }).getJurnalFormOptions(tanggal);
+    }).getJurnalFormOptions(tanggal, currentUser || {});
   }
 
   function setJurnalFormEnabled(enabled) {
-    ['jurGuru','jurMapel','jurKelas','jurJam','jurMateri','btnSimpanJurnal'].forEach(function(id) {
+    ['jurTanggal','jurHari','jurGuru','jurMapel','jurKelas','jurJam','jurMateri','btnSimpanJurnal'].forEach(function(id) {
       var el = document.getElementById(id); if (el) el.disabled = !enabled;
     });
   }
@@ -4368,7 +4368,7 @@
     var kelasSelect = document.getElementById('jurKelas');
 
     if (!guru || !hari) {
-      noticeBox.classList.add('d-none');
+      if (jurnalQrCanInput) noticeBox.classList.add('d-none');
       return;
     }
 
@@ -4454,7 +4454,10 @@
       btn.disabled = false;
       appNotify(res);
       if (String(res).indexOf('Jurnal berhasil disimpan') === 0 || String(res).indexOf('Jurnal disimpan,') === 0) { document.getElementById('jurMateri').value = ''; loadJurnalData(); refreshDashboard(); }
-    }).simpanJurnal(data);
+    }).withFailureHandler(function(err) {
+      btn.disabled = !jurnalQrCanInput;
+      appNotify('Gagal menyimpan jurnal: ' + (err && err.message ? err.message : err), 'error');
+    }).simpanJurnal(data, currentUser || {});
   }
 
   async function deleteJurnal(id) {
