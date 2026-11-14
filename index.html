@@ -1581,14 +1581,14 @@
         <h4 class="fw-bold mb-3 mb-md-4">Perhitungan Honor Guru</h4>
         
         <div id="honorAdminControls" class="card p-3 p-md-4 shadow-sm border-0 mb-4 no-print">
-          <h6 class="fw-bold mb-3"><i class="bi bi-calculator text-primary me-2"></i>Kalkulasi Berdasarkan Kehadiran Jurnal</h6>
+          <h6 class="fw-bold mb-3"><i class="bi bi-calculator text-primary me-2"></i>Rekap Honor Bulanan: Jurnal, Kehadiran QR & Tunjangan</h6>
           <div class="row g-2 align-items-end">
             <div class="col-12 col-md-3">
               <label class="form-label fw-semibold small">Bulan & Tahun</label>
               <input type="month" id="honorBulan" class="form-control form-control-sm">
             </div>
             <div class="col-12 col-md-4">
-              <div class="small text-muted pb-1">Tarif otomatis diambil dari Master Guru → Tarif/Jam.</div>
+              <div class="small text-muted pb-1">Honor mengajar dari jurnal; transport dari QR; tunjangan jabatan tetap bulanan.</div>
               <button type="button" class="btn btn-primary btn-sm w-100" id="btnHitungHonor" onclick="loadHonorGuru()"><i class="bi bi-arrow-clockwise me-1"></i> Hitung / Perbarui Rekap</button>
             </div>
             <div class="col-12 col-md-4">
@@ -1617,13 +1617,13 @@
           <div class="table-responsive">
             <table class="table table-bordered align-middle">
               <thead class="table-light">
-                <tr><th>NIP / ID</th><th>Nama Guru</th><th class="text-center">Total Kehadiran Valid (Jurnal)</th><th class="text-end">Tarif / Jam</th><th class="text-center">Hari Transport</th><th class="text-end">Tj Transpot / Hari</th><th class="text-end">Tj Jabatan</th><th class="text-end">Total Honor</th><th>Keterangan / Tanda Tangan</th></tr>
+                <tr><th>NIP / ID</th><th>Nama Pegawai</th><th>Kategori</th><th class="text-center">Jurnal Valid</th><th class="text-end">Tarif / Jam</th><th class="text-center">Hari QR</th><th class="text-end">Tj Transport / Hari</th><th class="text-end">Tj Jabatan / Bulan</th><th class="text-end">Total Honor</th><th>Keterangan / Tanda Tangan</th></tr>
               </thead>
               <tbody id="tblHonor">
-                <tr><td colspan="9" class="text-center text-muted">Silakan tentukan bulan dan klik "Hitung Honor"</td></tr>
+                <tr><td colspan="10" class="text-center text-muted">Silakan tentukan bulan dan klik "Hitung Honor"</td></tr>
               </tbody>
               <tfoot class="table-light fw-bold">
-                <tr><td colspan="8" class="text-end">GRAND TOTAL:</td><td class="text-end text-success" id="honorGrandTotal">Rp 0</td></tr>
+                <tr><td colspan="9" class="text-end">GRAND TOTAL:</td><td class="text-end text-success" id="honorGrandTotal">Rp 0</td></tr>
               </tfoot>
             </table>
           </div>
@@ -2043,6 +2043,13 @@
     <input type="number" min="0" id="mgTarif" class="form-control mb-2" value="0" placeholder="Tarif honor per jam">
     <label class="form-label fw-semibold">Jabatan Guru</label>
     <input type="text" id="mgJabatanNama" class="form-control mb-2" value="Guru" placeholder="Contoh: Wali Kelas, Waka Kurikulum">
+    <label class="form-label fw-semibold">Kategori Perhitungan Honor</label>
+    <select id="mgKategoriHonor" class="form-select mb-2">
+      <option value="Pengajar">Pengajar — honor berdasarkan jurnal mengajar</option>
+      <option value="Non-Pengajar">Non-Pengajar — transport QR + tunjangan jabatan</option>
+      <option value="Gabungan">Gabungan — honor mengajar + transport QR + tunjangan jabatan</option>
+    </select>
+    <div class="form-text mb-2">Tunjangan jabatan tetap dibayarkan penuh setiap bulan. Transport mengikuti hari hadir QR.</div>
     <div class="accordion mt-3" id="mgRbacAccordion"><div class="accordion-item">
       <h2 class="accordion-header"><button class="accordion-button collapsed py-2" type="button" data-bs-toggle="collapse" data-bs-target="#mgRbacBody">Hak Akses Menu Guru (RBAC)</button></h2>
       <div id="mgRbacBody" class="accordion-collapse collapse"><div class="accordion-body"><p class="small text-muted">Hak akses di sini tersinkron otomatis dengan Daftar Pengguna & Otorisasi Fitur. Perubahan pada salah satu formulir akan berlaku pada akun guru yang sama.</p><div class="row g-2"><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_dashboard">Dashboard</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_dashboard" data-menu="dashboard"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_profil">Profil Madrasah</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_profil" data-menu="profil"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_struktur">Struktur Organisasi</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_struktur" data-menu="struktur"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_master">Data Master</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_master" data-menu="master"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_jurnal">Jurnal Guru</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_jurnal" data-menu="jurnal"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_operatorAbsensiGuru">Operator Absensi Guru QR</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_operatorAbsensiGuru" data-menu="operatorAbsensiGuru"><option value="off">Tidak diizinkan</option><option value="edit">Diizinkan memindai kartu guru lain</option></select><div class="form-text">Khusus guru/TU yang diberi kuasa Administrator.</div></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_honor">Honor Guru</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_honor" data-menu="honor"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_absensi">Absensi Pelajaran</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_absensi" data-menu="absensi"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_kesiswaan">Kesiswaan</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_kesiswaan" data-menu="kesiswaan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_sarpras">SarPras</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_sarpras" data-menu="sarpras"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_pengaturan">Pengaturan User</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_pengaturan" data-menu="pengaturan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_website">Link Terkait</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_website" data-menu="website"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_whatsapp">WhatsApp Gateway</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_whatsapp" data-menu="whatsapp"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_absensiQr">Absensi QR Siswa</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_absensiQr" data-menu="absensiQr"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_absensiPembiasaan">Absensi Pembiasaan</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_absensiPembiasaan" data-menu="absensiPembiasaan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_hariEfektif">Hari Efektif</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_hariEfektif" data-menu="hariEfektif"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_laporanBos">Laporan BOS</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_laporanBos" data-menu="laporanBos"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_ppdb">PPDB</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_ppdb" data-menu="ppdb"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="mg_rbac_pengumuman">Pengumuman</label><select class="form-select form-select-sm mg-rbac-mode" id="mg_rbac_pengumuman" data-menu="pengumuman"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div></div></div></div></div></div>
@@ -3805,7 +3812,7 @@
   function openModalGuru() {
     ['mgOldNip','mgNip','mgNama','mgNoHp','mgMapel','mgUsername','mgPassword'].forEach(function(id){document.getElementById(id).value='';});
     document.getElementById('mgTransport').value='0';document.getElementById('mgJabatan').value='0';
-    document.getElementById('mgTarif').value='0';document.getElementById('mgJabatanNama').value='Guru';
+    document.getElementById('mgTarif').value='0';document.getElementById('mgJabatanNama').value='Guru';document.getElementById('mgKategoriHonor').value='Pengajar';
     document.getElementById('mgFotoFile').value='';document.getElementById('mgFotoData').value='';document.getElementById('mgFotoPreview').innerHTML='';mgFotoDataUrl='';
     document.getElementById('mgPassword').placeholder='Tentukan password guru';
     document.getElementById('modalGuruTitle').innerText='Tambah Data Guru';setGuruRbacDefaults(null);
@@ -3817,7 +3824,7 @@
     document.getElementById('mgMapel').value=g[3]||'';document.getElementById('mgTransport').value=g[4]||0;document.getElementById('mgJabatan').value=g[5]||0;
     document.getElementById('mgUsername').value=g[6]||'';document.getElementById('mgPassword').value='';
     document.getElementById('mgPassword').placeholder=g[7]?'Password tersimpan (isi jika ingin mengganti)':'Tentukan password guru';
-    document.getElementById('mgTarif').value=g[10]||0;document.getElementById('mgJabatanNama').value=g[12]||'Guru';
+    document.getElementById('mgTarif').value=g[10]||0;document.getElementById('mgJabatanNama').value=g[12]||'Guru';document.getElementById('mgKategoriHonor').value=g[15]||'Pengajar';
     mgFotoDataUrl=String(g[11]||'');document.getElementById('mgFotoData').value=mgFotoDataUrl;document.getElementById('mgFotoFile').value='';
     document.getElementById('mgFotoPreview').innerHTML=mgFotoDataUrl?'<img src="'+escapeHtml(mgFotoDataUrl)+'" style="width:76px;height:76px;object-fit:cover;border-radius:14px;border:1px solid #dbe3ef" alt="Foto guru">':'';
     document.getElementById('modalGuruTitle').innerText='Edit Data Guru';
@@ -3828,7 +3835,7 @@
     var data={oldNip:document.getElementById('mgOldNip').value,nip:document.getElementById('mgNip').value.trim(),
       nama:document.getElementById('mgNama').value.trim(),noHp:document.getElementById('mgNoHp').value.trim(),mapel:document.getElementById('mgMapel').value.trim(),
       transport:document.getElementById('mgTransport').value,tjJabatan:document.getElementById('mgJabatan').value,
-      tarif:document.getElementById('mgTarif').value,jabatanNama:document.getElementById('mgJabatanNama').value.trim(),
+      tarif:document.getElementById('mgTarif').value,jabatanNama:document.getElementById('mgJabatanNama').value.trim(),kategoriHonor:document.getElementById('mgKategoriHonor').value,
       foto:document.getElementById('mgFotoData').value||mgFotoDataUrl,username:document.getElementById('mgUsername').value.trim(),
       password:document.getElementById('mgPassword').value.trim(),aksesDetail:getGuruRbacDetail()};
     if(!data.nip||!data.nama){appNotify('NIP dan Nama Guru wajib diisi!');return;}
@@ -4552,7 +4559,7 @@
     }).withSuccessHandler(function(data) {
       var freshData = Array.isArray(data) ? data : [];
       var snapshot = JSON.stringify(freshData.map(function(x) {
-        return [x.nip,x.nama,Number(x.kehadiran)||0,Number(x.tarif)||0,Number(x.hariTransport)||0,Number(x.transport)||0,Number(x.jabatan)||0];
+        return [x.nip,x.nama,x.kategoriHonor||'Pengajar',Number(x.kehadiran)||0,Number(x.tarif)||0,Number(x.hariTransport)||0,Number(x.transport)||0,Number(x.jabatan)||0];
       }));
       var previousSnapshot = honorSnapshotByPeriod[bulanTahun];
       var hadPrevious = Object.prototype.hasOwnProperty.call(honorSnapshotByPeriod, bulanTahun);
@@ -4568,7 +4575,7 @@
       }
       var html = '', grandTotal = 0;
       if (!currentHonorData.length) {
-        html = '<tr><td colspan="9" class="text-center text-muted">Belum ada data honor untuk bulan ini.</td></tr>';
+        html = '<tr><td colspan="10" class="text-center text-muted">Belum ada data pegawai pada Master Guru.</td></tr>';
       } else {
         currentHonorData.forEach(function(item) {
           var tarif = Number(item.tarif) || 0;
@@ -4578,8 +4585,11 @@
           var hariTransport = Number(item.hariTransport) || 0;
           var total = kehadiran * tarif + hariTransport * transport + jabatan;
           grandTotal += total;
+          var kategori = item.kategoriHonor || 'Pengajar';
+          var badgeKategori = kategori === 'Non-Pengajar' ? 'bg-info text-dark' : (kategori === 'Gabungan' ? 'bg-warning text-dark' : 'bg-primary');
           html += '<tr><td>' + (item.nip || '-') + '</td><td class="fw-semibold">' + (item.nama || '-') + '</td>';
-          html += '<td class="text-center"><span class="badge bg-primary">' + kehadiran + ' Hadir</span></td>';
+          html += '<td><span class="badge '+badgeKategori+'">' + kategori + '</span></td>';
+          html += '<td class="text-center"><span class="badge bg-primary">' + kehadiran + ' jurnal</span></td>';
           html += '<td class="text-end">' + formatRupiah(tarif) + '</td>';
           html += '<td class="text-center">' + hariTransport + ' hari</td>';
           html += '<td class="text-end">' + formatRupiah(transport) + '</td>';
@@ -4591,7 +4601,7 @@
       document.getElementById('honorGrandTotal').innerText = formatRupiah(grandTotal);
       if (btn) { btn.disabled = false; btn.innerHTML = '<i class="bi bi-arrow-clockwise me-1"></i> Hitung / Perbarui Rekap'; }
       if (hadPrevious && previousSnapshot === snapshot) appNotify('Data honor sudah terbaru.', 'success');
-      else appNotify('Rekap honor berhasil diperbarui dari data jurnal dan Master Guru.', 'success');
+      else appNotify('Rekap honor berhasil diperbarui dari jurnal, Absensi QR, dan Master Guru.', 'success');
     });
     if (isGuru) runner.getHonorGuruSaya(bulanTahun, currentUser.username);
     else runner.getRekapHonorGuru(bulanTahun);
@@ -4637,12 +4647,13 @@
     var rows = currentHonorData.map(function(item) {
       var tarif = Number(item.tarif) || 0;
       var transport = Number(item.transport) || 0, jabatan = Number(item.jabatan) || 0;
-      return [item.nip, item.nama, item.kehadiran + 'x Hadir', formatRupiah(tarif),
+      var kategori=item.kategoriHonor||'Pengajar';
+      return [item.nip, item.nama, kategori, item.kehadiran + ' jurnal', formatRupiah(tarif),
         (Number(item.hariTransport) || 0) + ' hari', formatRupiah(transport), formatRupiah(jabatan),
         formatRupiah((Number(item.kehadiran) || 0) * tarif + (Number(item.hariTransport) || 0) * transport + jabatan), ''];
     });
     generatePdfTable('Rekapitulasi Honor Guru - ' + bulan,
-      ['NIP', 'Nama Guru', 'Valid Hadir/Jam', 'Tarif/Jam (Master Guru)', 'Hari Transport', 'Tj Transpot/Hari', 'Tj Jabatan', 'Total Honor', 'Keterangan / Tanda Tangan'], rows);
+      ['NIP', 'Nama Pegawai', 'Kategori', 'Jurnal Valid', 'Tarif/Jam', 'Hari QR', 'Tj Transport/Hari', 'Tj Jabatan/Bulan', 'Total Honor', 'Keterangan / Tanda Tangan'], rows);
   }
 
   // Antrean penyimpanan per siswa agar perubahan cepat Jam 1-4 tidak saling menimpa.
