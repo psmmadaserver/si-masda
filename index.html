@@ -643,7 +643,9 @@
     @media (prefers-reduced-motion:reduce) {
       .mobile-bottom-nav .mobile-bottom-item,.mobile-bottom-nav .mobile-bottom-item i { transition:none!important; }
     }
-  </style>
+  
+    .dash-guru-live-time{margin-top:12px;padding:9px 12px;border-radius:10px;background:rgba(139,92,246,.09);color:#5731a8;font-size:13px;font-weight:700;letter-spacing:.2px;text-align:center;border:1px solid rgba(168,85,247,.16)}
+</style>
 
 <style>
 .masda-scan-screen{position:fixed;inset:0;z-index:999999;background:#eef2f8;overflow-y:auto;color:#18264c;font-family:inherit}
@@ -1193,14 +1195,14 @@
                 <div class="dash-bar-item">
                   <div class="dash-bar-label"><span><i class="bi bi-person-check-fill me-1"></i>Hadir Guru</span><strong id="dashGuruPctHadir">0%</strong></div>
                   <div class="dash-bar-track"><div class="dash-bar-fill" id="dashBarGuruHadir" style="width:0%"></div></div>
-                  <small id="dashGuruSubHadir">0 Jurnal Hadir</small>
+
                 </div>
                 <div class="dash-bar-item">
                   <div class="dash-bar-label"><span><i class="bi bi-person-exclamation me-1"></i>T. Hadir Guru</span><strong id="dashGuruPctTidakHadir">0%</strong></div>
                   <div class="dash-bar-track"><div class="dash-bar-fill" id="dashBarGuruTidakHadir" style="width:0%"></div></div>
-                  <small id="dashGuruSubTidakHadir">0 Jurnal T.Hadir</small>
                 </div>
               </div>
+              <div id="dashGuruLiveTime" class="dash-guru-live-time" aria-live="off">Memuat tanggal dan waktu…</div>
             </div>
           </div>
         </div>
@@ -3255,6 +3257,26 @@
     if (hasAccess('pengaturan')) loadPenggunaData();
   }
 
+  // Jam dan tanggal real-time pada kartu Statistik Kehadiran Guru.
+  var dashGuruClockTimer = null;
+  function updateDashGuruLiveClock() {
+    var el = document.getElementById('dashGuruLiveTime');
+    if (!el) return;
+    var now = new Date();
+    var hari = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+    var bulan = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+    var tanggal = hari[now.getDay()] + ', ' + now.getDate() + ' ' + bulan[now.getMonth()] + ' ' + now.getFullYear();
+    var jam = [now.getHours(), now.getMinutes(), now.getSeconds()].map(function(v){ return String(v).padStart(2,'0'); }).join(':');
+    el.textContent = tanggal + ' • ' + jam;
+  }
+  function startDashGuruLiveClock() {
+    updateDashGuruLiveClock();
+    if (dashGuruClockTimer) clearInterval(dashGuruClockTimer);
+    dashGuruClockTimer = setInterval(updateDashGuruLiveClock, 1000);
+  }
+  startDashGuruLiveClock();
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) updateDashGuruLiveClock(); });
+
   function updateDashboardAttendanceBar(barId, percent, paletteOffset, isTeacher) {
     var bar=document.getElementById(barId);
     if(!bar) return;
@@ -3334,9 +3356,7 @@
 
       if (data.absensiGuruHariIni) {
         document.getElementById('dashGuruPctHadir').innerText = data.absensiGuruHariIni.pctHadir + '%';
-        document.getElementById('dashGuruSubHadir').innerText = data.absensiGuruHariIni.totalHadir + ' Jurnal Hadir';
         document.getElementById('dashGuruPctTidakHadir').innerText = data.absensiGuruHariIni.pctTidakHadir + '%';
-        document.getElementById('dashGuruSubTidakHadir').innerText = data.absensiGuruHariIni.totalTidakHadir + ' Jurnal T.Hadir';
         updateDashboardAttendanceBar('dashBarGuruHadir', data.absensiGuruHariIni.pctHadir, 0, true);
         updateDashboardAttendanceBar('dashBarGuruTidakHadir', data.absensiGuruHariIni.pctTidakHadir, 72, true);
       }
@@ -3769,7 +3789,7 @@
       html+='<td class="text-end text-nowrap">'+formatRupiah(Number(g[4])||0)+'</td><td class="text-end text-nowrap">'+formatRupiah(Number(g[5])||0)+'</td>';
       html+='<td><span class="badge rounded-pill text-bg-light border">'+escapeHtml(g[12]||'Guru')+'</span></td>';
       html+='<td>'+escapeHtml(g[6]||'-')+'</td><td class="text-muted">'+(g[7]?'••••••••':'-')+'</td>';
-      html+='<td class="text-nowrap"><button type="button" class="btn btn-sm btn-outline-info me-1" title="Cetak ID Card Guru" data-nip="'+nip+'" onclick="printGuruIdCard(this.dataset.nip)"><i class="bi bi-person-badge"></i></button><button type="button" class="btn btn-sm btn-outline-success me-1" title="Cetak Kartu QR Guru" data-nip="'+nip+'" onclick="printGuruQrCard(this.dataset.nip)"><i class="bi bi-qr-code"></i></button><button class="btn btn-sm btn-outline-primary me-1" title="Edit data dan hak akses" data-nip="'+nip+'" onclick="editGuru(this.dataset.nip)"><i class="bi bi-pencil"></i></button><button type="button" class="btn btn-sm btn-outline-danger" title="Hapus guru" data-nip="'+nip+'" onclick="deleteGuru(this.dataset.nip)"><i class="bi bi-trash"></i></button></td></tr>';
+      html+='<td class="text-nowrap"><button type="button" class="btn btn-sm btn-outline-info me-1" title="Cetak ID Card Guru" data-nip="'+nip+'" onclick="printGuruIdCard(this.dataset.nip)"><i class="bi bi-person-badge"></i></button><button class="btn btn-sm btn-outline-primary me-1" title="Edit data dan hak akses" data-nip="'+nip+'" onclick="editGuru(this.dataset.nip)"><i class="bi bi-pencil"></i></button><button type="button" class="btn btn-sm btn-outline-danger" title="Hapus guru" data-nip="'+nip+'" onclick="deleteGuru(this.dataset.nip)"><i class="bi bi-trash"></i></button></td></tr>';
     });
     tbody.innerHTML=html;
   }
@@ -5445,6 +5465,8 @@
     doc.text(title, 14, 36);
     doc.autoTable({
       head: [headers], body: rows, startY: 41,
+      styles: options.guruFull ? { fontSize: 6, cellPadding: 2, overflow: 'linebreak', valign: 'middle' } : {},
+      headStyles: options.guruFull ? { fontSize: 6, cellPadding: 2 } : {},
       margin: { left: 14, right: 14, bottom: options.sarprasSignatures ? 48 : 14 },
       didDrawPage: function() {
         var pageCount = doc.internal.getNumberOfPages();
@@ -5475,7 +5497,17 @@
   }
 
   function exportPdfGuru() {
-    generatePdfTable('Data Master Guru', ['NIP', 'Nama', 'Email', 'Mapel'], globalMasterData.guru.map(function(g) { return [g[0], g[1], g[2], g[3]]; }));
+    var gurus = globalMasterData.guru || [];
+    if (!gurus.length) { appNotify('Data Master Guru masih kosong.', 'warning'); return; }
+    var headers = ['Foto', 'NIP', 'Nama Lengkap', 'No. HP', 'Mata Pelajaran', 'Tarif/Jam (Rp)', 'Tj. Transport (Rp)', 'Tj. Jabatan (Rp)', 'Jabatan', 'Username', 'Password Awal'];
+    var rows = gurus.map(function(g) {
+      return [
+        g[11] ? 'Foto tersedia' : 'Tidak ada foto', g[0] || '', g[1] || '', g[13] || '', g[3] || '',
+        formatRupiah(Number(g[10]) || 0), formatRupiah(Number(g[4]) || 0), formatRupiah(Number(g[5]) || 0),
+        g[12] || 'Guru', g[6] || '', g[7] ? '••••••••' : '-'
+      ];
+    });
+    generatePdfTable('Data Master Guru - Seluruh Kolom', headers, rows, { guruFull: true });
   }
 
   function exportPdfKelas() {
