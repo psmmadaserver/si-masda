@@ -4309,9 +4309,21 @@
   }
 
   function setJurnalFormEnabled(enabled) {
-    ['jurTanggal','jurHari','jurGuru','jurMapel','jurKelas','jurJam','jurMateri','btnSimpanJurnal'].forEach(function(id) {
-      var el = document.getElementById(id); if (el) el.disabled = !enabled;
+    var ids = ['jurTanggal','jurHari','jurGuru','jurMapel','jurKelas','jurJam','jurMateri','btnSimpanJurnal'];
+    ids.forEach(function(id) {
+      var el = document.getElementById(id);
+      if (el) { el.disabled = !enabled; el.setAttribute('aria-disabled', enabled ? 'false' : 'true'); }
     });
+    var formCard = document.getElementById('jurMateri') && document.getElementById('jurMateri').closest('.card');
+    if (formCard) formCard.classList.toggle('jurnal-locked', !enabled);
+    var notice = document.getElementById('jurScheduleNotice');
+    if (notice && !enabled) {
+      notice.className = 'alert alert-warning py-2 small mb-3';
+      if (!notice.textContent || notice.textContent.indexOf('Absen Masuk QR') < 0) {
+        notice.textContent = 'Form jurnal terkunci. Silakan lakukan Absen Masuk QR terlebih dahulu pada tanggal jurnal.';
+      }
+      notice.classList.remove('d-none');
+    }
   }
 
   function renderTableJurnal(list) {
