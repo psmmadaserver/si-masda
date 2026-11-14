@@ -1343,6 +1343,40 @@
 }
 </style>
 
+
+<style id="simada-background-gradient-final-fix-v2">
+/* FIX: tampilkan gambar gradient biru-putih tanpa lapisan gelap dari CSS versi sebelumnya.
+   URL aset baru juga menghindari gambar lama yang tersimpan di cache browser. */
+#publicHomePage.masda-public-home .masda-home-hero,
+#publicHomePage .masda-home-hero{
+  background-image:url('/assets/login-gradient-bg-v2.jpg') !important;
+  background-position:center center !important;
+  background-size:cover !important;
+  background-repeat:no-repeat !important;
+  background-color:#dff2ff !important;
+}
+#publicHomePage .masda-home-hero::before{
+  content:none !important;
+  display:none !important;
+  background:none !important;
+}
+#publicHomePage .masda-home-hero::after{
+  content:none !important;
+  display:none !important;
+  background:none !important;
+}
+@media(max-width:760px){
+  #publicHomePage.masda-public-home .masda-home-hero,
+  #publicHomePage .masda-home-hero{
+    background-image:url('/assets/login-gradient-bg-v2.jpg') !important;
+    background-position:center center !important;
+    background-size:cover !important;
+    background-repeat:no-repeat !important;
+    background-color:#dff2ff !important;
+  }
+}
+</style>
+
 </head>
 <body>
 <div id="appNotificationStack" aria-live="polite" aria-atomic="false"></div>
