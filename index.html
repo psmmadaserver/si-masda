@@ -1208,6 +1208,35 @@
   #publicHomePage .masda-home-login-shell{padding:19px 15px 17px}
   #publicHomePage .masda-login-brand-copy small{font-size:.59rem}
 }
+
+/* Penyesuaian: form login diposisikan di sisi kanan desktop dan dibuat transparan */
+@media (min-width:761px){
+  #publicHomePage .masda-home-hero{
+    grid-template-columns:minmax(0,1fr) minmax(360px,.9fr);
+    align-items:center;
+    column-gap:clamp(24px,4vw,68px);
+    padding-left:clamp(24px,4vw,70px);
+    padding-right:clamp(28px,6vw,100px);
+  }
+  #publicHomePage .masda-home-login-shell{
+    grid-column:2;
+    justify-self:end;
+    margin-left:auto;
+    margin-right:0;
+    width:min(100%,405px);
+    max-width:405px;
+    background:rgba(7,14,32,.43)!important;
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+  }
+}
+@media (max-width:760px){
+  #publicHomePage .masda-home-login-shell{
+    background:rgba(7,14,32,.58)!important;
+    backdrop-filter:blur(9px);
+    -webkit-backdrop-filter:blur(9px);
+  }
+}
 </style>
 
 </head>
