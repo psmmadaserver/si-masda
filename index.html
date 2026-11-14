@@ -1549,10 +1549,10 @@
           <div class="table-responsive">
             <table class="table table-bordered align-middle">
               <thead class="table-light">
-                <tr><th>ID</th><th>Tanggal</th><th>Guru</th><th>Mata Pelajaran</th><th>Kelas</th><th>Materi Pelajaran</th><th>Status Absen</th><th>Jarak GPS</th><th style="width: 80px;" class="no-print">Aksi</th></tr>
+                <tr><th>ID</th><th>Tanggal</th><th>Guru Pengisi</th><th>Guru Pengampu Jadwal</th><th>Mata Pelajaran</th><th>Kelas</th><th>Materi Pelajaran</th><th>Status Absen</th><th>Jarak GPS</th><th style="width: 80px;" class="no-print">Aksi</th></tr>
               </thead>
               <tbody id="tblJurnal">
-                <tr><td colspan="9" class="text-center text-muted">Memuat data jurnal...</td></tr>
+                <tr><td colspan="10" class="text-center text-muted">Memuat data jurnal...</td></tr>
               </tbody>
             </table>
           </div>
@@ -4265,17 +4265,20 @@
   function renderTableJurnal(list) {
     var tbody = document.getElementById('tblJurnal');
     if (!list || list.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">Belum ada catatan jurnal mengajar.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="10" class="text-center text-muted">Belum ada catatan jurnal mengajar.</td></tr>';
       return;
     }
-
     var html = '';
     list.forEach(function(j) {
-      var statusBadge = j[6] && j[6].indexOf('Hadir') > -1 ? 'bg-success' : 'bg-danger';
+      var statusBadge = j[6] && (j[6].indexOf('Hadir') > -1 || j[6].indexOf('Jurnal Tercatat') > -1) ? 'bg-success' : 'bg-danger';
+      var guruPengampu = j[9] || j[2] || '-';
+      var guruPengisi = j[10] || j[2] || '-';
       html += '<tr>';
-      html += '  <td>' + j[0] + '</td><td>' + j[1] + '</td><td>' + j[2] + '</td><td>' + j[3] + '</td><td>' + j[4] + '</td><td>' + j[5] + '</td>';
-      html += '  <td><span class="badge ' + statusBadge + '">' + j[6] + '</span></td><td>' + (j[7] || '-') + '</td>';
-      html += '  <td class="no-print"><button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteJurnal(\'' + j[0] + '\')"><i class="bi bi-trash"></i></button></td>';
+      html += '<td>' + escapeHtml(j[0] || '') + '</td><td>' + escapeHtml(j[1] || '') + '</td>';
+      html += '<td>' + escapeHtml(guruPengisi) + '</td><td>' + escapeHtml(guruPengampu) + '</td>';
+      html += '<td>' + escapeHtml(j[3] || '') + '</td><td>' + escapeHtml(j[4] || '') + '</td><td>' + escapeHtml(j[5] || '') + '</td>';
+      html += '<td><span class="badge ' + statusBadge + '">' + escapeHtml(j[6] || '-') + '</span></td><td>' + escapeHtml(j[7] || '-') + '</td>';
+      html += '<td class="no-print"><button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteJurnal(' + JSON.stringify(String(j[0] || '')) + ')"><i class="bi bi-trash"></i></button></td>';
       html += '</tr>';
     });
     tbody.innerHTML = html;
@@ -5406,8 +5409,8 @@
   }
 
   function exportPdfJurnal() {
-    var rows = globalJurnalData.map(function(j) { return [j[0], j[1], j[2], j[3], j[4], j[6], j[7]]; });
-    generatePdfTable('Riwayat Jurnal Guru', ['ID', 'Tanggal', 'Guru', 'Mapel', 'Kelas', 'Status Absen', 'Jarak GPS'], rows);
+    var rows = globalJurnalData.map(function(j) { return [j[0], j[1], j[10] || j[2], j[9] || j[2], j[3], j[4], j[5], j[6], j[7]]; });
+    generatePdfTable('Riwayat Jurnal Guru', ['ID', 'Tanggal', 'Guru Pengisi', 'Guru Pengampu Jadwal', 'Mapel', 'Kelas', 'Materi', 'Status Absen', 'Jarak GPS'], rows);
   }
 
   function exportPdfSarprasPerKategori() {
