@@ -1,14 +1,13 @@
 /* siMADA PWA service worker. API dan data dinamis tidak pernah disimpan ke cache. */
 'use strict';
-const CACHE_NAME = 'simada-shell-v5-background-gradient-blue-white-fix-v6';
+const CACHE_NAME = 'simada-shell-v5-home-redesign-v1';
 const APP_SHELL = [
   '/',
   '/index.html',
   '/manifest.webmanifest',
   '/icons/icon-192.png',
   '/icons/icon-512.png',
-  '/icons/icon-512-maskable.png',
-  '/assets/login-gradient-bg-v2.jpg'
+  '/icons/icon-512-maskable.png'
 ];
 
 self.addEventListener('install', event => {
