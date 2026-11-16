@@ -1062,6 +1062,37 @@
 
 </style>
 
+
+<style id="simada-master-sort-weekly-cards">
+#tabJadwal .jadwal-toolbar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:14px}
+#tabJadwal .jadwal-toolbar .jadwal-search{margin-left:auto;min-width:min(280px,100%)}
+#tabJadwal .jadwal-note{border:1px solid #bfdbfe;background:linear-gradient(100deg,#eff6ff,#f8fbff);color:#1e3a8a;border-radius:12px;padding:10px 14px;font-size:.88rem;margin-bottom:16px}
+#tabJadwal .jadwal-day-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:start}
+#tabJadwal .jadwal-day-card{--day:#2563eb;--soft:#eff6ff;--line:#bfdbfe;background:#fff;border:1px solid var(--line);border-radius:17px;overflow:hidden;box-shadow:0 4px 12px rgba(15,23,42,.07);min-width:0}
+#tabJadwal .jadwal-day-head{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:13px 14px;background:linear-gradient(120deg,var(--soft),#fff);border-bottom:1px solid var(--line)}
+#tabJadwal .jadwal-day-title{display:flex;align-items:center;gap:9px;font-size:1.12rem;font-weight:850;color:#17345f;margin:0}
+#tabJadwal .jadwal-day-title i{font-size:1.35rem;color:var(--day)}
+#tabJadwal .jadwal-add-day{border:1px solid var(--day);color:var(--day);background:#ffffffd9;border-radius:10px;padding:6px 10px;font-size:.8rem;font-weight:800;white-space:nowrap}
+#tabJadwal .jadwal-add-day:hover{background:var(--day);color:#fff}
+#tabJadwal .jadwal-day-table{width:100%;border-collapse:collapse;font-size:.82rem}
+#tabJadwal .jadwal-day-table th{background:#f8fafc;color:#475569;font-size:.72rem;padding:9px 7px;white-space:nowrap}
+#tabJadwal .jadwal-day-table td{padding:9px 7px;border-top:1px solid #e8eef6;vertical-align:middle}
+#tabJadwal .jadwal-day-table tr:hover td{background:var(--soft)}
+#tabJadwal .jadwal-slot{display:inline-block;background:var(--soft);color:var(--day);border:1px solid var(--line);border-radius:8px;padding:4px 7px;font-weight:800;white-space:nowrap}
+#tabJadwal .jadwal-conflict{display:inline-flex;align-items:center;gap:4px;background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;border-radius:8px;padding:4px 6px;font-size:.7rem;font-weight:800;margin-top:4px}
+#tabJadwal .jadwal-empty{padding:18px 12px;text-align:center;color:#94a3b8;font-size:.82rem}
+#tabJadwal .jadwal-actions{white-space:nowrap}
+#tabJadwal .jadwal-actions button{padding:3px 7px}
+#tabJadwal .jadwal-day-card.day-senin{--day:#1674d1;--soft:#eaf4ff;--line:#c7e1ff}
+#tabJadwal .jadwal-day-card.day-selasa{--day:#16834e;--soft:#e8fbf0;--line:#c1efd3}
+#tabJadwal .jadwal-day-card.day-rabu{--day:#7041c6;--soft:#f3eaff;--line:#e0cdfd}
+#tabJadwal .jadwal-day-card.day-kamis{--day:#d45b0b;--soft:#fff1df;--line:#ffddb0}
+#tabJadwal .jadwal-day-card.day-jumat{--day:#087f83;--soft:#e2fbfa;--line:#b7eeeb}
+#tabJadwal .jadwal-day-card.day-sabtu{--day:#c83258;--soft:#fff0f3;--line:#ffd0dc}
+@media(max-width:1100px){#tabJadwal .jadwal-day-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){#tabJadwal .jadwal-day-grid{grid-template-columns:1fr}#tabJadwal .jadwal-toolbar .jadwal-search{margin-left:0;width:100%}#tabJadwal .jadwal-day-table{font-size:.78rem}#tabJadwal .jadwal-day-table th,#tabJadwal .jadwal-day-table td{padding:8px 5px}}
+</style>
+
 </head>
 <body>
 <div id="appNotificationStack" aria-live="polite" aria-atomic="false"></div>
@@ -1938,22 +1969,17 @@
             </div>
           </div>
 
-          <!-- TAB JADWAL MAPEL -->
+          <!-- TAB JADWAL MAPEL: KARTU PER HARI -->
           <div class="tab-pane fade" id="tabJadwal">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-              <div class="d-flex gap-2">
-                <button type="button" class="btn btn-primary btn-sm" onclick="openModalJadwal()"><i class="bi bi-plus-lg me-1"></i> Tambah</button>
-                <button type="button" class="btn btn-success btn-sm" onclick="document.getElementById('fileExcelJadwal').click()"><i class="bi bi-file-earmark-excel me-1"></i> Upload</button>
-                <input type="file" id="fileExcelJadwal" class="d-none" accept=".xlsx, .xls" onchange="uploadExcelJadwal(event)">
-              </div>
+            <div class="jadwal-toolbar">
+              <button type="button" class="btn btn-primary btn-sm" onclick="openModalJadwal()"><i class="bi bi-plus-lg me-1"></i> Tambah Jadwal</button>
+              <button type="button" class="btn btn-success btn-sm" onclick="document.getElementById('fileExcelJadwal').click()"><i class="bi bi-file-earmark-excel me-1"></i> Upload Excel</button>
+              <input type="file" id="fileExcelJadwal" class="d-none" accept=".xlsx, .xls" onchange="uploadExcelJadwal(event)">
               <button type="button" class="btn btn-outline-danger btn-sm" onclick="exportPdfJadwal()"><i class="bi bi-file-pdf me-1"></i> PDF</button>
+              <input id="jadwalSearchInput" class="form-control form-control-sm jadwal-search" type="search" placeholder="Cari hari, kelas, mapel, atau guru..." oninput="renderTableJadwal(globalMasterData.jadwal || [])">
             </div>
-            <div class="table-responsive">
-              <table class="table table-bordered align-middle">
-                <thead class="table-light"><tr><th>ID</th><th>Hari</th><th>Kelas</th><th>Jam Ke</th><th>Mata Pelajaran</th><th>Guru Pengampu</th><th style="width: 110px;">Aksi</th></tr></thead>
-                <tbody id="tblMasterJadwal"></tbody>
-              </table>
-            </div>
+            <div class="jadwal-note"><i class="bi bi-info-circle-fill me-2"></i>Setiap hari memiliki warna berbeda. Periksa tanda <b>Slot sudah terisi</b> untuk membantu menghindari jadwal ganda pada hari, kelas, dan jam pelajaran yang sama.</div>
+            <div id="tblMasterJadwal" class="jadwal-day-grid"></div>
           </div>
         </div>
       </div>
@@ -4261,7 +4287,7 @@
 
   function populateAllDropdowns() {
     var gOpts = '<option value="">-- Pilih Guru --</option>';
-    globalMasterData.guru.forEach(function(g) {
+    sortedMasterGuru(globalMasterData.guru).forEach(function(g) {
       // Potong tampilan mapel jika sangat panjang
       var shortMapel = g[3] && g[3].length > 25 ? g[3].substring(0, 25) + '...' : (g[3] || '-');
       gOpts += '<option value="' + g[1] + '">' + g[1] + ' (' + shortMapel + ')</option>';
@@ -4269,14 +4295,14 @@
 
     var kOpts = '<option value="">-- Pilih Kelas --</option>';
     var kAllOpts = '<option value="">-- Semua Kelas --</option>';
-    globalMasterData.kelas.forEach(function(k) {
+    sortedMasterKelas(globalMasterData.kelas).forEach(function(k) {
       var opt = '<option value="' + k[1] + '">' + k[1] + '</option>';
       kOpts += opt;
       kAllOpts += opt;
     });
 
     var sOpts = '<option value="">-- Pilih Siswa --</option>';
-    globalMasterData.siswa.forEach(function(s) {
+    sortedMasterSiswa(globalMasterData.siswa).forEach(function(s) {
       sOpts += '<option value="' + s[0] + '|' + s[1] + '">' + s[1] + ' (' + s[2] + ')</option>';
     });
 
@@ -4291,12 +4317,20 @@
     document.getElementById('kesiswaanSelectSiswa').innerHTML = sOpts;
   }
 
+  // Pengurutan hanya pada sisi tampilan; urutan dan isi data di Spreadsheet tidak diubah.
+  function masterSortText(a, b) {
+    return String(a == null ? '' : a).trim().localeCompare(String(b == null ? '' : b).trim(), 'id', { sensitivity: 'base', numeric: true });
+  }
+  function sortedMasterGuru(list) { return (list || []).slice().sort(function(a,b){ return masterSortText(a[1],b[1]); }); }
+  function sortedMasterKelas(list) { return (list || []).slice().sort(function(a,b){ return masterSortText(a[1],b[1]); }); }
+  function sortedMasterSiswa(list) { return (list || []).slice().sort(function(a,b){ var byClass=masterSortText(a[2],b[2]); return byClass || masterSortText(a[1],b[1]); }); }
+
   // --- MASTER GURU ---
   function renderTableGuru(list) {
     var tbody=document.getElementById('tblMasterGuru');
     if(!list||!list.length){tbody.innerHTML='<tr><td colspan="12" class="text-center text-muted">Data Guru Kosong</td></tr>';return;}
     var html='';
-    list.forEach(function(g){
+    sortedMasterGuru(list).forEach(function(g){
       var nip=escapeHtml(g[0]||''), nama=escapeHtml(g[1]||'-');
       var initials=String(g[1]||'G').trim().split(/\s+/).slice(0,2).map(function(x){return x.charAt(0);}).join('').toUpperCase();
       var photo=String(g[11]||'').trim();
@@ -4440,7 +4474,7 @@
     }
 
     var html = '';
-    list.forEach(function(k) {
+    sortedMasterKelas(list).forEach(function(k) {
       html += '<tr>';
       html += '  <td>' + k[0] + '</td><td>' + k[1] + '</td><td>' + k[2] + '</td>';
       html += '  <td><button class="btn btn-sm btn-outline-primary me-1" onclick="editKelas(\'' + k[0] + '\')"><i class="bi bi-pencil"></i></button>';
@@ -4506,11 +4540,11 @@
     if (filter) {
       var selected = filter.value || '';
       var opts = '<option value="">Semua Kelas</option>';
-      (globalMasterData.kelas || []).forEach(function(k) { opts += '<option value="' + escapeHtml(String(k[1] || '')) + '">' + escapeHtml(String(k[1] || '')) + '</option>'; });
+      sortedMasterKelas(globalMasterData.kelas || []).forEach(function(k) { opts += '<option value="' + escapeHtml(String(k[1] || '')) + '">' + escapeHtml(String(k[1] || '')) + '</option>'; });
       filter.innerHTML = opts; filter.value = selected;
     }
     var kelasFilter = filter ? filter.value : '';
-    var filtered = (list || []).filter(function(s) { return !kelasFilter || String(s[2] || '') === kelasFilter; });
+    var filtered = sortedMasterSiswa(list || []).filter(function(s) { return !kelasFilter || String(s[2] || '') === kelasFilter; });
     if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted">Data Siswa Kosong</td></tr>'; return; }
     var html = '';
     filtered.forEach(function(s) {
@@ -4655,23 +4689,60 @@
     }
   }
 
-  // --- MASTER JADWAL ---
+  // --- MASTER JADWAL: KARTU PER HARI ---
+  var MASTER_JADWAL_DAYS = ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  function normalizeJadwalDay(value) {
+    var v = String(value || '').trim().toLowerCase();
+    var found = MASTER_JADWAL_DAYS.find(function(day){ return day.toLowerCase() === v; });
+    return found || String(value || '').trim();
+  }
+  function openModalJadwalForDay(day) {
+    openModalJadwal();
+    document.getElementById('mjHari').value = day;
+  }
   function renderTableJadwal(list) {
-    var tbody = document.getElementById('tblMasterJadwal');
-    if (!list || list.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Data Jadwal Kosong</td></tr>';
-      return;
-    }
-
-    var html = '';
-    list.forEach(function(j) {
-      html += '<tr>';
-      html += '  <td>' + j[0] + '</td><td>' + j[1] + '</td><td>' + j[2] + '</td><td>' + j[3] + '</td><td>' + j[4] + '</td><td>' + j[5] + '</td>';
-      html += '  <td><button class="btn btn-sm btn-outline-primary me-1" onclick="editJadwal(\'' + j[0] + '\')"><i class="bi bi-pencil"></i></button>';
-      html += '  <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteJadwal(\'' + j[0] + '\')"><i class="bi bi-trash"></i></button></td>';
-      html += '</tr>';
+    var root = document.getElementById('tblMasterJadwal');
+    if (!root) return;
+    var searchEl = document.getElementById('jadwalSearchInput');
+    var query = searchEl ? String(searchEl.value || '').trim().toLowerCase() : '';
+    var source = (list || []).slice();
+    var dayOrder = MASTER_JADWAL_DAYS.reduce(function(o,d,i){o[d.toLowerCase()]=i;return o;},{});
+    source.sort(function(a,b){
+      var da=normalizeJadwalDay(a[1]).toLowerCase(), db=normalizeJadwalDay(b[1]).toLowerCase();
+      var dayDiff=(dayOrder[da] == null ? 99 : dayOrder[da])-(dayOrder[db] == null ? 99 : dayOrder[db]);
+      if(dayDiff) return dayDiff;
+      var classDiff=masterSortText(a[2],b[2]); if(classDiff) return classDiff;
+      var jamA=parseInt(String(a[3]||'').replace(/\D/g,''),10)||0, jamB=parseInt(String(b[3]||'').replace(/\D/g,''),10)||0;
+      return jamA-jamB || masterSortText(a[4],b[4]);
     });
-    tbody.innerHTML = html;
+    if (query) source = source.filter(function(j){return [j[1],j[2],j[3],j[4],j[5]].join(' ').toLowerCase().indexOf(query)!==-1;});
+    var html = '';
+    MASTER_JADWAL_DAYS.forEach(function(day){
+      var dayRows = source.filter(function(j){return normalizeJadwalDay(j[1]).toLowerCase()===day.toLowerCase();});
+      var counts = {};
+      dayRows.forEach(function(j){var key=String(j[2]||'').trim().toLowerCase()+'|'+String(j[3]||'').trim().toLowerCase();counts[key]=(counts[key]||0)+1;});
+      var cls='day-'+day.toLowerCase();
+      html += '<section class="jadwal-day-card '+cls+'">';
+      html += '<div class="jadwal-day-head"><h5 class="jadwal-day-title"><i class="bi bi-calendar-week"></i>'+day+'</h5><button type="button" class="jadwal-add-day" onclick="openModalJadwalForDay(\''+day+'\')"><i class="bi bi-plus-lg me-1"></i>Tambah</button></div>';
+      if (!dayRows.length) {
+        html += '<div class="jadwal-empty">'+(query?'Tidak ada jadwal yang cocok.':'Belum ada jadwal untuk hari ini.')+'</div>';
+      } else {
+        html += '<div class="table-responsive"><table class="jadwal-day-table"><thead><tr><th>Jam</th><th>Kelas</th><th>Mata Pelajaran</th><th>Guru Pengampu</th><th>Aksi</th></tr></thead><tbody>';
+        dayRows.forEach(function(j){
+          var key=String(j[2]||'').trim().toLowerCase()+'|'+String(j[3]||'').trim().toLowerCase();
+          var conflict=counts[key]>1;
+          html += '<tr><td><span class="jadwal-slot">'+escapeHtml(j[3]||'-')+'</span>'+(conflict?'<div class="jadwal-conflict"><i class="bi bi-exclamation-triangle-fill"></i> Slot sudah terisi</div>':'')+'</td>';
+          html += '<td><span class="badge rounded-pill" style="background:var(--soft);color:var(--day);border:1px solid var(--line)">'+escapeHtml(j[2]||'-')+'</span></td>';
+          html += '<td>'+escapeHtml(j[4]||'-')+'</td><td>'+escapeHtml(j[5]||'-')+'</td>';
+          html += '<td class="jadwal-actions"><button type="button" class="btn btn-sm btn-outline-primary me-1" title="Edit" onclick="editJadwal(\''+String(j[0]).replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')"><i class="bi bi-pencil"></i></button><button type="button" class="btn btn-sm btn-outline-danger" title="Hapus" onclick="deleteJadwal(\''+String(j[0]).replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')"><i class="bi bi-trash"></i></button></td></tr>';
+        });
+        html += '</tbody></table></div>';
+      }
+      html += '</section>';
+    });
+    var otherDays = source.filter(function(j){return MASTER_JADWAL_DAYS.indexOf(normalizeJadwalDay(j[1]))===-1;});
+    if(otherDays.length){html+='<section class="jadwal-day-card"><div class="jadwal-day-head"><h5 class="jadwal-day-title"><i class="bi bi-calendar-week"></i>Hari Lainnya</h5></div><div class="jadwal-empty">Terdapat '+otherDays.length+' jadwal dengan nama hari di luar Senin–Sabtu.</div></section>';}
+    root.innerHTML = html;
   }
 
   function prepareJadwalModal() {
