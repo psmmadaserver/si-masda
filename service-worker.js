@@ -1,6 +1,6 @@
 /* siMADA PWA service worker. API dan data dinamis tidak pernah disimpan ke cache. */
 'use strict';
-const CACHE_NAME = 'simada-shell-v7-absensi-semua-kelas-fast-v1';
+const CACHE_NAME = 'simada-shell-v8-absensi-kolom-kelas-fix-v1';
 const APP_SHELL = [
   '/',
   '/index.html',

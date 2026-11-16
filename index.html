@@ -5396,12 +5396,12 @@
     var t = document.getElementById('absensiSelectTanggal').value;
     var tbody = document.getElementById('tblAbsensi');
     var token = ++absensiRenderToken;
-    tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted"><span class="spinner-border spinner-border-sm me-2"></span>Memuat data siswa... Mohon tunggu.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted"><span class="spinner-border spinner-border-sm me-2"></span>Memuat data siswa... Mohon tunggu.</td></tr>';
 
     google.script.run.withSuccessHandler(function(list) {
       if(token !== absensiRenderToken) return; // Abaikan respons filter sebelumnya.
       if (!list || list.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Tidak ada data siswa untuk filter kelas ini.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="text-center text-muted">Tidak ada data siswa untuk filter kelas ini.</td></tr>';
         return;
       }
       list=(list||[]).slice().sort(function(a,b){var c=String(a.kelas||'').localeCompare(String(b.kelas||''),'id',{numeric:true,sensitivity:'base'});return c||String(a.nama||'').localeCompare(String(b.nama||''),'id',{sensitivity:'base'});});
@@ -5414,7 +5414,8 @@
         for(;index<end;index++){
           var s=list[index];
           html += '<tr data-nisn="' + escapeHtml(s.nisn) + '" data-nama="' + escapeHtml(s.nama) + '" data-kelas="' + escapeHtml(s.kelas||'') + '">';
-          html += '  <td>' + escapeHtml(s.nisn) + '</td><td>' + escapeHtml(s.nama) + '</td>';
+          // Urutan kolom harus sama dengan header: Kelas, NISN, Nama Siswa.
+          html += '  <td>' + escapeHtml(s.kelas || '') + '</td><td>' + escapeHtml(s.nisn) + '</td><td>' + escapeHtml(s.nama) + '</td>';
           ['jam1','jam2','jam3','jam4'].forEach(function(jam){
             var status=String(s[jam]||'Alpha'), isChecked=['Hadir','Izin','Sakit','Terlambat'].indexOf(status)>=0;
             html += '  <td class="text-center"><label class="att-pill-wrap" title="Klik untuk mengubah Hadir/Bolos"><input type="checkbox" title="'+escapeHtml(status)+'" data-status="'+escapeHtml(status)+'" onchange="onAbsensiJamChange(this)" class="form-check-input att-cb '+jam+'" '+(isChecked?'checked':'')+'><span class="status-label att-pill '+getAbsensiPillClass(status)+'">'+escapeHtml(status)+'</span></label></td>';
@@ -5427,7 +5428,7 @@
       renderChunk();
     }).withFailureHandler(function(e){
       if(token !== absensiRenderToken) return;
-      tbody.innerHTML='<tr><td colspan="6" class="text-center text-danger">Gagal memuat absensi: '+escapeHtml(e&&e.message?e.message:e)+'</td></tr>';
+      tbody.innerHTML='<tr><td colspan="7" class="text-center text-danger">Gagal memuat absensi: '+escapeHtml(e&&e.message?e.message:e)+'</td></tr>';
       appNotify('Gagal memuat data Absensi Pelajaran. '+(e&&e.message?e.message:e));
     }).getSiswaByKelas(k, t);
   }
