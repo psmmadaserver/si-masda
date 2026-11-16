@@ -2068,7 +2068,7 @@
             <div class="col-12 col-md-3">
               <label class="form-label fw-semibold small">Kelas (Jadwal)</label>
               <select id="jurKelas" class="form-select form-select-sm" disabled onchange="updateJurnalJamOptions()">
-                <option value="">-- Pilih Kelas --</option>
+                <option value="">-- Semua Kelas --</option>
               </select>
             </div>
             <div class="col-12 col-md-2">
@@ -2188,7 +2188,7 @@
             <div class="col-6 col-md-3">
               <label class="form-label fw-semibold small">Pilih Kelas</label>
               <select id="absensiSelectKelas" class="form-select form-select-sm" onchange="loadAbsensiSiswa()">
-                <option value="">-- Pilih Kelas --</option>
+                <option value="">-- Semua Kelas --</option>
               </select>
             </div>
             <div class="col-12 col-md-6 text-end pt-2 pt-md-4 d-flex justify-content-end gap-1">
@@ -2199,18 +2199,18 @@
           </div>
         </div>
         <div class="card p-3 p-md-4 shadow-sm border-0">
-          <small class="text-muted mb-2 d-block">* Centang = <b>Hadir</b>, Kosong = <b>Bolos</b></small>
+          <small class="text-muted mb-2 d-block">* Tampilan awal memuat <b>Semua Kelas</b> (urut kelas dan nama A–Z). Centang = <b>Hadir</b>, Kosong = <b>Bolos</b></small>
           <div class="table-responsive">
             <table class="table table-hover align-middle">
               <thead class="table-light">
                 <tr>
-                  <th>NISN</th><th>Nama Siswa</th>
+                  <th>Kelas</th><th>NISN</th><th>Nama Siswa</th>
                   <th class="text-center">Jam 1</th><th class="text-center">Jam 2</th>
                   <th class="text-center">Jam 3</th><th class="text-center">Jam 4</th>
                 </tr>
               </thead>
               <tbody id="tblAbsensi">
-                <tr><td colspan="6" class="text-center text-muted">Silakan pilih kelas terlebih dahulu</td></tr>
+                <tr><td colspan="7" class="text-center text-muted">Silakan pilih kelas terlebih dahulu</td></tr>
               </tbody>
             </table>
           </div>
@@ -5281,8 +5281,9 @@
   function loadAbsensiKelasOptions(){
     google.script.run.withSuccessHandler(function(data){
       var rows=data||[], current=document.getElementById('absensiSelectKelas').value;
-      var options='<option value="">-- Pilih Kelas --</option>';
+      var options='<option value="">-- Semua Kelas --</option>';
       var allOptions='<option value="">-- Semua Kelas --</option>';
+      rows.sort(function(a,b){return String(a[1]||'').localeCompare(String(b[1]||''),'id',{numeric:true,sensitivity:'base'});});
       rows.forEach(function(k){
         var name=String(k[1]||'').trim(); if(!name)return;
         var safe=escapeHtml(name);
@@ -5295,6 +5296,8 @@
         var el=document.getElementById(id), keep=el?el.value:'';
         if(el){el.innerHTML=allOptions;if(rows.some(function(k){return String(k[1]||'').trim()===keep;}))el.value=keep;}
       });
+      var dateEl=document.getElementById('absensiSelectTanggal');if(dateEl&&!dateEl.value)dateEl.value=todayLocalInput_();
+      loadAbsensiSiswa();
     }).withFailureHandler(function(e){appNotify('Gagal memuat daftar kelas: '+(e.message||e));}).getDaftarKelasAbsensi();
   }
 
@@ -5310,6 +5313,7 @@
       if(!sel) return;
       var keep=sel.value;
       var rows=Array.isArray(data) ? data : ((data && Array.isArray(data.kelas)) ? data.kelas : []);
+      rows.sort(function(a,b){var an=Array.isArray(a)?(a[1]||a[0]||''):(a.namaKelas||a.kelas||a.nama||'');var bn=Array.isArray(b)?(b[1]||b[0]||''):(b.namaKelas||b.kelas||b.nama||'');return String(an).localeCompare(String(bn),'id',{numeric:true,sensitivity:'base'});});
       sel.innerHTML='<option value="">Semua Kelas</option>';
       rows.forEach(function(k){
         var name=String(Array.isArray(k) ? (k[1] || k[0] || '') : (k.namaKelas || k.kelas || k.nama || '')).trim();
@@ -5333,7 +5337,8 @@
     var date=document.getElementById('pembiasaanTanggal').value||todayLocalInput_(), kelas=document.getElementById('pembiasaanKelas').value;
     var body=document.getElementById('tblAbsensiPembiasaan');body.innerHTML='<tr><td colspan="5" class="text-center">Memuat data siswa...</td></tr>';
     google.script.run.withSuccessHandler(function(list){
-      pembiasaanRowsCache=list||[];
+      list=(list||[]).slice().sort(function(a,b){var c=String(a.kelas||'').localeCompare(String(b.kelas||''),'id',{numeric:true,sensitivity:'base'});return c||String(a.nama||'').localeCompare(String(b.nama||''),'id',{sensitivity:'base'});});
+      pembiasaanRowsCache=list;
       if(!list||!list.length){body.innerHTML='<tr><td colspan="5" class="text-center text-muted">Tidak ada siswa pada kelas tersebut.</td></tr>';return;}
       body.innerHTML=list.map(function(s){return '<tr data-nisn="'+escapeHtml(s.nisn)+'" data-nama="'+escapeHtml(s.nama)+'"><td>'+escapeHtml(s.nisn)+'</td><td>'+escapeHtml(s.nama)+'</td><td>'+escapeHtml(s.kelas)+'</td>'+['dhuha','dzuhur'].map(function(f){var value=s[f]||'';return '<td class="text-center"><div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">'+['Ya','Tidak'].map(function(choice){var id='pb_'+f+'_'+String(s.nisn).replace(/[^a-zA-Z0-9_-]/g,'')+'_'+choice;return '<label class="pb-choice pb-choice-'+(choice==='Ya'?'ya':'tidak')+'"><input id="'+id+'" type="checkbox" '+(value===choice?'checked':'')+' aria-label="'+f+' '+choice+'" onchange="ubahStatusPembiasaan(this,\''+f+'\',\''+choice+'\')"><span>'+choice+'</span></label>';}).join('')+'</div></td>';}).join('')+'</tr>';}).join('');
     }).withFailureHandler(function(e){body.innerHTML='<tr><td colspan="5" class="text-danger text-center">'+escapeHtml(e.message||e)+'</td></tr>';}).getAbsensiPembiasaan(date,kelas);
@@ -5390,23 +5395,19 @@
     var t = document.getElementById('absensiSelectTanggal').value;
     var tbody = document.getElementById('tblAbsensi');
 
-    if (!k) {
-      tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Silakan pilih kelas terlebih dahulu</td></tr>';
-      return;
-    }
-
     tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Memuat data siswa & absensi...</td></tr>';
 
     google.script.run.withSuccessHandler(function(list) {
       if (!list || list.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Tidak ada siswa terdaftar di kelas ' + k + '</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">Tidak ada data siswa untuk filter kelas ini.</td></tr>';
         return;
       }
 
+      list=(list||[]).slice().sort(function(a,b){var c=String(a.kelas||'').localeCompare(String(b.kelas||''),'id',{numeric:true,sensitivity:'base'});return c||String(a.nama||'').localeCompare(String(b.nama||''),'id',{sensitivity:'base'});});
       var html = '';
       list.forEach(function(s) {
-        html += '<tr data-nisn="' + s.nisn + '" data-nama="' + s.nama + '">';
-        html += '  <td>' + s.nisn + '</td><td>' + s.nama + '</td>';
+        html += '<tr data-nisn="' + escapeHtml(s.nisn) + '" data-nama="' + escapeHtml(s.nama) + '" data-kelas="' + escapeHtml(s.kelas||'') + '">';
+        html += '  <td>' + escapeHtml(s.nisn) + '</td><td>' + escapeHtml(s.nama) + '</td>';
         ['jam1','jam2','jam3','jam4'].forEach(function(jam){
           var status=String(s[jam]||'Alpha'), isChecked=['Hadir','Izin','Sakit','Terlambat'].indexOf(status)>=0;
           html += '  <td class="text-center"><label class="att-pill-wrap" title="Klik untuk mengubah Hadir/Bolos"><input type="checkbox" title="'+escapeHtml(status)+'" data-status="'+escapeHtml(status)+'" onchange="onAbsensiJamChange(this)" class="form-check-input att-cb '+jam+'" '+(isChecked?'checked':'')+'><span class="status-label att-pill '+getAbsensiPillClass(status)+'">'+escapeHtml(status)+'</span></label></td>';
@@ -5431,7 +5432,7 @@
     var row = input.closest('tr[data-nisn]');
     if (!row) return;
     var tanggal = document.getElementById('absensiSelectTanggal').value;
-    var kelas = document.getElementById('absensiSelectKelas').value;
+    var kelas = row.getAttribute('data-kelas') || document.getElementById('absensiSelectKelas').value;
     var item = {
       tanggal: tanggal,
       kelas: kelas,
@@ -5499,10 +5500,9 @@
 
   function simpanAbsensiLengkap() {
     var k=document.getElementById('absensiSelectKelas').value,t=document.getElementById('absensiSelectTanggal').value;
-    if(!k){appNotify('Pilih kelas terlebih dahulu!');return;}
     var rows=document.querySelectorAll('#tblAbsensi tr[data-nisn]'),list=[];
     rows.forEach(function(r){
-      var item={tanggal:t,kelas:k,nisn:r.getAttribute('data-nisn'),nama:r.getAttribute('data-nama')};
+      var item={tanggal:t,kelas:(r.getAttribute('data-kelas')||k),nisn:r.getAttribute('data-nisn'),nama:r.getAttribute('data-nama')};
       ['jam1','jam2','jam3','jam4'].forEach(function(j){var cb=r.querySelector('.'+j);item[j]=cb ? (cb.dataset.status || (cb.checked?'Hadir':'Alpha')) : 'Alpha';});
       list.push(item);
     });
