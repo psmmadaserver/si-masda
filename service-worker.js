@@ -1,6 +1,6 @@
 /* siMADA PWA service worker. API dan data dinamis tidak pernah disimpan ke cache. */
 'use strict';
-const CACHE_NAME = 'simada-shell-v13-kesiswaan-edit-hapus';
+const CACHE_NAME = 'simada-shell-v15-kesiswaan-filter-kelas';
 const APP_SHELL = [
   '/',
   '/index.html',
