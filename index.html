@@ -2043,7 +2043,7 @@
             <h5 class="fw-bold mb-1"><i class="bi bi-calendar2-check text-warning me-2"></i>Pencatatan Izin / Sakit Guru</h5>
             <p class="small text-muted mb-3">Admin atau guru yang diberi kewenangan dapat mencatat izin/sakit tanpa persetujuan lanjutan. Status berlaku pada rentang tanggal yang dipilih dan tidak menghapus riwayat QR.</p>
             <div class="row g-2 align-items-end">
-              <div class="col-12 col-md-3"><label class="form-label small fw-semibold" for="guruLeaveNip">NIP Guru</label><input id="guruLeaveNip" class="form-control" type="text" maxlength="40" placeholder="Masukkan NIP"></div>
+              <div class="col-12 col-md-3"><label class="form-label small fw-semibold" for="guruLeaveNip">NIP Guru</label><select id="guruLeaveNip" class="form-select"><option value="">-- Pilih Guru (NIP — Nama) --</option></select></div>
               <div class="col-6 col-md-2"><label class="form-label small fw-semibold" for="guruLeaveStatus">Status</label><select id="guruLeaveStatus" class="form-select"><option value="Izin">Izin</option><option value="Sakit">Sakit</option></select></div>
               <div class="col-6 col-md-2"><label class="form-label small fw-semibold" for="guruLeaveStart">Tanggal Mulai</label><input id="guruLeaveStart" class="form-control" type="date"></div>
               <div class="col-6 col-md-2"><label class="form-label small fw-semibold" for="guruLeaveEnd">Tanggal Selesai</label><input id="guruLeaveEnd" class="form-control" type="date"></div>
@@ -4931,6 +4931,29 @@
       populateJurnalExportClassFilter();
     }).getJurnalData();
     loadJurnalFormOptions();
+    loadGuruLeaveOptions();
+  }
+
+  function loadGuruLeaveOptions() {
+    var select=document.getElementById('guruLeaveNip');
+    if(!select) return;
+    var previous=select.value;
+    select.innerHTML='<option value="">Memuat data guru...</option>';
+    google.script.run.withSuccessHandler(function(rows){
+      rows=Array.isArray(rows)?rows:[];
+      rows.sort(function(a,b){return String(a.nama||'').localeCompare(String(b.nama||''),'id');});
+      var html='<option value="">-- Pilih Guru (NIP — Nama) --</option>';
+      rows.forEach(function(g){
+        var nip=String(g.nip||'').trim(), nama=String(g.nama||'').trim();
+        if(nip && nama) html+='<option value="'+escapeHtml(nip)+'">'+escapeHtml(nip+' — '+nama)+'</option>';
+      });
+      select.innerHTML=html;
+      if(previous && rows.some(function(g){return String(g.nip||'').trim()===previous;})) select.value=previous;
+      if(!rows.length) select.innerHTML='<option value="">Tidak ada data guru di Master Guru</option>';
+    }).withFailureHandler(function(err){
+      select.innerHTML='<option value="">Gagal memuat data guru</option>';
+      console.error('Gagal memuat daftar guru untuk Izin/Sakit:',err);
+    }).getGuruLeaveOptions();
   }
 
   function loadJurnalFormOptions() {
