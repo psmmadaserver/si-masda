@@ -1688,6 +1688,12 @@
                   <div class="dash-bar-label"><span><i class="bi bi-person-exclamation me-1"></i>T. Hadir Guru</span><strong id="dashGuruPctTidakHadir">0%</strong></div>
                   <div class="dash-bar-track"><div class="dash-bar-fill" id="dashBarGuruTidakHadir" style="width:0%"></div></div>
                 </div>
+                <div class="dash-bar-item"><div class="dash-bar-label"><span>Hadir Tepat Waktu</span><strong id="dashGuruPctTepat">0%</strong></div><div class="dash-bar-track"><div class="dash-bar-fill" id="dashBarGuruTepat" style="width:0%"></div></div></div>
+                <div class="dash-bar-item"><div class="dash-bar-label"><span>Terlambat</span><strong id="dashGuruPctTerlambat">0%</strong></div><div class="dash-bar-track"><div class="dash-bar-fill" id="dashBarGuruTerlambat" style="width:0%"></div></div></div>
+                <div class="dash-bar-item"><div class="dash-bar-label"><span>Izin</span><strong id="dashGuruPctIzin">0%</strong></div><div class="dash-bar-track"><div class="dash-bar-fill" id="dashBarGuruIzin" style="width:0%"></div></div></div>
+                <div class="dash-bar-item"><div class="dash-bar-label"><span>Sakit</span><strong id="dashGuruPctSakit">0%</strong></div><div class="dash-bar-track"><div class="dash-bar-fill" id="dashBarGuruSakit" style="width:0%"></div></div></div>
+                <div class="dash-bar-item"><div class="dash-bar-label"><span>Pulang Tepat Waktu <small>(dari QR pulang)</small></span><strong id="dashGuruPctPulangTepat">0%</strong></div><div class="dash-bar-track"><div class="dash-bar-fill" id="dashBarGuruPulangTepat" style="width:0%"></div></div></div>
+                <div class="dash-bar-item"><div class="dash-bar-label"><span>Pulang Awal <small>(dari QR pulang)</small></span><strong id="dashGuruPctPulangAwal">0%</strong></div><div class="dash-bar-track"><div class="dash-bar-fill" id="dashBarGuruPulangAwal" style="width:0%"></div></div></div>
               </div>
               <div id="dashGuruLiveTime" class="dash-guru-live-time" aria-live="off">Memuat tanggal dan waktu…</div>
             </div>
@@ -2032,6 +2038,21 @@
           <div id="guruQrReader" class="mt-3" style="max-width:520px"></div><div id="guruQrStatus" class="alert mt-3 mb-0 d-none"></div>
         </div></div>
         
+        <div class="card border-0 shadow-sm rounded-4 mb-4 no-print">
+          <div class="card-body p-3 p-md-4">
+            <h5 class="fw-bold mb-1"><i class="bi bi-calendar2-check text-warning me-2"></i>Pencatatan Izin / Sakit Guru</h5>
+            <p class="small text-muted mb-3">Admin atau guru yang diberi kewenangan dapat mencatat izin/sakit tanpa persetujuan lanjutan. Status berlaku pada rentang tanggal yang dipilih dan tidak menghapus riwayat QR.</p>
+            <div class="row g-2 align-items-end">
+              <div class="col-12 col-md-3"><label class="form-label small fw-semibold" for="guruLeaveNip">NIP Guru</label><input id="guruLeaveNip" class="form-control" type="text" maxlength="40" placeholder="Masukkan NIP"></div>
+              <div class="col-6 col-md-2"><label class="form-label small fw-semibold" for="guruLeaveStatus">Status</label><select id="guruLeaveStatus" class="form-select"><option value="Izin">Izin</option><option value="Sakit">Sakit</option></select></div>
+              <div class="col-6 col-md-2"><label class="form-label small fw-semibold" for="guruLeaveStart">Tanggal Mulai</label><input id="guruLeaveStart" class="form-control" type="date"></div>
+              <div class="col-6 col-md-2"><label class="form-label small fw-semibold" for="guruLeaveEnd">Tanggal Selesai</label><input id="guruLeaveEnd" class="form-control" type="date"></div>
+              <div class="col-12 col-md-3"><label class="form-label small fw-semibold" for="guruLeaveReason">Alasan</label><input id="guruLeaveReason" class="form-control" type="text" maxlength="500" placeholder="Alasan izin/sakit"></div>
+              <div class="col-12 d-flex flex-wrap gap-2 align-items-center"><button type="button" class="btn btn-warning" onclick="submitGuruLeave()"><i class="bi bi-check2-circle me-1"></i>Simpan Izin / Sakit</button><span id="guruLeaveResult" class="small"></span></div>
+            </div>
+          </div>
+        </div>
+
         <div class="card p-3 p-md-4 shadow-sm border-0 mb-4 no-print">
           <h6 class="fw-bold mb-3"><i class="bi bi-pencil-square me-2 text-primary"></i>Input Jurnal Pembelajaran</h6>
           <div id="jurScheduleNotice" class="d-none mb-3"></div>
@@ -2686,6 +2707,10 @@
         <option value="Jam 7">Jam 7</option>
         <option value="Jam 8">Jam 8</option>
       </select>
+    </div>
+    <div class="row g-2 mb-2">
+      <div class="col-6"><label class="form-label fw-semibold">Jam Mulai Pelajaran</label><input type="time" id="mjJamMulai" class="form-control" value="07:00"><div class="form-text">Acuan QR masuk guru.</div></div>
+      <div class="col-6"><label class="form-label fw-semibold">Jam Selesai Pelajaran</label><input type="time" id="mjJamSelesai" class="form-control" value="07:45"><div class="form-text">Acuan QR pulang guru.</div></div>
     </div>
     <div class="mb-2">
       <label class="form-label fw-semibold">Guru Pengampu</label>
@@ -3902,6 +3927,8 @@
         document.getElementById('dashGuruPctTidakHadir').innerText = data.absensiGuruHariIni.pctTidakHadir + '%';
         updateDashboardAttendanceBar('dashBarGuruHadir', data.absensiGuruHariIni.pctHadir, 0, true);
         updateDashboardAttendanceBar('dashBarGuruTidakHadir', data.absensiGuruHariIni.pctTidakHadir, 72, true);
+        var guruStats=[['Tepat','pctTepatWaktu'],['Terlambat','pctTerlambat'],['Izin','pctIzin'],['Sakit','pctSakit'],['PulangTepat','pctPulangTepatWaktu'],['PulangAwal','pctPulangAwal']];
+        guruStats.forEach(function(item,idx){var val=Number(data.absensiGuruHariIni[item[1]])||0;var label=document.getElementById('dashGuruPct'+item[0]);if(label)label.innerText=val+'%';updateDashboardAttendanceBar('dashBarGuru'+item[0],val,[145,35,190,260,155,15][idx],true);});
       }
 
       if (data.sarpras) {
@@ -4731,7 +4758,7 @@
         dayRows.forEach(function(j){
           var key=String(j[2]||'').trim().toLowerCase()+'|'+String(j[3]||'').trim().toLowerCase();
           var conflict=counts[key]>1;
-          html += '<tr><td><span class="jadwal-slot">'+escapeHtml(j[3]||'-')+'</span>'+(conflict?'<div class="jadwal-conflict"><i class="bi bi-exclamation-triangle-fill"></i> Slot sudah terisi</div>':'')+'</td>';
+          html += '<tr><td><span class="jadwal-slot">'+escapeHtml(j[3]||'-')+'</span>'+(j[6]||j[7]?'<div class="small text-muted mt-1">'+escapeHtml(j[6]||'--:--')+' – '+escapeHtml(j[7]||'--:--')+'</div>':'')+(conflict?'<div class="jadwal-conflict"><i class="bi bi-exclamation-triangle-fill"></i> Slot sudah terisi</div>':'')+'</td>';
           html += '<td><span class="badge rounded-pill" style="background:var(--soft);color:var(--day);border:1px solid var(--line)">'+escapeHtml(j[2]||'-')+'</span></td>';
           html += '<td>'+escapeHtml(j[4]||'-')+'</td><td>'+escapeHtml(j[5]||'-')+'</td>';
           html += '<td class="jadwal-actions"><button type="button" class="btn btn-sm btn-outline-primary me-1" title="Edit" onclick="editJadwal(\''+String(j[0]).replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')"><i class="bi bi-pencil"></i></button><button type="button" class="btn btn-sm btn-outline-danger" title="Hapus" onclick="deleteJadwal(\''+String(j[0]).replace(/\\/g,'\\\\').replace(/'/g,"\\'")+'\')"><i class="bi bi-trash"></i></button></td></tr>';
@@ -4759,6 +4786,8 @@
     document.getElementById('mjHari').value = 'Senin';
     document.getElementById('mjKelas').value = '';
     document.getElementById('mjJam').value = 'Jam 1';
+    document.getElementById('mjJamMulai').value = '07:00';
+    document.getElementById('mjJamSelesai').value = '07:45';
     document.getElementById('mjGuru').value = '';
     document.getElementById('mjMapel').value = '';
     document.getElementById('dlMapelGuru').innerHTML = '';
@@ -4802,6 +4831,8 @@
     document.getElementById('mjHari').value = j[1];
     document.getElementById('mjKelas').value = j[2];
     document.getElementById('mjJam').value = j[3];
+    document.getElementById('mjJamMulai').value = j[6] || '';
+    document.getElementById('mjJamSelesai').value = j[7] || '';
     document.getElementById('mjGuru').value = j[5];
     
     // Panggil logika untuk membangun datalist (opsi mapel)
@@ -4819,6 +4850,8 @@
       hari: document.getElementById('mjHari').value,
       kelas: document.getElementById('mjKelas').value,
       jam: document.getElementById('mjJam').value,
+      jamMulai: document.getElementById('mjJamMulai').value,
+      jamSelesai: document.getElementById('mjJamSelesai').value,
       mapel: document.getElementById('mjMapel').value.trim(),
       guru: document.getElementById('mjGuru').value
     };
@@ -5046,6 +5079,14 @@
     var seen = {};
     schedules.forEach(function(j) { var jam = String(j[3] || '').trim(); if (jam && !seen[jam]) { seen[jam] = true; html += '<option value="' + escapeHtml(jam) + '">' + escapeHtml(jam) + '</option>'; } });
     jamSelect.innerHTML = html;
+  }
+
+  function submitGuruLeave() {
+    var data={nip:String(document.getElementById('guruLeaveNip').value||'').trim(),status:document.getElementById('guruLeaveStatus').value,tanggalMulai:document.getElementById('guruLeaveStart').value,tanggalSelesai:document.getElementById('guruLeaveEnd').value||document.getElementById('guruLeaveStart').value,alasan:String(document.getElementById('guruLeaveReason').value||'').trim()};
+    var out=document.getElementById('guruLeaveResult');
+    if(!data.nip||!data.tanggalMulai||!data.alasan){appNotify('NIP, tanggal mulai, dan alasan wajib diisi.','warning');return;}
+    out.innerHTML='<span class="text-muted">Menyimpan...</span>';
+    google.script.run.withSuccessHandler(function(res){out.innerHTML='<span class="text-success">'+escapeHtml(res.message||'Berhasil disimpan.')+'</span>';document.getElementById('guruLeaveReason').value='';refreshDashboard();loadJurnalData();}).withFailureHandler(function(err){out.innerHTML='<span class="text-danger">'+escapeHtml(err.message||err)+'</span>';}).catatIzinSakitGuru(data,masdaGetSessionToken_());
   }
 
   function submitJurnal() {
