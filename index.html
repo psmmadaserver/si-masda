@@ -2142,26 +2142,26 @@
           <p class="text-muted small mb-0">Absensi guru berbasis QR Code dan GPS, pencatatan izin/sakit, serta rekap status kehadiran harian.</p>
         </div></div>
         <div class="card border-0 shadow-sm rounded-4 mb-4 no-print guru-qr-scan-card"><div class="card-body p-3 p-md-4">
-          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3"><div><h5 class="fw-bold mb-1"><i class="bi bi-qr-code-scan me-2"></i>Absensi Guru Kartu QR</h5></div><span class="badge rounded-pill guru-qr-pill">Khusus Guru</span></div>
-          <div class="row g-3 align-items-end"><div class="col-12 col-md-4"><label class="form-label small fw-semibold">Jenis Absensi</label><select id="guruQrJenis" class="form-select"><option value="masuk">Absen Masuk</option><option value="pulang">Absen Pulang</option></select></div><div class="col-12 col-md-8 d-flex gap-2 flex-wrap"><button type="button" class="btn btn-primary" onclick="startGuruQrScanner()"><i class="bi bi-camera-video me-1"></i>Mulai Scan Kartu</button><button type="button" class="btn btn-outline-secondary" onclick="stopGuruQrScanner()"><i class="bi bi-camera-video-off me-1"></i>Matikan Kamera</button></div></div>
-          <div id="guruQrReader" class="mt-3" style="max-width:520px"></div><div id="guruQrStatus" class="alert mt-3 mb-0 d-none"></div>
-        </div></div>
-        
-        <div class="card border-0 shadow-sm rounded-4 mb-4 no-print guru-qr-leave-card">
-          <div class="card-body p-3 p-md-4">
-            <h5 class="fw-bold mb-1"><i class="bi bi-calendar2-check me-2"></i>Pencatatan Izin / Sakit Guru</h5>
-            <p class="small text-muted mb-3">Admin atau guru yang diberi kewenangan dapat mencatat izin/sakit tanpa persetujuan lanjutan. Status berlaku pada rentang tanggal yang dipilih dan tidak menghapus riwayat QR.</p>
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3"><div><h5 class="fw-bold mb-1"><i class="bi bi-qr-code-scan me-2"></i>Pemindai Barcode Kartu Guru</h5><div class="small text-muted">Arahkan barcode pada kartu guru langsung ke kamera pemindai di bawah.</div></div><span class="badge rounded-pill guru-qr-pill">Khusus Guru</span></div>
+          <div class="row g-3 align-items-end mb-3">
+            <div class="col-12 col-md-4"><label class="form-label small fw-semibold" for="guruQrJenis">Pilih jenis absensi</label><select id="guruQrJenis" class="form-select" onchange="updateGuruQrMode()"><option value="masuk">Absen Masuk</option><option value="pulang">Absen Pulang</option></select></div>
+            <div class="col-12 col-md-8" id="guruQrStatusWrap"><label class="form-label small fw-semibold" for="guruQrStatusSelect">Status saat absen masuk</label><select id="guruQrStatusSelect" class="form-select" onchange="updateGuruQrMode()"><option value="Hadir">Hadir</option><option value="Izin">Izin</option><option value="Sakit">Sakit</option></select></div>
+          </div>
+          <div id="guruLeaveInline" class="guru-qr-inline-leave d-none mb-3">
+            <div class="fw-bold small mb-1"><i class="bi bi-calendar2-check me-2"></i>Catat Izin / Sakit Guru</div><div class="small text-muted mb-3">Pilih guru dan rentang tanggal. Riwayat QR yang sudah ada tidak dihapus.</div>
             <div class="row g-2 align-items-end">
-              <div class="col-12 col-md-3"><label class="form-label small fw-semibold" for="guruLeaveNip">NIP Guru</label><select id="guruLeaveNip" class="form-select"><option value="">-- Pilih Guru (NIP — Nama) --</option></select></div>
+              <div class="col-12 col-md-4"><label class="form-label small fw-semibold" for="guruLeaveNip">NIP Guru</label><select id="guruLeaveNip" class="form-select"><option value="">-- Pilih Guru (NIP — Nama) --</option></select></div>
               <div class="col-6 col-md-2"><label class="form-label small fw-semibold" for="guruLeaveStatus">Status</label><select id="guruLeaveStatus" class="form-select"><option value="Izin">Izin</option><option value="Sakit">Sakit</option></select></div>
               <div class="col-6 col-md-2"><label class="form-label small fw-semibold" for="guruLeaveStart">Tanggal Mulai</label><input id="guruLeaveStart" class="form-control" type="date"></div>
               <div class="col-6 col-md-2"><label class="form-label small fw-semibold" for="guruLeaveEnd">Tanggal Selesai</label><input id="guruLeaveEnd" class="form-control" type="date"></div>
-              <div class="col-12 col-md-3"><label class="form-label small fw-semibold" for="guruLeaveReason">Alasan</label><input id="guruLeaveReason" class="form-control" type="text" maxlength="500" placeholder="Alasan izin/sakit"></div>
-              <div class="col-12 d-flex flex-wrap gap-2 align-items-center"><button type="button" class="btn btn-warning" onclick="submitGuruLeave()"><i class="bi bi-check2-circle me-1"></i>Simpan Izin / Sakit</button><span id="guruLeaveResult" class="small"></span></div>
+              <div class="col-12 col-md-2"><label class="form-label small fw-semibold" for="guruLeaveReason">Alasan</label><input id="guruLeaveReason" class="form-control" type="text" maxlength="500" placeholder="Alasan izin/sakit"></div>
+              <div class="col-12 d-flex flex-wrap gap-2 align-items-center"><button type="button" class="btn btn-primary guru-qr-action-btn" onclick="submitGuruLeave()"><i class="bi bi-send me-1"></i>Catat Status &amp; Kirim Notifikasi</button><span id="guruLeaveResult" class="small"></span></div>
             </div>
           </div>
-        </div>
-
+          <div id="guruQrScannerArea"><div id="guruQrReader" class="mt-3" style="max-width:520px"></div><div id="guruQrStatus" class="alert mt-3 mb-0 d-none" role="status"></div>
+            <div class="d-flex justify-content-center gap-2 flex-wrap mt-3"><button type="button" class="btn btn-primary guru-qr-action-btn" onclick="startGuruQrScanner()"><i class="bi bi-camera-video me-1"></i>Mulai Kamera</button><button type="button" class="btn btn-outline-secondary" onclick="stopGuruQrScanner()"><i class="bi bi-camera-video-off me-1"></i>Matikan Kamera</button></div>
+          </div>
+        </div></div>
         <div class="card border-0 shadow-sm rounded-4 mb-4 guru-qr-table-card"><div class="card-body p-3 p-md-4">
           <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3"><div><h5 class="fw-bold mb-1"><i class="bi bi-table me-2"></i>Rekap Kehadiran Guru</h5><div class="small text-muted">Ringkasan status kehadiran seluruh guru pada tanggal yang dipilih.</div></div><div class="d-flex gap-2 align-items-end"><div><label class="form-label small mb-1" for="guruAttendanceDate">Tanggal</label><input type="date" id="guruAttendanceDate" class="form-control form-control-sm" onchange="loadRekapStatusKehadiranGuru()"></div><button type="button" class="btn btn-outline-primary btn-sm" onclick="loadRekapStatusKehadiranGuru()"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button></div></div>
           <div class="table-responsive"><table class="table table-bordered table-sm align-middle text-center" id="guruAttendanceSummaryTable"><thead class="table-primary"><tr><th>NIP</th><th>Nama Guru</th><th>Belum Absen</th><th>Masuk Tepat Waktu</th><th>Masuk Terlambat</th><th>Pulang Tepat Waktu</th><th>Pulang Awal</th><th>Izin</th><th>Sakit</th></tr></thead><tbody id="guruAttendanceSummaryBody"><tr><td colspan="9" class="text-muted">Pilih tanggal atau tekan Refresh.</td></tr></tbody><tfoot id="guruAttendanceSummaryFoot"></tfoot></table></div>
@@ -3859,7 +3859,7 @@
     if (targetKey === 'absensi') loadAbsensiKelasOptions();
     if (targetKey === 'absensiPembiasaan') loadAbsensiPembiasaanPage();
     if (targetKey === 'absensiQr') { updateQrAttendanceClock(); setQrAttendanceMode((document.getElementById('qrAttendanceMode')||{}).value||'masuk'); }
-    if (targetKey === 'absensiGuruQr') { loadGuruLeaveOptions(); var gd=document.getElementById('guruAttendanceDate'); if(gd && !gd.value) gd.value=getLocalTodayStr(); loadRekapStatusKehadiranGuru(); }
+    if (targetKey === 'absensiGuruQr') { loadGuruLeaveOptions(); updateGuruQrMode(); var gd=document.getElementById('guruAttendanceDate'); if(gd && !gd.value) gd.value=getLocalTodayStr(); loadRekapStatusKehadiranGuru(); }
     if (targetKey === 'pengumuman') loadPengumuman();
     if (targetKey === 'profil' && schoolMap) {
       setTimeout(function() { schoolMap.invalidateSize(); }, 300);
@@ -5234,7 +5234,8 @@
     var out=document.getElementById('guruLeaveResult');
     if(!data.nip||!data.tanggalMulai||!data.alasan){appNotify('NIP, tanggal mulai, dan alasan wajib diisi.','warning');return;}
     out.innerHTML='<span class="text-muted">Menyimpan...</span>';
-    google.script.run.withSuccessHandler(function(res){out.innerHTML='<span class="text-success">'+escapeHtml(res.message||'Berhasil disimpan.')+'</span>';document.getElementById('guruLeaveReason').value='';refreshDashboard();loadJurnalData();}).withFailureHandler(function(err){out.innerHTML='<span class="text-danger">'+escapeHtml(err.message||err)+'</span>';}).catatIzinSakitGuru(data,masdaGetSessionToken_());
+    var btn=document.querySelector('#guruLeaveInline .guru-qr-action-btn');if(btn)btn.disabled=true;
+    google.script.run.withSuccessHandler(function(res){var wa=res&&res.whatsapp;var waText=wa&&wa.success?'Notifikasi WhatsApp terkirim.':'Data tersimpan, tetapi WA belum terkirim: '+((wa&&wa.message)||'periksa nomor guru dan Gateway.');out.innerHTML='<span class="text-success">'+escapeHtml((res.message||'Berhasil disimpan.')+' '+waText)+'</span>';document.getElementById('guruLeaveReason').value='';if(btn)btn.disabled=false;refreshDashboard();loadJurnalData();loadRekapStatusKehadiranGuru();}).withFailureHandler(function(err){out.innerHTML='<span class="text-danger">'+escapeHtml(err.message||err)+'</span>';if(btn)btn.disabled=false;}).catatIzinSakitGuru(data,masdaGetSessionToken_());
   }
 
   function submitJurnal() {
@@ -6765,22 +6766,41 @@
 
 <script>
   // --- ABSENSI GURU QR + GPS ---
-  var guruQrScannerInstance=null, guruQrBusy=false;
-  function setGuruQrStatus(message,type){var el=document.getElementById('guruQrStatus');if(el){el.className='alert mt-3 mb-0 '+(type==='error'?'alert-danger':type==='success'?'alert-success':'alert-light border');el.textContent=message;}}
-  function stopGuruQrScanner(){if(guruQrScannerInstance){guruQrScannerInstance.stop().catch(function(){}).finally(function(){guruQrScannerInstance.clear();guruQrScannerInstance=null;});}guruQrBusy=false;}
+  var guruQrScannerInstance=null, guruQrBusy=false, guruQrStarting=false;
+  function setGuruQrStatus(message,type){var el=document.getElementById('guruQrStatus');if(el){el.className='alert mt-3 mb-0 '+(type==='error'?'alert-danger':type==='success'?'alert-success':'alert-light border');el.textContent=message;el.classList.remove('d-none');}}
+  function updateGuruQrMode(){
+    var jenis=document.getElementById('guruQrJenis'),status=document.getElementById('guruQrStatusSelect'),wrap=document.getElementById('guruQrStatusWrap'),leave=document.getElementById('guruLeaveInline'),scan=document.getElementById('guruQrScannerArea');
+    var pulang=jenis&&jenis.value==='pulang', izin=!pulang&&status&&status.value!=='Hadir';
+    if(wrap)wrap.classList.toggle('d-none',pulang); if(leave)leave.classList.toggle('d-none',!izin); if(scan)scan.classList.toggle('d-none',izin);
+    if(izin){var ls=document.getElementById('guruLeaveStatus');if(ls)ls.value=status.value;stopGuruQrScanner();}
+    if(!izin&&leave){var out=document.getElementById('guruLeaveResult');if(out)out.textContent='';}
+  }
+  function stopGuruQrScanner(){
+    var scanner=guruQrScannerInstance; if(!scanner)return Promise.resolve();
+    guruQrScannerInstance=null;
+    return Promise.resolve().then(function(){return scanner.stop().catch(function(){});}).then(function(){try{scanner.clear();}catch(e){}}).finally(function(){guruQrStarting=false;});
+  }
   function startGuruQrScanner(){
+    if(guruQrBusy||guruQrStarting)return;
     if(!window.Html5Qrcode){setGuruQrStatus('Library pemindai QR belum tersedia. Muat ulang aplikasi.','error');return;}
-    stopGuruQrScanner();guruQrScannerInstance=new Html5Qrcode('guruQrReader');
-    guruQrScannerInstance.start({facingMode:'environment'},{fps:10,qrbox:{width:240,height:240}},function(decoded){if(guruQrBusy)return;guruQrBusy=true;stopGuruQrScanner();submitGuruQrAttendance(decoded);},function(){}).then(function(){setGuruQrStatus('Kamera aktif. Arahkan ke QR Code pada kartu guru.');}).catch(function(err){setGuruQrStatus('Kamera tidak dapat dibuka: '+err,'error');});
+    var target=document.getElementById('guruQrReader'); if(!target){setGuruQrStatus('Area kamera tidak ditemukan. Muat ulang menu Absensi QR Guru.','error');return;}
+    guruQrStarting=true;setGuruQrStatus('Menyiapkan kamera…');
+    stopGuruQrScanner().then(function(){
+      var scanner=new Html5Qrcode('guruQrReader');guruQrScannerInstance=scanner;
+      return scanner.start({facingMode:'environment'},{fps:10,qrbox:function(w,h){var side=Math.floor(Math.min(w,h)*0.72);return {width:side,height:side};},aspectRatio:1.0},function(decoded){
+        if(guruQrBusy)return;guruQrBusy=true;setGuruQrStatus('QR terbaca. Memproses absensi dan lokasi GPS…');
+        stopGuruQrScanner().then(function(){submitGuruQrAttendance(decoded);});
+      },function(){}).then(function(){guruQrStarting=false;setGuruQrStatus('Kamera aktif. Arahkan QR pada kartu guru ke kotak pemindai.');}).catch(function(err){guruQrStarting=false;guruQrScannerInstance=null;try{scanner.clear();}catch(e){}setGuruQrStatus('Kamera tidak dapat dibuka: '+(err&&err.message?err.message:err),'error');});
+    });
   }
   function submitGuruQrAttendance(qrToken){
     setGuruQrStatus('Memeriksa QR dan mengambil lokasi GPS…');
     if(!navigator.geolocation){setGuruQrStatus('Browser tidak mendukung GPS.','error');guruQrBusy=false;return;}
     navigator.geolocation.getCurrentPosition(function(pos){
-      google.script.run.withSuccessHandler(function(res){setGuruQrStatus((res.message||'Absensi berhasil.')+' | '+(res.nama||'')+' | '+(res.waktu||'')+' | '+(res.jarak||0)+' m. '+(res.whatsapp&&res.whatsapp.success?'Notifikasi WhatsApp terkirim.':'WhatsApp belum terkirim: periksa nomor guru dan koneksi Gateway.'),'success');guruQrBusy=false;loadJurnalData();})
+      google.script.run.withSuccessHandler(function(res){res=res||{};var wa=res.whatsapp&&res.whatsapp.success?'Notifikasi WhatsApp terkirim.':'Absensi tercatat, tetapi WhatsApp belum terkirim: '+((res.whatsapp&&res.whatsapp.message)||'periksa nomor guru dan koneksi Gateway.');setGuruQrStatus((res.message||'Absensi berhasil.')+' | '+(res.nama||'')+' | '+(res.waktu||'')+' | '+(res.jarak||0)+' m. '+wa,'success');guruQrBusy=false;loadJurnalData();loadRekapStatusKehadiranGuru();})
       .withFailureHandler(function(err){setGuruQrStatus(err&&err.message?err.message:'Absensi gagal.','error');guruQrBusy=false;})
       .catatAbsensiGuruQr({qrToken:qrToken,jenis:document.getElementById('guruQrJenis').value,lat:pos.coords.latitude,lng:pos.coords.longitude});
-    },function(err){setGuruQrStatus('Lokasi GPS gagal diperoleh: '+err.message+'. Pastikan izin lokasi aktif.','error');guruQrBusy=false;},{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+    },function(err){setGuruQrStatus('Lokasi GPS gagal diperoleh: '+err.message+'. Pastikan izin lokasi aktif.','error');guruQrBusy=false;},{enableHighAccuracy:true,timeout:20000,maximumAge:0});
   }
   function printGuruQrCard(nip){
     var g=(globalMasterData.guru||[]).find(function(x){return String(x[0])===String(nip);});if(!g){appNotify('Data guru tidak ditemukan.','error');return;}
@@ -7211,22 +7231,41 @@
 
 <script>
   // --- ABSENSI GURU QR + GPS ---
-  var guruQrScannerInstance=null, guruQrBusy=false;
-  function setGuruQrStatus(message,type){var el=document.getElementById('guruQrStatus');if(el){el.className='alert mt-3 mb-0 '+(type==='error'?'alert-danger':type==='success'?'alert-success':'alert-light border');el.textContent=message;}}
-  function stopGuruQrScanner(){if(guruQrScannerInstance){guruQrScannerInstance.stop().catch(function(){}).finally(function(){guruQrScannerInstance.clear();guruQrScannerInstance=null;});}guruQrBusy=false;}
+  var guruQrScannerInstance=null, guruQrBusy=false, guruQrStarting=false;
+  function setGuruQrStatus(message,type){var el=document.getElementById('guruQrStatus');if(el){el.className='alert mt-3 mb-0 '+(type==='error'?'alert-danger':type==='success'?'alert-success':'alert-light border');el.textContent=message;el.classList.remove('d-none');}}
+  function updateGuruQrMode(){
+    var jenis=document.getElementById('guruQrJenis'),status=document.getElementById('guruQrStatusSelect'),wrap=document.getElementById('guruQrStatusWrap'),leave=document.getElementById('guruLeaveInline'),scan=document.getElementById('guruQrScannerArea');
+    var pulang=jenis&&jenis.value==='pulang', izin=!pulang&&status&&status.value!=='Hadir';
+    if(wrap)wrap.classList.toggle('d-none',pulang); if(leave)leave.classList.toggle('d-none',!izin); if(scan)scan.classList.toggle('d-none',izin);
+    if(izin){var ls=document.getElementById('guruLeaveStatus');if(ls)ls.value=status.value;stopGuruQrScanner();}
+    if(!izin&&leave){var out=document.getElementById('guruLeaveResult');if(out)out.textContent='';}
+  }
+  function stopGuruQrScanner(){
+    var scanner=guruQrScannerInstance; if(!scanner)return Promise.resolve();
+    guruQrScannerInstance=null;
+    return Promise.resolve().then(function(){return scanner.stop().catch(function(){});}).then(function(){try{scanner.clear();}catch(e){}}).finally(function(){guruQrStarting=false;});
+  }
   function startGuruQrScanner(){
+    if(guruQrBusy||guruQrStarting)return;
     if(!window.Html5Qrcode){setGuruQrStatus('Library pemindai QR belum tersedia. Muat ulang aplikasi.','error');return;}
-    stopGuruQrScanner();guruQrScannerInstance=new Html5Qrcode('guruQrReader');
-    guruQrScannerInstance.start({facingMode:'environment'},{fps:10,qrbox:{width:240,height:240}},function(decoded){if(guruQrBusy)return;guruQrBusy=true;stopGuruQrScanner();submitGuruQrAttendance(decoded);},function(){}).then(function(){setGuruQrStatus('Kamera aktif. Arahkan ke QR Code pada kartu guru.');}).catch(function(err){setGuruQrStatus('Kamera tidak dapat dibuka: '+err,'error');});
+    var target=document.getElementById('guruQrReader'); if(!target){setGuruQrStatus('Area kamera tidak ditemukan. Muat ulang menu Absensi QR Guru.','error');return;}
+    guruQrStarting=true;setGuruQrStatus('Menyiapkan kamera…');
+    stopGuruQrScanner().then(function(){
+      var scanner=new Html5Qrcode('guruQrReader');guruQrScannerInstance=scanner;
+      return scanner.start({facingMode:'environment'},{fps:10,qrbox:function(w,h){var side=Math.floor(Math.min(w,h)*0.72);return {width:side,height:side};},aspectRatio:1.0},function(decoded){
+        if(guruQrBusy)return;guruQrBusy=true;setGuruQrStatus('QR terbaca. Memproses absensi dan lokasi GPS…');
+        stopGuruQrScanner().then(function(){submitGuruQrAttendance(decoded);});
+      },function(){}).then(function(){guruQrStarting=false;setGuruQrStatus('Kamera aktif. Arahkan QR pada kartu guru ke kotak pemindai.');}).catch(function(err){guruQrStarting=false;guruQrScannerInstance=null;try{scanner.clear();}catch(e){}setGuruQrStatus('Kamera tidak dapat dibuka: '+(err&&err.message?err.message:err),'error');});
+    });
   }
   function submitGuruQrAttendance(qrToken){
     setGuruQrStatus('Memeriksa QR dan mengambil lokasi GPS…');
     if(!navigator.geolocation){setGuruQrStatus('Browser tidak mendukung GPS.','error');guruQrBusy=false;return;}
     navigator.geolocation.getCurrentPosition(function(pos){
-      google.script.run.withSuccessHandler(function(res){setGuruQrStatus((res.message||'Absensi berhasil.')+' | '+(res.nama||'')+' | '+(res.waktu||'')+' | '+(res.jarak||0)+' m. '+(res.whatsapp&&res.whatsapp.success?'Notifikasi WhatsApp terkirim.':'WhatsApp belum terkirim: periksa nomor guru dan koneksi Gateway.'),'success');guruQrBusy=false;loadJurnalData();})
+      google.script.run.withSuccessHandler(function(res){res=res||{};var wa=res.whatsapp&&res.whatsapp.success?'Notifikasi WhatsApp terkirim.':'Absensi tercatat, tetapi WhatsApp belum terkirim: '+((res.whatsapp&&res.whatsapp.message)||'periksa nomor guru dan koneksi Gateway.');setGuruQrStatus((res.message||'Absensi berhasil.')+' | '+(res.nama||'')+' | '+(res.waktu||'')+' | '+(res.jarak||0)+' m. '+wa,'success');guruQrBusy=false;loadJurnalData();loadRekapStatusKehadiranGuru();})
       .withFailureHandler(function(err){setGuruQrStatus(err&&err.message?err.message:'Absensi gagal.','error');guruQrBusy=false;})
       .catatAbsensiGuruQr({qrToken:qrToken,jenis:document.getElementById('guruQrJenis').value,lat:pos.coords.latitude,lng:pos.coords.longitude});
-    },function(err){setGuruQrStatus('Lokasi GPS gagal diperoleh: '+err.message+'. Pastikan izin lokasi aktif.','error');guruQrBusy=false;},{enableHighAccuracy:true,timeout:15000,maximumAge:0});
+    },function(err){setGuruQrStatus('Lokasi GPS gagal diperoleh: '+err.message+'. Pastikan izin lokasi aktif.','error');guruQrBusy=false;},{enableHighAccuracy:true,timeout:20000,maximumAge:0});
   }
   function printGuruQrCard(nip){
     var g=(globalMasterData.guru||[]).find(function(x){return String(x[0])===String(nip);});if(!g){appNotify('Data guru tidak ditemukan.','error');return;}
@@ -7278,6 +7317,16 @@
 #sec-jurnal .btn-jurnal-delete:hover{transform:translateY(-1px);filter:brightness(.96)}
 #sec-jurnal .btn-jurnal-delete:disabled{opacity:.6;cursor:wait}
 @media(max-width:767px){#sec-jurnal .jurnal-page-hero{padding:12px;gap:11px}#sec-jurnal .jurnal-hero-icon{width:46px;height:46px;flex-basis:46px;font-size:1.45rem}#sec-jurnal .jurnal-hero-art{font-size:1.7rem;gap:5px}#sec-jurnal .jurnal-section-title{margin:-.5rem -.5rem 1rem;font-size:.95rem}#sec-jurnal .jurnal-history-toolbar{align-items:stretch!important}#sec-jurnal .jurnal-history-title{font-size:1rem}}
+</style>
+
+<style id="simada-guru-qr-single-card-v1">
+.simada-guru-qr-page .guru-qr-scan-card{border-top:4px solid #7c3aed!important;background:#fff}
+.simada-guru-qr-page .guru-qr-scan-card .guru-qr-action-btn{border:0!important;border-radius:11px!important;background:linear-gradient(135deg,#a63df0,#5e1ac1)!important;color:#fff!important;font-weight:800!important;box-shadow:0 5px 14px rgba(112,39,192,.22)}
+.simada-guru-qr-page .guru-qr-scan-card .form-select,.simada-guru-qr-page .guru-qr-scan-card .form-control{border-color:#d9c9f3;border-radius:10px;min-height:42px}
+.simada-guru-qr-page .guru-qr-inline-leave{padding:15px;border:1px solid #d9c1f4;border-left:4px solid #8b3ed2;border-radius:13px;background:linear-gradient(120deg,#fbf7ff,#f5edff)}
+.simada-guru-qr-page #guruQrReader{width:100%;max-width:520px!important;min-height:230px;margin:18px auto 8px!important;padding:10px;background:linear-gradient(145deg,#170d32,#28104b 55%,#40116f);border:2px solid #9b4dff;box-shadow:0 0 0 4px rgba(151,71,235,.10),0 12px 28px rgba(62,20,113,.22);color:#fff;overflow:hidden}
+.simada-guru-qr-page #guruQrReader video{width:100%!important;border-radius:10px;object-fit:cover}
+@media(max-width:767.98px){.simada-guru-qr-page .guru-qr-inline-leave{padding:12px}.simada-guru-qr-page #guruQrReader{min-height:210px}}
 </style>
 </body>
 </html>
