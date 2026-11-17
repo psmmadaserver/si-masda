@@ -1094,6 +1094,66 @@
 </style>
 
 <style id="kes-subnav-v7">.kes-subnav{overflow-x:auto;overflow-y:hidden;white-space:nowrap;scrollbar-width:thin;-webkit-overflow-scrolling:touch;gap:4px}.kes-subnav .nav-item{flex:0 0 auto}.kes-subnav .nav-link{white-space:nowrap;border-radius:10px 10px 0 0;color:#536783;font-weight:600}.kes-subnav .nav-link.active{color:#173b87;border-bottom:3px solid #ffc107;background:#f5f8ff}@media(max-width:767.98px){.kes-subnav{flex-wrap:nowrap!important;justify-content:flex-start;padding-bottom:7px!important}.kes-subnav .nav-link{font-size:12px;padding:.55rem .7rem}.kes-subnav::-webkit-scrollbar{height:4px}.kes-subnav::-webkit-scrollbar-thumb{background:#a9bfed;border-radius:10px}}</style>
+
+<style id="simada-guru-qr-visual-v240">
+/* Penyegaran visual Absensi QR Guru saja — tidak mengubah alur maupun data. */
+.simada-guru-qr-page{--gq-purple:#6825c9;--gq-violet:#9b35ec;--gq-ink:#172653;--gq-line:#e4dcf8}
+.simada-guru-qr-page .guru-qr-hero{overflow:hidden;border:1px solid #e4d5ff!important;border-top:5px solid #7c35e8!important;background:linear-gradient(112deg,#fff 0%,#f6efff 48%,#eadcff 100%);box-shadow:0 10px 28px rgba(91,45,164,.12)!important}
+.simada-guru-qr-page .guru-qr-hero h4{font-size:clamp(1.25rem,2vw,1.8rem);font-weight:850;color:#172653;letter-spacing:-.035em}
+.simada-guru-qr-page .guru-qr-hero h4 i{color:#8538e8}
+.simada-guru-qr-page .guru-qr-hero p{color:#69779b!important}
+.simada-guru-qr-page .guru-qr-scan-card,.simada-guru-qr-page .guru-qr-leave-card,.simada-guru-qr-page .guru-qr-table-card{border:1px solid #e8defb!important;box-shadow:0 8px 24px rgba(54,45,105,.09)!important;overflow:hidden;background:rgba(255,255,255,.97)}
+.simada-guru-qr-page .guru-qr-scan-card{border-top:4px solid #6e2bd2!important;background:linear-gradient(145deg,#fff 0%,#faf6ff 100%)}
+.simada-guru-qr-page .guru-qr-scan-card h5,.simada-guru-qr-page .guru-qr-leave-card h5,.simada-guru-qr-page .guru-qr-table-card h5{color:#202d5b;font-weight:850}
+.simada-guru-qr-page .guru-qr-scan-card h5 i,.simada-guru-qr-page .guru-qr-leave-card h5 i,.simada-guru-qr-page .guru-qr-table-card h5 i{color:#8538e8}
+.simada-guru-qr-page .guru-qr-pill{background:linear-gradient(135deg,#e9d5ff,#d8b4fe);color:#54209d;padding:.48rem .8rem;font-weight:800}
+.simada-guru-qr-page #guruQrJenis,.simada-guru-qr-page #guruQrReader{border-radius:16px}
+.simada-guru-qr-page #guruQrReader{max-width:520px!important;margin:18px auto 8px!important;padding:10px;background:linear-gradient(145deg,#170d32,#28104b 55%,#40116f);border:2px solid #9b4dff;box-shadow:0 0 0 4px rgba(151,71,235,.10),0 12px 28px rgba(62,20,113,.22);color:#fff;overflow:hidden}
+.simada-guru-qr-page #guruQrReader video{border-radius:10px;object-fit:cover}
+.simada-guru-qr-page #guruQrReader button{border:0!important;border-radius:10px!important;background:linear-gradient(135deg,#a63df0,#5c19bd)!important;color:#fff!important;font-weight:750!important;padding:8px 14px!important}
+.simada-guru-qr-page .guru-qr-scan-card .btn-primary,.simada-guru-qr-page .guru-qr-leave-card .btn-warning{border:0;border-radius:11px;background:linear-gradient(135deg,#a63df0,#5e1ac1);color:#fff;font-weight:800;box-shadow:0 5px 12px rgba(112,39,192,.2)}
+.simada-guru-qr-page .guru-qr-scan-card .btn-outline-secondary{border-radius:11px;font-weight:700}
+.simada-guru-qr-page .guru-qr-leave-card{border-left:4px solid #bd70f5!important;background:linear-gradient(130deg,#fff 0%,#fbf6ff 100%)}
+.simada-guru-qr-page .guru-qr-leave-card .form-control,.simada-guru-qr-page .guru-qr-leave-card .form-select,.simada-guru-qr-page .guru-qr-scan-card .form-select{border-color:#d9c9f3;border-radius:10px;min-height:39px}
+.simada-guru-qr-page .guru-qr-leave-card .btn-warning{background:linear-gradient(135deg,#b64af0,#7824d2)}
+.simada-guru-qr-page .guru-qr-table-card{border-top:4px solid #6d2acb!important}
+.simada-guru-qr-page #guruAttendanceSummaryTable{border-collapse:separate;border-spacing:0;min-width:980px;border:1px solid #e6def4;border-radius:13px;overflow:hidden}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead th{padding:12px 9px;vertical-align:middle;color:#fff;font-size:.78rem;line-height:1.3;font-weight:850;border:0;border-right:1px solid rgba(255,255,255,.18);background:linear-gradient(135deg,#351078,#6420b2)}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead th:nth-child(3){background:linear-gradient(135deg,#64748b,#94a3b8)}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead th:nth-child(4){background:linear-gradient(135deg,#059669,#22c55e)}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead th:nth-child(5){background:linear-gradient(135deg,#d97706,#f59e0b)}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead th:nth-child(6){background:linear-gradient(135deg,#075acb,#1689f8)}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead th:nth-child(7){background:linear-gradient(135deg,#6d28d9,#a855f7)}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead th:nth-child(8){background:linear-gradient(135deg,#d69a00,#facc15);color:#392800}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead th:nth-child(9){background:linear-gradient(135deg,#dc2626,#fb5656)}
+.simada-guru-qr-page #guruAttendanceSummaryTable tbody td{padding:9px 10px;border-color:#ece7f5;background:#fff;color:#26345b;font-weight:650;vertical-align:middle}
+.simada-guru-qr-page #guruAttendanceSummaryTable tbody tr:nth-child(even) td{background:#faf8ff}
+.simada-guru-qr-page #guruAttendanceSummaryTable tbody tr:hover td{background:#f1eaff}
+.simada-guru-qr-page #guruAttendanceSummaryTable .guru-nip-cell{font-variant-numeric:tabular-nums;white-space:nowrap;color:#39466d;font-size:.82rem}
+.simada-guru-qr-page #guruAttendanceSummaryTable .guru-name-cell{font-weight:800;color:#1d2a55;min-width:170px}
+.simada-guru-qr-page .guru-status-mark{display:inline-flex;width:27px;height:27px;align-items:center;justify-content:center;border-radius:50%;font-size:17px;font-weight:1000;color:#fff;line-height:1;text-shadow:0 -1px 1px rgba(0,0,0,.35),0 1px 1px rgba(255,255,255,.45);border:1px solid rgba(255,255,255,.72);box-shadow:inset 0 2px 3px rgba(255,255,255,.65),inset 0 -4px 5px rgba(0,0,0,.22),0 2px 3px rgba(23,32,70,.2)}
+.simada-guru-qr-page .guru-status-mark.is-missing{background:linear-gradient(145deg,#cbd5e1,#64748b)}
+.simada-guru-qr-page .guru-status-mark.is-ontime{background:linear-gradient(145deg,#86efac,#16a34a)}
+.simada-guru-qr-page .guru-status-mark.is-late{background:linear-gradient(145deg,#fde68a,#f59e0b)}
+.simada-guru-qr-page .guru-status-mark.is-home-ontime{background:linear-gradient(145deg,#7dd3fc,#0875d1)}
+.simada-guru-qr-page .guru-status-mark.is-early{background:linear-gradient(145deg,#d8b4fe,#6d28d9)}
+.simada-guru-qr-page .guru-status-mark.is-leave{background:linear-gradient(145deg,#fef08a,#eab308);color:#674600}
+.simada-guru-qr-page .guru-status-mark.is-sick{background:linear-gradient(145deg,#fca5a5,#dc2626)}
+.simada-guru-qr-page .guru-status-empty{color:#a5aec2;font-weight:800;font-size:1rem}
+.simada-guru-qr-page #guruAttendanceSummaryFoot td{padding:12px 8px;background:linear-gradient(135deg,#eee3ff,#d9c2ff);color:#351078;border-color:#d8c4f6;font-weight:900;font-size:.95rem}
+.simada-guru-qr-page #guruAttendanceSummaryFoot td:nth-child(3){background:#e2e8f0;color:#334155}
+.simada-guru-qr-page #guruAttendanceSummaryFoot td:nth-child(4){background:#bbf7d0;color:#166534}
+.simada-guru-qr-page #guruAttendanceSummaryFoot td:nth-child(5){background:#fef3c7;color:#92400e}
+.simada-guru-qr-page #guruAttendanceSummaryFoot td:nth-child(6){background:#bfdbfe;color:#1e40af}
+.simada-guru-qr-page #guruAttendanceSummaryFoot td:nth-child(7){background:#e9d5ff;color:#6b21a8}
+.simada-guru-qr-page #guruAttendanceSummaryFoot td:nth-child(8){background:#fef08a;color:#854d0e}
+.simada-guru-qr-page #guruAttendanceSummaryFoot td:nth-child(9){background:#fecaca;color:#991b1b}
+.simada-guru-qr-page .guru-qr-table-card .small.text-muted{padding:12px 14px;margin-top:14px!important;border:1px solid #e7ddf7;border-radius:12px;background:linear-gradient(110deg,#faf5ff,#f4f0ff);color:#59658a!important;line-height:1.65}
+@media(max-width:767.98px){.simada-guru-qr-page .guru-qr-hero .card-body{padding:18px!important}.simada-guru-qr-page #guruQrReader{width:100%;max-width:100%!important}.simada-guru-qr-page #guruAttendanceSummaryTable thead th{font-size:.72rem;padding:10px 7px}.simada-guru-qr-page #guruAttendanceSummaryTable tbody td{padding:8px 7px}.simada-guru-qr-page .guru-status-mark{width:25px;height:25px}}
+</style>
+
+
+<style id="simada-guru-qr-legend-style">.simada-guru-qr-page .guru-qr-legend{padding:15px 16px;border:1px solid #e6dcf6;border-radius:15px;background:linear-gradient(115deg,#fbf8ff,#f3edff)}.simada-guru-qr-page .guru-qr-legend-title{font-weight:900;color:#54219b;margin-bottom:12px}.simada-guru-qr-page .guru-qr-legend-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}.simada-guru-qr-page .guru-qr-legend-grid>div{display:grid;grid-template-columns:30px 1fr;column-gap:7px;align-items:center;padding:7px;border-right:1px solid #ddd1ef}.simada-guru-qr-page .guru-qr-legend-grid .guru-status-mark{grid-row:span 2}.simada-guru-qr-page .guru-qr-legend-grid b{font-size:.76rem;color:#28345d;line-height:1.2}.simada-guru-qr-page .guru-qr-legend-grid small{font-size:.68rem;color:#687493;line-height:1.35;margin-top:3px}@media(max-width:1100px){.simada-guru-qr-page .guru-qr-legend-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(max-width:600px){.simada-guru-qr-page .guru-qr-legend-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.simada-guru-qr-page .guru-qr-legend-grid>div{border-right:0;border-bottom:1px solid #e5dcf2}}</style>
 </head>
 <body>
 <div id="appNotificationStack" aria-live="polite" aria-atomic="false"></div>
@@ -2032,20 +2092,20 @@
       </div>
 
       <!-- ABSENSI QR GURU -->
-      <div id="sec-absensiGuruQr" class="content-section d-none">
-        <div class="card border-0 shadow-sm rounded-4 mb-4"><div class="card-body p-3 p-md-4">
-          <h4 class="fw-bold mb-1"><i class="bi bi-person-vcard text-primary me-2"></i>Absensi QR Guru</h4>
+      <div id="sec-absensiGuruQr" class="content-section d-none simada-guru-qr-page">
+        <div class="card border-0 shadow-sm rounded-4 mb-4 guru-qr-hero"><div class="card-body p-3 p-md-4">
+          <h4 class="fw-bold mb-1"><i class="bi bi-person-vcard me-2"></i>Absensi QR Guru</h4>
           <p class="text-muted small mb-0">Absensi guru berbasis QR Code dan GPS, pencatatan izin/sakit, serta rekap status kehadiran harian.</p>
         </div></div>
-        <div class="card border-0 shadow-sm rounded-4 mb-4 no-print"><div class="card-body p-3 p-md-4">
-          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3"><div><h5 class="fw-bold mb-1"><i class="bi bi-qr-code-scan text-primary me-2"></i>Absensi Guru Kartu QR</h5></div><span class="badge rounded-pill text-bg-info">Khusus Guru</span></div>
+        <div class="card border-0 shadow-sm rounded-4 mb-4 no-print guru-qr-scan-card"><div class="card-body p-3 p-md-4">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3"><div><h5 class="fw-bold mb-1"><i class="bi bi-qr-code-scan me-2"></i>Absensi Guru Kartu QR</h5></div><span class="badge rounded-pill guru-qr-pill">Khusus Guru</span></div>
           <div class="row g-3 align-items-end"><div class="col-12 col-md-4"><label class="form-label small fw-semibold">Jenis Absensi</label><select id="guruQrJenis" class="form-select"><option value="masuk">Absen Masuk</option><option value="pulang">Absen Pulang</option></select></div><div class="col-12 col-md-8 d-flex gap-2 flex-wrap"><button type="button" class="btn btn-primary" onclick="startGuruQrScanner()"><i class="bi bi-camera-video me-1"></i>Mulai Scan Kartu</button><button type="button" class="btn btn-outline-secondary" onclick="stopGuruQrScanner()"><i class="bi bi-camera-video-off me-1"></i>Matikan Kamera</button></div></div>
           <div id="guruQrReader" class="mt-3" style="max-width:520px"></div><div id="guruQrStatus" class="alert mt-3 mb-0 d-none"></div>
         </div></div>
         
-        <div class="card border-0 shadow-sm rounded-4 mb-4 no-print">
+        <div class="card border-0 shadow-sm rounded-4 mb-4 no-print guru-qr-leave-card">
           <div class="card-body p-3 p-md-4">
-            <h5 class="fw-bold mb-1"><i class="bi bi-calendar2-check text-warning me-2"></i>Pencatatan Izin / Sakit Guru</h5>
+            <h5 class="fw-bold mb-1"><i class="bi bi-calendar2-check me-2"></i>Pencatatan Izin / Sakit Guru</h5>
             <p class="small text-muted mb-3">Admin atau guru yang diberi kewenangan dapat mencatat izin/sakit tanpa persetujuan lanjutan. Status berlaku pada rentang tanggal yang dipilih dan tidak menghapus riwayat QR.</p>
             <div class="row g-2 align-items-end">
               <div class="col-12 col-md-3"><label class="form-label small fw-semibold" for="guruLeaveNip">NIP Guru</label><select id="guruLeaveNip" class="form-select"><option value="">-- Pilih Guru (NIP — Nama) --</option></select></div>
@@ -2058,10 +2118,10 @@
           </div>
         </div>
 
-        <div class="card border-0 shadow-sm rounded-4 mb-4"><div class="card-body p-3 p-md-4">
-          <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3"><div><h5 class="fw-bold mb-1"><i class="bi bi-table text-primary me-2"></i>Rekap Kehadiran Guru</h5><div class="small text-muted">Ringkasan status kehadiran seluruh guru pada tanggal yang dipilih.</div></div><div class="d-flex gap-2 align-items-end"><div><label class="form-label small mb-1" for="guruAttendanceDate">Tanggal</label><input type="date" id="guruAttendanceDate" class="form-control form-control-sm" onchange="loadRekapStatusKehadiranGuru()"></div><button type="button" class="btn btn-outline-primary btn-sm" onclick="loadRekapStatusKehadiranGuru()"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button></div></div>
+        <div class="card border-0 shadow-sm rounded-4 mb-4 guru-qr-table-card"><div class="card-body p-3 p-md-4">
+          <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3"><div><h5 class="fw-bold mb-1"><i class="bi bi-table me-2"></i>Rekap Kehadiran Guru</h5><div class="small text-muted">Ringkasan status kehadiran seluruh guru pada tanggal yang dipilih.</div></div><div class="d-flex gap-2 align-items-end"><div><label class="form-label small mb-1" for="guruAttendanceDate">Tanggal</label><input type="date" id="guruAttendanceDate" class="form-control form-control-sm" onchange="loadRekapStatusKehadiranGuru()"></div><button type="button" class="btn btn-outline-primary btn-sm" onclick="loadRekapStatusKehadiranGuru()"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button></div></div>
           <div class="table-responsive"><table class="table table-bordered table-sm align-middle text-center" id="guruAttendanceSummaryTable"><thead class="table-primary"><tr><th>NIP</th><th>Nama Guru</th><th>Belum Absen</th><th>Masuk Tepat Waktu</th><th>Masuk Terlambat</th><th>Pulang Tepat Waktu</th><th>Pulang Awal</th><th>Izin</th><th>Sakit</th></tr></thead><tbody id="guruAttendanceSummaryBody"><tr><td colspan="9" class="text-muted">Pilih tanggal atau tekan Refresh.</td></tr></tbody><tfoot id="guruAttendanceSummaryFoot"></tfoot></table></div>
-          <div class="small text-muted mt-2"><strong>Keterangan:</strong> Belum Absen = belum melakukan QR Masuk; Masuk Tepat Waktu = QR sebelum jadwal; Masuk Terlambat = QR tepat pada/setelah jadwal; Pulang Tepat Waktu = QR Pulang sesuai/setelah jadwal; Pulang Awal = QR Pulang sebelum jadwal atau belum melakukan QR Pulang; Izin/Sakit menggantikan status Belum Absen.</div>
+          <div class="guru-qr-legend mt-3"><div class="guru-qr-legend-title"><i class="bi bi-info-circle-fill me-2"></i>Keterangan Simbol &amp; Status</div><div class="guru-qr-legend-grid"><div><span class="guru-status-mark is-missing">✓</span><b>Belum Absen</b><small>Belum melakukan QR Masuk pada tanggal tersebut.</small></div><div><span class="guru-status-mark is-ontime">✓</span><b>Masuk Tepat Waktu</b><small>Absen masuk sebelum jadwal dimulai.</small></div><div><span class="guru-status-mark is-late">✓</span><b>Masuk Terlambat</b><small>Absen masuk tepat pada atau setelah jadwal.</small></div><div><span class="guru-status-mark is-home-ontime">✓</span><b>Pulang Tepat Waktu</b><small>Absen pulang sesuai atau setelah jadwal selesai.</small></div><div><span class="guru-status-mark is-early">✓</span><b>Pulang Awal</b><small>Pulang sebelum jadwal selesai atau belum QR Pulang.</small></div><div><span class="guru-status-mark is-leave">✓</span><b>Izin</b><small>Tidak masuk dengan status izin tercatat.</small></div><div><span class="guru-status-mark is-sick">✓</span><b>Sakit</b><small>Tidak masuk dengan status sakit tercatat.</small></div></div><div class="small text-muted mt-2">Catatan: Status Izin/Sakit menggantikan kategori Belum Absen pada tanggal yang sama. Simbol centang menunjukkan kategori yang berlaku untuk guru tersebut.</div></div>
         </div></div>
       </div>
 
@@ -4961,7 +5021,7 @@
     google.script.run.withSuccessHandler(function(res){
       res=res||{};var rows=Array.isArray(res.rows)?res.rows:[], totals=res.totals||{};
       if(!rows.length){body.innerHTML='<tr><td colspan="9" class="text-muted">Tidak ada data guru.</td></tr>';return;}
-      body.innerHTML=rows.map(function(r){return '<tr><td>'+escapeHtml(r.nip||'')+'</td><td class="text-start">'+escapeHtml(r.nama||'')+'</td><td>'+ (r.status==='Belum Absen'?'●':'—') +'</td><td>'+(r.status==='Masuk Tepat Waktu'?'✓':'—')+'</td><td>'+(r.status==='Masuk Terlambat'?'✓':'—')+'</td><td>'+(r.pulang==='Pulang Tepat Waktu'?'✓':'—')+'</td><td>'+(r.pulang==='Pulang Awal'?'✓':'—')+'</td><td>'+(r.status==='Izin'?'✓':'—')+'</td><td>'+(r.status==='Sakit'?'✓':'—')+'</td></tr>';}).join('');
+      body.innerHTML=rows.map(function(r){function mark(ok,kind){return ok?'<span class="guru-status-mark '+kind+'" aria-label="Ada">✓</span>':'<span class="guru-status-empty">—</span>';}return '<tr><td class="guru-nip-cell">'+escapeHtml(r.nip||'')+'</td><td class="text-start guru-name-cell">'+escapeHtml(r.nama||'')+'</td><td>'+mark(r.status==='Belum Absen','is-missing')+'</td><td>'+mark(r.status==='Masuk Tepat Waktu','is-ontime')+'</td><td>'+mark(r.status==='Masuk Terlambat','is-late')+'</td><td>'+mark(r.pulang==='Pulang Tepat Waktu','is-home-ontime')+'</td><td>'+mark(r.pulang==='Pulang Awal','is-early')+'</td><td>'+mark(r.status==='Izin','is-leave')+'</td><td>'+mark(r.status==='Sakit','is-sick')+'</td></tr>';}).join('');
       if(foot)foot.innerHTML='<tr class="table-light fw-bold"><td colspan="2">Total Guru: '+rows.length+'</td><td>'+(totals.belumAbsen||0)+'</td><td>'+(totals.tepatWaktu||0)+'</td><td>'+(totals.terlambat||0)+'</td><td>'+(totals.pulangTepat||0)+'</td><td>'+(totals.pulangAwal||0)+'</td><td>'+(totals.izin||0)+'</td><td>'+(totals.sakit||0)+'</td></tr>';
     }).withFailureHandler(function(err){body.innerHTML='<tr><td colspan="9" class="text-danger">Gagal memuat rekap: '+escapeHtml(err&&err.message||err)+'</td></tr>';}).getRekapStatusKehadiranGuru(tanggal);
   }

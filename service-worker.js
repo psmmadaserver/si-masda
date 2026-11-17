@@ -1,6 +1,6 @@
 /* siMADA PWA service worker. API dan data dinamis tidak pernah disimpan ke cache. */
 'use strict';
-const CACHE_NAME = 'simada-shell-v19-absensi-qr-guru';
+const CACHE_NAME = 'simada-shell-v20-absensi-qr-guru-visual';
 const APP_SHELL = [
   '/',
   '/index.html',
