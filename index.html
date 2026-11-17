@@ -1154,6 +1154,50 @@
 
 
 <style id="simada-guru-qr-legend-style">.simada-guru-qr-page .guru-qr-legend{padding:15px 16px;border:1px solid #e6dcf6;border-radius:15px;background:linear-gradient(115deg,#fbf8ff,#f3edff)}.simada-guru-qr-page .guru-qr-legend-title{font-weight:900;color:#54219b;margin-bottom:12px}.simada-guru-qr-page .guru-qr-legend-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}.simada-guru-qr-page .guru-qr-legend-grid>div{display:grid;grid-template-columns:30px 1fr;column-gap:7px;align-items:center;padding:7px;border-right:1px solid #ddd1ef}.simada-guru-qr-page .guru-qr-legend-grid .guru-status-mark{grid-row:span 2}.simada-guru-qr-page .guru-qr-legend-grid b{font-size:.76rem;color:#28345d;line-height:1.2}.simada-guru-qr-page .guru-qr-legend-grid small{font-size:.68rem;color:#687493;line-height:1.35;margin-top:3px}@media(max-width:1100px){.simada-guru-qr-page .guru-qr-legend-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(max-width:600px){.simada-guru-qr-page .guru-qr-legend-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.simada-guru-qr-page .guru-qr-legend-grid>div{border-right:0;border-bottom:1px solid #e5dcf2}}</style>
+
+<style id="simada-premium-menu-refresh-v1">
+/* Lapisan visual premium: tidak mengubah event, data, maupun aturan bisnis. */
+#mainApp .content-section{--menu-a:#2563eb;--menu-b:#06b6d4;--menu-soft:#eff6ff}
+#sec-profil{--menu-a:#0ea5e9;--menu-b:#2563eb;--menu-soft:#eff8ff}
+#sec-struktur{--menu-a:#7c3aed;--menu-b:#2563eb;--menu-soft:#f5f3ff}
+#sec-hariEfektif{--menu-a:#0f9f8f;--menu-b:#22c55e;--menu-soft:#ecfdf5}
+#sec-honor{--menu-a:#059669;--menu-b:#d4a017;--menu-soft:#ecfdf5}
+#sec-absensi{--menu-a:#2563eb;--menu-b:#0891b2;--menu-soft:#eff6ff}
+#sec-absensiPembiasaan{--menu-a:#0d9488;--menu-b:#65a30d;--menu-soft:#f0fdf4}
+#sec-ppdb{--menu-a:#1d4ed8;--menu-b:#7c3aed;--menu-soft:#eef2ff}
+#sec-pengumuman{--menu-a:#ea580c;--menu-b:#2563eb;--menu-soft:#fff7ed}
+#sec-kesiswaan{--menu-a:#db2777;--menu-b:#7c3aed;--menu-soft:#fdf2f8}
+#sec-sarpras{--menu-a:#0284c7;--menu-b:#059669;--menu-soft:#ecfeff}
+#sec-pengaturan{--menu-a:#4f46e5;--menu-b:#0891b2;--menu-soft:#eef2ff}
+#mainApp .content-section:not(#sec-dashboard)>h4:first-child{position:relative;padding:16px 20px;margin:0 0 20px!important;border:1px solid rgba(255,255,255,.9);border-top:4px solid var(--menu-a);border-radius:18px;background:linear-gradient(110deg,#fff 0%,var(--menu-soft) 100%);box-shadow:0 8px 24px rgba(15,23,42,.055);color:#172554;letter-spacing:-.025em}
+#mainApp .content-section:not(#sec-dashboard)>h4:first-child:before{content:"";display:inline-block;width:7px;height:25px;margin-right:11px;vertical-align:-5px;border-radius:8px;background:linear-gradient(180deg,var(--menu-a),var(--menu-b));box-shadow:0 3px 9px color-mix(in srgb,var(--menu-a) 28%,transparent)}
+#mainApp .content-section .card{border:1px solid rgba(148,163,184,.19)!important;border-radius:17px!important;box-shadow:0 7px 22px rgba(15,23,42,.055)!important;transition:transform .18s ease,box-shadow .18s ease}
+#mainApp .content-section .card:hover{box-shadow:0 12px 28px rgba(15,23,42,.085)!important}
+#mainApp .content-section .card .card-header{border-bottom:1px solid rgba(148,163,184,.18);background:linear-gradient(100deg,var(--menu-soft),#fff);border-radius:16px 16px 0 0}
+#mainApp .content-section .table-responsive{border-radius:14px;scrollbar-width:thin;scrollbar-color:#94a3b8 #edf2f7}
+#mainApp .content-section table.table{--bs-table-bg:transparent;border-collapse:separate;border-spacing:0;overflow:hidden;margin-bottom:0;font-size:.88rem}
+#mainApp .content-section table.table thead th{background:linear-gradient(105deg,var(--menu-a),var(--menu-b))!important;color:#fff!important;border-color:rgba(255,255,255,.18)!important;font-weight:800;letter-spacing:.015em;white-space:nowrap;padding:12px 11px;vertical-align:middle}
+#mainApp .content-section table.table tbody td{padding:10px 11px;vertical-align:middle;border-color:#e7edf4;color:#334155}
+#mainApp .content-section table.table tbody tr:nth-child(even)>td{background:color-mix(in srgb,var(--menu-soft) 64%,#fff)}
+#mainApp .content-section table.table tbody tr:hover>td{background:color-mix(in srgb,var(--menu-soft) 88%,#fff)}
+#mainApp .content-section table.table tfoot th,#mainApp .content-section table.table tfoot td{background:linear-gradient(100deg,var(--menu-soft),#fff);font-weight:800;border-color:#dbe5ef}
+#mainApp .content-section .form-control,#mainApp .content-section .form-select{border-radius:10px;border-color:#d6e0eb;min-height:38px}
+#mainApp .content-section .form-control:focus,#mainApp .content-section .form-select:focus{border-color:var(--menu-a);box-shadow:0 0 0 .2rem color-mix(in srgb,var(--menu-a) 15%,transparent)}
+#mainApp .content-section .btn{border-radius:10px;font-weight:700;transition:transform .16s ease,box-shadow .16s ease}
+#mainApp .content-section .btn:hover{transform:translateY(-1px);box-shadow:0 5px 12px rgba(15,23,42,.12)}
+#mainApp .content-section .badge{border:1px solid rgba(255,255,255,.55);box-shadow:0 3px 8px rgba(15,23,42,.12);padding:.42em .7em;letter-spacing:.01em}
+/* Pertahankan warna status jam 1-4 dan YA/Tidak: hanya dekorasi umum tabel yang disentuh. */
+#sec-absensi .badge,#sec-absensiPembiasaan .badge{box-shadow:0 2px 6px rgba(15,23,42,.10)}
+#sec-honor .teacher-honor-hero{background:linear-gradient(125deg,#047857 0%,#0f766e 48%,#b88716 100%);box-shadow:0 16px 34px rgba(5,150,105,.18)}
+#sec-honor .honor-stat-card{border-top:3px solid #10b981!important;background:linear-gradient(145deg,#fff,#ecfdf5);}
+#sec-honor #honorTableWrap{border-top:4px solid #059669!important}
+#sec-profil .card,#sec-struktur .card,#sec-hariEfektif .card,#sec-ppdb .card,#sec-pengumuman .card,#sec-kesiswaan .card,#sec-sarpras .card,#sec-pengaturan .card{background:linear-gradient(145deg,#fff 0%,var(--menu-soft) 160%)}
+@media(max-width:767.98px){#mainApp .content-section:not(#sec-dashboard)>h4:first-child{padding:13px 14px;font-size:1.05rem;margin-bottom:14px!important}#mainApp .content-section table.table{font-size:.79rem}#mainApp .content-section table.table thead th{padding:10px 9px}#mainApp .content-section table.table tbody td{padding:9px}}
+/* Slip honor khusus cetak */
+#honorSlipPrintRoot{display:none}
+@media print{body.printing-honor-slip #mainApp{display:none!important}body.printing-honor-slip #honorSlipPrintRoot{display:block!important;position:static!important;width:100%!important;color:#111!important;font-family:Arial,sans-serif!important}body.printing-honor-slip #honorSlipPrintRoot .slip-sheet{display:block!important;page-break-after:always;break-after:page;padding:10mm 12mm;min-height:260mm}body.printing-honor-slip #honorSlipPrintRoot .slip-sheet:last-child{page-break-after:auto;break-after:auto}body.printing-honor-slip #honorSlipPrintRoot .slip-head{display:flex;align-items:center;gap:16px;border-bottom:3px double #111;padding-bottom:12px;margin-bottom:18px}body.printing-honor-slip #honorSlipPrintRoot .slip-logo{width:76px;height:76px;object-fit:contain}body.printing-honor-slip #honorSlipPrintRoot .slip-school{text-align:center;flex:1}body.printing-honor-slip #honorSlipPrintRoot .slip-school h2{font-size:18pt;margin:0 0 4px;font-weight:800}body.printing-honor-slip #honorSlipPrintRoot .slip-school p{margin:0;font-size:9pt}body.printing-honor-slip #honorSlipPrintRoot .slip-title{text-align:center;font-size:14pt;font-weight:800;letter-spacing:.06em;margin:18px 0 4px}body.printing-honor-slip #honorSlipPrintRoot .slip-period{text-align:center;margin-bottom:20px;font-size:10pt}body.printing-honor-slip #honorSlipPrintRoot .slip-ident{width:100%;margin-bottom:16px}body.printing-honor-slip #honorSlipPrintRoot .slip-ident td{padding:4px 7px;font-size:10pt}body.printing-honor-slip #honorSlipPrintRoot .slip-lines{width:100%;border-collapse:collapse;margin:12px 0}body.printing-honor-slip #honorSlipPrintRoot .slip-lines th,body.printing-honor-slip #honorSlipPrintRoot .slip-lines td{border:1px solid #444;padding:9px;font-size:10pt}body.printing-honor-slip #honorSlipPrintRoot .slip-lines th{background:#eaf3ef!important;color:#111!important;text-align:left}body.printing-honor-slip #honorSlipPrintRoot .slip-total{font-weight:800;font-size:12pt;background:#e8f5ee!important}body.printing-honor-slip #honorSlipPrintRoot .slip-sign{display:flex;justify-content:space-between;gap:30px;margin-top:38px;text-align:center;font-size:10pt}body.printing-honor-slip #honorSlipPrintRoot .slip-sign>div{width:42%}body.printing-honor-slip #honorSlipPrintRoot .slip-sign .space{height:62px}body.printing-honor-slip #honorSlipPrintRoot .slip-sign strong{text-decoration:underline} @page{size:A4;margin:8mm}}
+</style>
+
 </head>
 <body>
 <div id="appNotificationStack" aria-live="polite" aria-atomic="false"></div>
@@ -2234,7 +2278,7 @@
               <button type="button" class="btn btn-primary btn-sm w-100" id="btnHitungHonor" onclick="loadHonorGuru()"><i class="bi bi-arrow-clockwise me-1"></i> Hitung / Perbarui Rekap</button>
             </div>
             <div class="col-12 col-md-4">
-              <button type="button" class="btn btn-outline-danger btn-sm w-100" onclick="exportPdfHonor()"><i class="bi bi-file-pdf me-1"></i> Export PDF</button>
+              <div class="d-flex gap-2"><button type="button" class="btn btn-outline-danger btn-sm flex-fill" onclick="exportPdfHonor()"><i class="bi bi-file-pdf me-1"></i> Export PDF</button><button type="button" class="btn btn-success btn-sm flex-fill" onclick="printHonorSlips()"><i class="bi bi-printer me-1"></i> Cetak Semua Slip</button></div>
             </div>
           </div>
         </div>
@@ -2243,7 +2287,7 @@
           <div class="teacher-honor-hero p-4 p-md-5 mb-4">
             <div class="d-flex flex-wrap justify-content-between align-items-start gap-3">
               <div><div class="small text-uppercase fw-bold muted-light mb-2"><i class="bi bi-stars me-1"></i> Ringkasan Honor Bulanan</div><h3 class="fw-bold mb-1" id="teacherHonorName">Honor Guru</h3><div class="muted-light" id="teacherHonorPeriod">Periode -</div></div>
-              <div class="text-md-end"><div class="small muted-light">TOTAL HONOR</div><div class="display-6 fw-bold" id="teacherHonorTotal">Rp 0</div></div>
+              <div class="text-md-end"><div class="small muted-light">TOTAL HONOR</div><div class="display-6 fw-bold" id="teacherHonorTotal">Rp 0</div><button type="button" class="btn btn-light btn-sm mt-2" onclick="printHonorSlips()"><i class="bi bi-printer me-1"></i> Cetak Slip Saya</button></div>
             </div>
           </div>
           <div class="row g-3 mb-4">
@@ -2259,19 +2303,18 @@
           <div class="table-responsive">
             <table class="table table-bordered align-middle">
               <thead class="table-light">
-                <tr><th>NIP / ID</th><th>Nama Pegawai</th><th>Kategori</th><th class="text-center">Jurnal Valid</th><th class="text-end">Tarif / Jam</th><th class="text-center">Hari QR</th><th class="text-end">Tj Transport / Hari</th><th class="text-end">Tj Jabatan / Bulan</th><th class="text-end">Total Honor</th><th>Keterangan / Tanda Tangan</th></tr>
+                <tr><th>NIP / ID</th><th>Nama Pegawai</th><th>Kategori</th><th class="text-center">Jurnal Valid</th><th class="text-end">Tarif / Jam</th><th class="text-center">Hari QR</th><th class="text-end">Tj Transport / Hari</th><th class="text-end">Tj Jabatan / Bulan</th><th class="text-end">Total Honor</th><th>Keterangan / Tanda Tangan</th><th class="text-center">Slip</th></tr>
               </thead>
               <tbody id="tblHonor">
                 <tr><td colspan="10" class="text-center text-muted">Silakan tentukan bulan dan klik "Hitung Honor"</td></tr>
               </tbody>
               <tfoot class="table-light fw-bold">
-                <tr><td colspan="9" class="text-end">GRAND TOTAL:</td><td class="text-end text-success" id="honorGrandTotal">Rp 0</td></tr>
+                <tr><td colspan="10" class="text-end">GRAND TOTAL:</td><td class="text-end text-success" id="honorGrandTotal">Rp 0</td></tr>
               </tfoot>
             </table>
           </div>
         </div>
       </div>
-
       <!-- ABSENSI PELAJARAN -->
       <div id="sec-absensi" class="content-section d-none">
         <h4 class="fw-bold mb-3 mb-md-4">Absensi Pelajaran Digital</h4>
@@ -5307,10 +5350,10 @@
     var isGuru = currentUser && String(currentUser.role).toLowerCase() === 'guru';
     if (!bulanTahun) { appNotify('Silakan pilih Bulan & Tahun terlebih dahulu!'); return; }
     if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Memperbarui...'; }
-    tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">Sedang memperbarui rekap honor...</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="11" class="text-center text-muted">Sedang memperbarui rekap honor...</td></tr>';
     var runner = google.script.run.withFailureHandler(function(err) {
       if (btn) { btn.disabled = false; btn.innerHTML = '<i class="bi bi-arrow-clockwise me-1"></i> Hitung / Perbarui Rekap'; }
-      tbody.innerHTML = '<tr><td colspan="9" class="text-center text-danger">' + (err.message || err) + '</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="11" class="text-center text-danger">' + (err.message || err) + '</td></tr>';
       appNotify('Gagal memperbarui rekap honor: ' + (err.message || err), 'error');
     }).withSuccessHandler(function(data) {
       var freshData = Array.isArray(data) ? data : [];
@@ -5331,7 +5374,7 @@
       }
       var html = '', grandTotal = 0;
       if (!currentHonorData.length) {
-        html = '<tr><td colspan="10" class="text-center text-muted">Belum ada data pegawai pada Master Guru.</td></tr>';
+        html = '<tr><td colspan="11" class="text-center text-muted">Belum ada data pegawai pada Master Guru.</td></tr>';
       } else {
         currentHonorData.forEach(function(item) {
           var tarif = Number(item.tarif) || 0;
@@ -5350,7 +5393,8 @@
           html += '<td class="text-center">' + hariTransport + ' hari</td>';
           html += '<td class="text-end">' + formatRupiah(transport) + '</td>';
           html += '<td class="text-end">' + formatRupiah(jabatan) + '</td>';
-          html += '<td class="text-end fw-bold text-dark">' + formatRupiah(total) + '</td><td style="min-width:150px;height:48px"></td></tr>';
+          html += '<td class="text-end fw-bold text-dark">' + formatRupiah(total) + '</td><td style="min-width:150px;height:48px"></td>';
+          html += '<td class="text-center"><button type="button" class="btn btn-sm btn-outline-success" title="Cetak slip guru ini" onclick="printHonorSlipByNip(decodeURIComponent(\'' + encodeURIComponent(String(item.nip || '')) + '\'))"><i class="bi bi-printer-fill"></i></button></td></tr>';
         });
       }
       tbody.innerHTML = html;
@@ -5393,6 +5437,59 @@
     el('teacherHonorLegend').innerHTML = [
       ['Honor Kehadiran',honorHadir,colors[0]],['Tj. Transport',transport,colors[1]],['Tj. Jabatan',jabatan,colors[2]]
     ].map(function(x){return '<div class="honor-legend"><span class="honor-legend-dot" style="background:'+x[2]+'"></span><span class="flex-grow-1">'+x[0]+'</span><strong>'+formatRupiah(x[1])+'</strong></div>';}).join('');
+  }
+
+  function honorSlipEscape_(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});
+  }
+  function buildHonorSlipHtml_(item, bulan) {
+    var p = globalPrintSchoolProfile || {};
+    var logo = p['Logo'] || (document.getElementById('profLogoBase64') || {}).value || '';
+    var school = p['Nama Madrasah'] || 'MAS Darul Amin';
+    var contact = [p['Alamat'] || p['Alamat Madrasah'] || '', p['No. Handphone'] || p['No. HP'] || '', p['Email'] || ''].filter(Boolean).join(' | ');
+    var tarif = Number(item.tarif)||0, kehadiran = Number(item.kehadiran)||0;
+    var transportRate = Number(item.transport)||0, hari = Number(item.hariTransport)||0, jabatan = Number(item.jabatan)||0;
+    var honorMengajar = tarif * kehadiran, totalTransport = transportRate * hari, total = honorMengajar + totalTransport + jabatan;
+    var periodText = bulan || document.getElementById('honorBulan').value || '-';
+    var logoHtml = logo ? '<img class="slip-logo" src="'+String(logo).replace(/"/g,'%22')+'" alt="Logo Madrasah">' : '<div class="slip-logo" style="display:grid;place-items:center;border:1px solid #ddd;font-weight:bold">LOGO</div>';
+    return '<section class="slip-sheet"><header class="slip-head">'+logoHtml+'<div class="slip-school"><h2>'+honorSlipEscape_(school)+'</h2><p>'+honorSlipEscape_(contact)+'</p><p>'+((p['NISM']?'NISM: '+honorSlipEscape_(p['NISM'])+' &nbsp; ':'')+(p['NPSN']?'NPSN: '+honorSlipEscape_(p['NPSN']):''))+'</p></div></header>'+
+      '<div class="slip-title">SLIP HONOR GURU / PEGAWAI</div><div class="slip-period">Periode Pembayaran: <strong>'+honorSlipEscape_(periodText)+'</strong></div>'+
+      '<table class="slip-ident"><tr><td style="width:20%">NIP / ID</td><td style="width:3%">:</td><td><strong>'+honorSlipEscape_(item.nip||'-')+'</strong></td><td style="width:20%">Kategori</td><td style="width:3%">:</td><td>'+honorSlipEscape_(item.kategoriHonor||'Pengajar')+'</td></tr><tr><td>Nama Pegawai</td><td>:</td><td colspan="4"><strong>'+honorSlipEscape_(item.nama||'-')+'</strong></td></tr></table>'+
+      '<table class="slip-lines"><thead><tr><th style="width:7%">No.</th><th>Uraian Komponen</th><th style="width:18%">Volume</th><th style="width:23%;text-align:right">Jumlah</th></tr></thead><tbody>'+
+      '<tr><td>1</td><td>Honor mengajar / jurnal valid</td><td>'+kehadiran+' jurnal × '+honorSlipEscape_(formatRupiah(tarif))+'</td><td style="text-align:right">'+honorSlipEscape_(formatRupiah(honorMengajar))+'</td></tr>'+
+      '<tr><td>2</td><td>Tunjangan transport</td><td>'+hari+' hari × '+honorSlipEscape_(formatRupiah(transportRate))+'</td><td style="text-align:right">'+honorSlipEscape_(formatRupiah(totalTransport))+'</td></tr>'+
+      '<tr><td>3</td><td>Tunjangan jabatan</td><td>1 bulan</td><td style="text-align:right">'+honorSlipEscape_(formatRupiah(jabatan))+'</td></tr>'+
+      '<tr class="slip-total"><td colspan="3" style="text-align:right">TOTAL HONOR DITERIMA</td><td style="text-align:right">'+honorSlipEscape_(formatRupiah(total))+'</td></tr></tbody></table>'+
+      '<p style="font-size:9pt;margin-top:14px">Terbilang: <strong>'+honorSlipEscape_(terbilangRupiah_(total))+'</strong></p>'+
+      '<div class="slip-sign"><div>Mengetahui,<br>Kepala Madrasah<div class="space"></div><strong>'+honorSlipEscape_(p['Kepala Madrasah']||'................................')+'</strong></div><div>'+honorSlipEscape_(p['Kota']||'')+', '+new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})+'<br>Bendahara<div class="space"></div><strong>................................</strong></div></div></section>';
+  }
+  function terbilangRupiah_(n) {
+    n = Math.floor(Math.max(0, Number(n)||0));
+    if (!n) return 'nol rupiah';
+    var a=['','satu','dua','tiga','empat','lima','enam','tujuh','delapan','sembilan','sepuluh','sebelas'];
+    function words(x){if(x<12)return a[x];if(x<20)return words(x-10)+' belas';if(x<100)return words(Math.floor(x/10))+' puluh '+words(x%10);if(x<200)return 'seratus '+words(x-100);if(x<1000)return words(Math.floor(x/100))+' ratus '+words(x%100);if(x<2000)return 'seribu '+words(x-1000);if(x<1000000)return words(Math.floor(x/1000))+' ribu '+words(x%1000);if(x<1000000000)return words(Math.floor(x/1000000))+' juta '+words(x%1000000);return words(Math.floor(x/1000000000))+' miliar '+words(x%1000000000);}
+    return words(n).replace(/\s+/g,' ').trim()+' rupiah';
+  }
+  function printHonorSlipByNip(nip) {
+    var item = (currentHonorData||[]).find(function(x){return String(x.nip||'')===String(nip||'');});
+    if (!item) { appNotify('Data guru tidak ditemukan pada rekap periode ini.','error'); return; }
+    renderHonorSlipPrint_([item]);
+  }
+  function printHonorSlips() {
+    if (!currentHonorData || !currentHonorData.length) { appNotify('Hitung honor terlebih dahulu sebelum mencetak slip.'); return; }
+    var rows = currentHonorData.slice();
+    // Untuk akun guru, endpoint getHonorGuruSaya memang hanya mengembalikan data miliknya.
+    if (!rows.length) { appNotify('Tidak ada data slip yang dapat dicetak.','error'); return; }
+    renderHonorSlipPrint_(rows);
+  }
+  function renderHonorSlipPrint_(rows) {
+    var root = document.getElementById('honorSlipPrintRoot');
+    var month = (document.getElementById('honorBulan')||{}).value || '-';
+    root.innerHTML = rows.map(function(item){return buildHonorSlipHtml_(item,month);}).join('');
+    document.body.classList.add('printing-honor-slip');
+    var cleanup=function(){document.body.classList.remove('printing-honor-slip');root.innerHTML='';window.removeEventListener('afterprint',cleanup);};
+    window.addEventListener('afterprint',cleanup);
+    setTimeout(function(){window.print();setTimeout(cleanup,1200);},250);
   }
 
   function exportPdfHonor() {
@@ -6673,6 +6770,7 @@
     var w=window.open('','_blank','width=520,height=680');if(!w){appNotify('Izinkan pop-up untuk mencetak kartu QR.','error');return;}
     w.document.write('<!doctype html><html><head><title>Kartu Guru</title><style>body{font-family:Arial;text-align:center;padding:30px}.card{border:2px solid #1748c9;border-radius:18px;padding:24px;width:320px;margin:auto}#qr{display:flex;justify-content:center;margin:20px}h2{margin:8px 0}small{color:#555}</style></head><body><div class="card"><h2>MAS DARUL AMIN</h2><p>KARTU ABSENSI GURU</p><div id="qr"></div><h3>'+String(g[1]||'').replace(/[<>]/g,'')+'</h3><small>NIP: '+String(g[0]||'').replace(/[<>]/g,'')+'</small><p><small>Gunakan QR ini untuk absensi masuk dan pulang melalui siMADA.</small></p></div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script>new QRCode(document.getElementById("qr"),{text:'+JSON.stringify(token)+',width:220,height:220});setTimeout(function(){window.print()},700)<\/script>
 
+  <div id="honorSlipPrintRoot" aria-hidden="true"></div>
 </body></html>');w.document.close();
   }
 
