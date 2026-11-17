@@ -1,6 +1,6 @@
 /* siMADA PWA service worker. API dan data dinamis tidak pernah disimpan ke cache. */
 'use strict';
-const CACHE_NAME = 'simada-shell-v22-premium-menu-honor-slip';
+const CACHE_NAME = 'simada-shell-v23-fix-cetak-slip-honor';
 const APP_SHELL = [
   '/',
   '/index.html',

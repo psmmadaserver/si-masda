@@ -5483,14 +5483,32 @@
     renderHonorSlipPrint_(rows);
   }
   function renderHonorSlipPrint_(rows) {
-    var root = document.getElementById('honorSlipPrintRoot');
-    var month = (document.getElementById('honorBulan')||{}).value || '-';
-    root.innerHTML = rows.map(function(item){return buildHonorSlipHtml_(item,month);}).join('');
-    document.body.classList.add('printing-honor-slip');
-    var cleanup=function(){document.body.classList.remove('printing-honor-slip');root.innerHTML='';window.removeEventListener('afterprint',cleanup);};
-    window.addEventListener('afterprint',cleanup);
-    setTimeout(function(){window.print();setTimeout(cleanup,1200);},250);
+    try {
+      rows = Array.isArray(rows) ? rows.filter(Boolean) : [];
+      if (!rows.length) { appNotify('Tidak ada data slip yang dapat dicetak.', 'warning'); return; }
+      var month = (document.getElementById('honorBulan')||{}).value || '-';
+      // Buka jendela cetak langsung dari aksi klik agar tidak dianggap pop-up tertunda.
+      var printWindow = window.open('', '_blank', 'width=980,height=720');
+      if (!printWindow) {
+        appNotify('Jendela cetak diblokir browser. Izinkan pop-up untuk situs siMADA, lalu klik cetak kembali.', 'error');
+        return;
+      }
+      var sheets = rows.map(function(item){ return buildHonorSlipHtml_(item, month); }).join('');
+      var printCss = '<style>@page{size:A4;margin:8mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#111;margin:0}.slip-sheet{display:block;page-break-after:always;break-after:page;padding:10mm 12mm;min-height:260mm}.slip-sheet:last-child{page-break-after:auto;break-after:auto}.slip-head{display:flex;align-items:center;gap:16px;border-bottom:3px double #111;padding-bottom:12px;margin-bottom:18px}.slip-logo{width:76px;height:76px;object-fit:contain}.slip-school{text-align:center;flex:1}.slip-school h2{font-size:18pt;margin:0 0 4px;font-weight:800}.slip-school p{margin:0;font-size:9pt}.slip-title{text-align:center;font-size:14pt;font-weight:800;letter-spacing:.06em;margin:18px 0 4px}.slip-period{text-align:center;margin-bottom:20px;font-size:10pt}.slip-ident{width:100%;margin-bottom:16px}.slip-ident td{padding:4px 7px;font-size:10pt}.slip-lines{width:100%;border-collapse:collapse;margin:12px 0}.slip-lines th,.slip-lines td{border:1px solid #444;padding:9px;font-size:10pt}.slip-lines th{background:#eaf3ef;text-align:left}.slip-total{font-weight:800;font-size:12pt;background:#e8f5ee}.slip-sign{display:flex;justify-content:space-between;gap:30px;margin-top:38px;text-align:center;font-size:10pt}.slip-sign>div{width:42%}.slip-sign .space{height:62px}.slip-sign strong{text-decoration:underline}@media screen{body{background:#eef2f7;padding:18px}.slip-sheet{background:#fff;max-width:210mm;margin:0 auto 18px;box-shadow:0 4px 18px #0002}}</style>';
+      printWindow.document.open();
+      printWindow.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Slip Honor - '+honorSlipEscape_(month)+'</title>'+printCss+'</head><body>'+sheets+'</body></html>');
+      printWindow.document.close();
+      var doPrint = function(){ setTimeout(function(){ try { printWindow.focus(); printWindow.print(); } catch(e) { appNotify('Jendela cetak terbuka, tetapi dialog cetak gagal dijalankan: '+(e.message||e), 'error'); } }, 450); };
+      if (printWindow.document.readyState === 'complete') doPrint();
+      else printWindow.onload = doPrint;
+    } catch (err) {
+      appNotify('Gagal menyiapkan slip honor: ' + (err && err.message ? err.message : err), 'error');
+      console.error('[siMADA] Cetak slip honor gagal:', err);
+    }
   }
+  // Ekspos eksplisit untuk tombol onclick pada tabel dan kartu Honor Guru.
+  window.printHonorSlipByNip = printHonorSlipByNip;
+  window.printHonorSlips = printHonorSlips;
 
   function exportPdfHonor() {
     if (!currentHonorData || !currentHonorData.length) {
