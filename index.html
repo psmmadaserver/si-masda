@@ -6755,9 +6755,7 @@
       w.document.open();
       w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>' + guruIdCardEscape(title) +
         '</title><style>' + guruIdCardPrintCss() + '</style></head><body><div class="guru-id-grid">' + cards +
-        '</div><script>window.onload=function(){setTimeout(function(){window.print()},650)};<\/script>
-
-</body></html>');
+        '</div><script>window.onload=function(){setTimeout(function(){window.print()},650)};<\/script></body></html>');
       w.document.close();
     }, 450);
   }
