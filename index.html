@@ -2127,9 +2127,9 @@
 
       <!-- JURNAL GURU -->
       <div id="sec-jurnal" class="content-section d-none">
-        <h4 class="fw-bold mb-3 mb-md-4">Jurnal Mengajar Guru</h4>
-        <div class="card p-3 p-md-4 shadow-sm border-0 mb-4 no-print">
-          <h6 class="fw-bold mb-3"><i class="bi bi-pencil-square me-2 text-primary"></i>Input Jurnal Pembelajaran</h6>
+        <div class="jurnal-page-hero mb-3"><div class="jurnal-hero-icon"><i class="bi bi-journal-bookmark-fill"></i></div><div><h4>Jurnal Mengajar Guru</h4><p>Input jurnal pembelajaran harian, guru pengganti, dan riwayat mengajar.</p></div><div class="jurnal-hero-art"><i class="bi bi-calendar3"></i><i class="bi bi-journal-richtext"></i></div></div>
+        <div class="card p-3 p-md-4 shadow-sm border-0 mb-4 jurnal-form-card no-print">
+          <h6 class="fw-bold mb-3 jurnal-section-title"><i class="bi bi-file-earmark-text-fill me-2"></i>Input Jurnal Pembelajaran</h6>
           <div id="jurScheduleNotice" class="d-none mb-3"></div>
 
           <div class="row g-2 g-md-3">
@@ -2174,7 +2174,7 @@
               </select>
             </div>
             <div class="col-12 mt-2">
-              <label class="form-label fw-semibold small">Materi Pelajaran / Ringkasan Pembelajaran</label>
+              <label class="form-label fw-semibold small">Materi Pelajaran / Ringkasan Pembelajaran <span class="text-danger">*</span></label>
               <textarea id="jurMateri" disabled class="form-control form-control-sm" rows="3" placeholder="Tuliskan pokok materi pelajaran yang disampaikan di kelas..."></textarea>
             </div>
             <div class="col-12 mt-2 text-end">
@@ -2183,9 +2183,9 @@
           </div>
         </div>
 
-        <div class="card p-3 p-md-4 shadow-sm border-0">
-          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
-            <h6 class="fw-bold mb-0">Riwayat Jurnal Mengajar & Status Absensi</h6>
+        <div class="card p-3 p-md-4 shadow-sm border-0 jurnal-history-card">
+          <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3 jurnal-history-toolbar">
+            <h6 class="fw-bold mb-0 jurnal-history-title"><i class="bi bi-list-columns-reverse me-2"></i>Riwayat Jurnal Mengajar &amp; Status Absensi</h6>
             <div class="d-flex flex-wrap align-items-end gap-2 no-print">
               <div style="min-width:150px">
                 <label for="filterJurnalKelas" class="form-label small fw-semibold mb-1">Filter Kelas</label>
@@ -2206,8 +2206,8 @@
             </div>
           </div>
           <div class="table-responsive">
-            <table class="table table-bordered align-middle">
-              <thead class="table-light">
+            <table class="table align-middle jurnal-history-table">
+              <thead>
                 <tr><th>ID</th><th>Tanggal</th><th>Guru Pengisi</th><th>Guru Pengampu Jadwal</th><th>Mata Pelajaran</th><th>Kelas</th><th>Materi Pelajaran</th><th>Status Absen</th><th>Jarak GPS</th><th style="width: 80px;" class="no-print">Aksi</th></tr>
               </thead>
               <tbody id="tblJurnal">
@@ -5070,25 +5070,37 @@
 
   function renderTableJurnal(list) {
     var tbody = document.getElementById('tblJurnal');
+    if (!tbody) return;
     if (!list || list.length === 0) {
-      tbody.innerHTML = '<tr><td colspan="10" class="text-center text-muted">Belum ada catatan jurnal mengajar.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="10" class="text-center text-muted py-4"><i class="bi bi-journal-x me-2"></i>Belum ada catatan jurnal mengajar.</td></tr>';
       return;
     }
     var html = '';
-    list.forEach(function(j) {
+    list.forEach(function(j, idx) {
       var statusText = String(j[6] || '-');
-      var statusBadge = /Terlambat/i.test(statusText) ? 'bg-warning text-dark' : (/Hadir/i.test(statusText) ? 'bg-success' : (/Jurnal Tercatat/i.test(statusText) ? 'bg-secondary' : 'bg-danger'));
+      var isSub = /pengganti/i.test(statusText);
+      var statusBadge = isSub ? 'jurnal-badge-sub' : (/pengampu/i.test(statusText) ? 'jurnal-badge-main' : (/terlambat/i.test(statusText) ? 'jurnal-badge-late' : (/hadir/i.test(statusText) ? 'jurnal-badge-main' : 'jurnal-badge-neutral')));
       var guruPengampu = j[9] || j[2] || '-';
       var guruPengisi = j[10] || j[2] || '-';
+      var gps = String(j[7] || '-');
+      var safeId = String(j[0] || '');
       html += '<tr>';
-      html += '<td>' + escapeHtml(j[0] || '') + '</td><td>' + escapeHtml(j[1] || '') + '</td>';
-      html += '<td>' + escapeHtml(guruPengisi) + '</td><td>' + escapeHtml(guruPengampu) + '</td>';
-      html += '<td>' + escapeHtml(j[3] || '') + '</td><td>' + escapeHtml(j[4] || '') + '</td><td>' + escapeHtml(j[5] || '') + '</td>';
-      html += '<td><span class="badge ' + statusBadge + '">' + escapeHtml(j[6] || '-') + '</span></td><td>' + escapeHtml(j[7] || '-') + '</td>';
-      html += '<td class="no-print"><button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteJurnal(' + JSON.stringify(String(j[0] || '')) + ')"><i class="bi bi-trash"></i></button></td>';
+      html += '<td class="jurnal-no">' + (idx + 1) + '</td><td><span class="jurnal-date"><i class="bi bi-calendar3"></i>' + escapeHtml(j[1] || '') + '</span></td>';
+      html += '<td class="jurnal-person">' + escapeHtml(guruPengisi) + '</td><td class="jurnal-person">' + escapeHtml(guruPengampu) + '</td>';
+      html += '<td><span class="jurnal-subject">' + escapeHtml(j[3] || '-') + '</span></td><td><span class="jurnal-class">' + escapeHtml(j[4] || '-') + '</span></td>';
+      html += '<td class="jurnal-material">' + escapeHtml(j[5] || '-') + '</td>';
+      html += '<td><span class="jurnal-status ' + statusBadge + '"><i class="bi ' + (isSub ? 'bi-arrow-left-right' : 'bi-check-circle-fill') + '"></i>' + escapeHtml(statusText) + '</span></td>';
+      html += '<td><span class="jurnal-gps"><i class="bi bi-geo-alt-fill"></i>' + escapeHtml(gps) + '</span></td>';
+      html += '<td class="no-print"><div class="jurnal-actions"><button type="button" class="btn-jurnal-delete" data-jurnal-id="' + escapeHtml(safeId) + '" onclick="deleteJurnalFromButton(this)" title="Hapus jurnal"><i class="bi bi-trash3-fill"></i></button></div></td>';
       html += '</tr>';
     });
     tbody.innerHTML = html;
+  }
+
+  function deleteJurnalFromButton(button) {
+    var id = button && button.getAttribute('data-jurnal-id');
+    if (!id) { appNotify('ID jurnal tidak ditemukan. Muat ulang tabel lalu coba kembali.', 'error'); return; }
+    deleteJurnal(id);
   }
 
   function onJurnalTanggalChange() {
@@ -5199,11 +5211,6 @@
       appNotify('Semua isian formulir Jurnal Wajib diisi!');
       return;
     }
-    if (data.materi.length < 50) {
-      appNotify('Lengkapi Materi Pelajaran anda (minimal 50 huruf).', 'warning');
-      document.getElementById('jurMateri').focus();
-      return;
-    }
 
     var btn = document.getElementById('btnSimpanJurnal');
     btn.disabled = true;
@@ -5223,13 +5230,19 @@
   }
 
   async function deleteJurnal(id) {
-    if (window.confirm('Hapus catatan jurnal ini?')) {
-      google.script.run.withSuccessHandler(function(res) {
-        appNotify(res);
-        loadJurnalData();
-        refreshDashboard();
-      }).withFailureHandler(function(err) { appNotify('Gagal menghapus jurnal: ' + (err && err.message ? err.message : err), 'error'); }).hapusJurnal(id);
-    }
+    id = String(id || '').trim();
+    if (!id) { appNotify('ID jurnal tidak valid.', 'error'); return; }
+    if (!window.confirm('Hapus catatan jurnal ini? Data yang dihapus tidak dapat dikembalikan.')) return;
+    var buttons = document.querySelectorAll('[data-jurnal-id]');
+    buttons.forEach(function(b){ if (b.getAttribute('data-jurnal-id') === id) { b.disabled = true; b.innerHTML = '<span class="spinner-border spinner-border-sm"></span>'; } });
+    google.script.run.withSuccessHandler(function(res) {
+      var msg = String(res || '');
+      if (/berhasil dihapus/i.test(msg)) { appNotify(msg, 'success'); loadJurnalData(); refreshDashboard(); }
+      else { appNotify(msg || 'Data jurnal tidak berhasil dihapus.', 'warning'); loadJurnalData(); }
+    }).withFailureHandler(function(err) {
+      buttons.forEach(function(b){ if (b.getAttribute('data-jurnal-id') === id) { b.disabled = false; b.innerHTML = '<i class="bi bi-trash3-fill"></i>'; } });
+      appNotify('Gagal menghapus jurnal: ' + (err && err.message ? err.message : err), 'error');
+    }).hapusJurnal(id);
   }
 
   // ==========================================
@@ -6658,8 +6671,12 @@
     var g=(globalMasterData.guru||[]).find(function(x){return String(x[0])===String(nip);});if(!g){appNotify('Data guru tidak ditemukan.','error');return;}
     var token=String(g[14]||g[0]||'').trim();if(!token){appNotify('NIP guru belum diisi. Lengkapi NIP pada Master Guru terlebih dahulu.','error');return;}
     var w=window.open('','_blank','width=520,height=680');if(!w){appNotify('Izinkan pop-up untuk mencetak kartu QR.','error');return;}
-    w.document.write('<!doctype html><html><head><title>Kartu Guru</title><style>body{font-family:Arial;text-align:center;padding:30px}.card{border:2px solid #1748c9;border-radius:18px;padding:24px;width:320px;margin:auto}#qr{display:flex;justify-content:center;margin:20px}h2{margin:8px 0}small{color:#555}</style></head><body><div class="card"><h2>MAS DARUL AMIN</h2><p>KARTU ABSENSI GURU</p><div id="qr"></div><h3>'+String(g[1]||'').replace(/[<>]/g,'')+'</h3><small>NIP: '+String(g[0]||'').replace(/[<>]/g,'')+'</small><p><small>Gunakan QR ini untuk absensi masuk dan pulang melalui siMADA.</small></p></div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script>new QRCode(document.getElementById("qr"),{text:'+JSON.stringify(token)+',width:220,height:220});setTimeout(function(){window.print()},700)<\/script></body></html>');w.document.close();
+    w.document.write('<!doctype html><html><head><title>Kartu Guru</title><style>body{font-family:Arial;text-align:center;padding:30px}.card{border:2px solid #1748c9;border-radius:18px;padding:24px;width:320px;margin:auto}#qr{display:flex;justify-content:center;margin:20px}h2{margin:8px 0}small{color:#555}</style></head><body><div class="card"><h2>MAS DARUL AMIN</h2><p>KARTU ABSENSI GURU</p><div id="qr"></div><h3>'+String(g[1]||'').replace(/[<>]/g,'')+'</h3><small>NIP: '+String(g[0]||'').replace(/[<>]/g,'')+'</small><p><small>Gunakan QR ini untuk absensi masuk dan pulang melalui siMADA.</small></p></div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script>new QRCode(document.getElementById("qr"),{text:'+JSON.stringify(token)+',width:220,height:220});setTimeout(function(){window.print()},700)<\/script>
+
+</body></html>');w.document.close();
   }
+
+
 
 </body></html>`);
       win.onload = function() { setTimeout(function() { win.print(); }, 700); };
@@ -6738,7 +6755,9 @@
       w.document.open();
       w.document.write('<!doctype html><html><head><meta charset="utf-8"><title>' + guruIdCardEscape(title) +
         '</title><style>' + guruIdCardPrintCss() + '</style></head><body><div class="guru-id-grid">' + cards +
-        '</div><script>window.onload=function(){setTimeout(function(){window.print()},650)};<\/script></body></html>');
+        '</div><script>window.onload=function(){setTimeout(function(){window.print()},650)};<\/script>
+
+</body></html>');
       w.document.close();
     }, 450);
   }
@@ -7099,8 +7118,52 @@
     var g=(globalMasterData.guru||[]).find(function(x){return String(x[0])===String(nip);});if(!g){appNotify('Data guru tidak ditemukan.','error');return;}
     var token=String(g[14]||g[0]||'').trim();if(!token){appNotify('NIP guru belum diisi. Lengkapi NIP pada Master Guru terlebih dahulu.','error');return;}
     var w=window.open('','_blank','width=520,height=680');if(!w){appNotify('Izinkan pop-up untuk mencetak kartu QR.','error');return;}
-    w.document.write('<!doctype html><html><head><title>Kartu Guru</title><style>body{font-family:Arial;text-align:center;padding:30px}.card{border:2px solid #1748c9;border-radius:18px;padding:24px;width:320px;margin:auto}#qr{display:flex;justify-content:center;margin:20px}h2{margin:8px 0}small{color:#555}</style></head><body><div class="card"><h2>MAS DARUL AMIN</h2><p>KARTU ABSENSI GURU</p><div id="qr"></div><h3>'+String(g[1]||'').replace(/[<>]/g,'')+'</h3><small>NIP: '+String(g[0]||'').replace(/[<>]/g,'')+'</small><p><small>Gunakan QR ini untuk absensi masuk dan pulang melalui siMADA.</small></p></div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script>new QRCode(document.getElementById("qr"),{text:'+JSON.stringify(token)+',width:220,height:220});setTimeout(function(){window.print()},700)<\/script></body></html>');w.document.close();
+    w.document.write('<!doctype html><html><head><title>Kartu Guru</title><style>body{font-family:Arial;text-align:center;padding:30px}.card{border:2px solid #1748c9;border-radius:18px;padding:24px;width:320px;margin:auto}#qr{display:flex;justify-content:center;margin:20px}h2{margin:8px 0}small{color:#555}</style></head><body><div class="card"><h2>MAS DARUL AMIN</h2><p>KARTU ABSENSI GURU</p><div id="qr"></div><h3>'+String(g[1]||'').replace(/[<>]/g,'')+'</h3><small>NIP: '+String(g[0]||'').replace(/[<>]/g,'')+'</small><p><small>Gunakan QR ini untuk absensi masuk dan pulang melalui siMADA.</small></p></div><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script><script>new QRCode(document.getElementById("qr"),{text:'+JSON.stringify(token)+',width:220,height:220});setTimeout(function(){window.print()},700)<\/script>
+
+</body></html>');w.document.close();
   }
 </script>
+
+
+<style id="simada-jurnal-modern-v1">
+#sec-jurnal{--jr-blue:#087fc5;--jr-teal:#079b91;--jr-green:#16a765;--jr-ink:#17365d;--jr-line:#d7eaf0}
+#sec-jurnal .jurnal-page-hero{position:relative;display:flex;align-items:center;gap:18px;min-height:82px;padding:15px 22px;border:1px solid #d7edf3;border-radius:18px;overflow:hidden;background:linear-gradient(112deg,#fff 0%,#e9faff 43%,#d9fff0 100%);box-shadow:0 8px 24px rgba(12,112,143,.09)}
+#sec-jurnal .jurnal-hero-icon{width:58px;height:58px;flex:0 0 58px;display:grid;place-items:center;border-radius:17px;color:#fff;font-size:1.8rem;background:linear-gradient(145deg,#0799df,#08b978);box-shadow:0 7px 15px #0789b344}
+#sec-jurnal .jurnal-page-hero h4{margin:0;color:#17365d;font-size:clamp(1.25rem,2vw,1.85rem);font-weight:900;letter-spacing:-.035em}
+#sec-jurnal .jurnal-page-hero p{margin:3px 0 0;color:#58758b;font-size:.9rem}
+#sec-jurnal .jurnal-hero-art{margin-left:auto;display:flex;gap:14px;align-items:center;color:#079b91;font-size:2.5rem;opacity:.7}
+#sec-jurnal .jurnal-form-card,#sec-jurnal .jurnal-history-card{border:1px solid #d7edf0!important;border-radius:17px!important;overflow:hidden;background:linear-gradient(145deg,#fff,#f6fcff);box-shadow:0 8px 24px rgba(15,93,126,.09)!important}
+#sec-jurnal .jurnal-section-title{margin:-1rem -1rem 1rem;padding:13px 18px;border-radius:12px;color:#fff;background:linear-gradient(100deg,#16b86c,#08a6a8,#169be0);font-size:1.05rem}
+#sec-jurnal .jurnal-section-title i{color:#fff}
+#sec-jurnal .form-control,#sec-jurnal .form-select{border-color:#c9dce8;border-radius:9px;min-height:36px}
+#sec-jurnal #jurMateri{min-height:74px;border-radius:11px}
+#sec-jurnal #btnSimpanJurnal{border:0;border-radius:10px;background:linear-gradient(110deg,#087ee4,#08a86d);box-shadow:0 5px 12px #078f9a30;font-weight:800;padding:9px 22px}
+#sec-jurnal .jurnal-history-title{color:#17365d;font-size:1.15rem;font-weight:900;display:flex;align-items:center;gap:4px}
+#sec-jurnal .jurnal-history-title i{color:#078ec4;font-size:1.3rem}
+#sec-jurnal .jurnal-history-table{min-width:1120px;border-collapse:separate;border-spacing:0;border:1px solid #d8eaf0;border-radius:13px;overflow:hidden;margin-bottom:0}
+#sec-jurnal .jurnal-history-table thead th{padding:12px 10px;white-space:nowrap;color:#fff;background:linear-gradient(105deg,#086b91,#078f91,#0aa56c);border:0;border-right:1px solid #ffffff25;font-size:.78rem;font-weight:850;vertical-align:middle}
+#sec-jurnal .jurnal-history-table tbody td{padding:10px 9px;border-color:#dcebf0;color:#243b59;font-size:.8rem;vertical-align:middle}
+#sec-jurnal .jurnal-history-table tbody tr:nth-child(even) td{background:#eafaf5}
+#sec-jurnal .jurnal-history-table tbody tr:nth-child(odd) td{background:#fff}
+#sec-jurnal .jurnal-history-table tbody tr:hover td{background:#dff5ff;transition:background .18s ease}
+#sec-jurnal .jurnal-no{font-weight:900;color:#0788aa;text-align:center;width:42px}
+#sec-jurnal .jurnal-date{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-weight:750;color:#37617a}
+#sec-jurnal .jurnal-date i,#sec-jurnal .jurnal-gps i{color:#079b91}
+#sec-jurnal .jurnal-person{font-weight:750;min-width:125px}
+#sec-jurnal .jurnal-subject,#sec-jurnal .jurnal-class{display:inline-flex;justify-content:center;align-items:center;padding:5px 11px;border-radius:30px;color:#fff;font-weight:850;white-space:nowrap;background:linear-gradient(110deg,#087ee2,#09a6b2);box-shadow:0 3px 7px #078bb52b}
+#sec-jurnal .jurnal-class{background:linear-gradient(110deg,#087de0,#05b4d0)}
+#sec-jurnal .jurnal-material{min-width:230px;max-width:420px;line-height:1.45}
+#sec-jurnal .jurnal-status{display:inline-flex;align-items:center;gap:6px;padding:5px 10px;border-radius:30px;white-space:nowrap;font-weight:850;font-size:.73rem;box-shadow:inset 0 1px 0 #ffffffa8,0 3px 7px #1d53651c}
+#sec-jurnal .jurnal-badge-main{color:#075d32;background:linear-gradient(120deg,#c6f7d8,#5be18b)}
+#sec-jurnal .jurnal-badge-sub{color:#704000;background:linear-gradient(120deg,#fff0b5,#ffc857)}
+#sec-jurnal .jurnal-badge-late{color:#8a3c00;background:linear-gradient(120deg,#ffe0b4,#ffad43)}
+#sec-jurnal .jurnal-badge-neutral{color:#34516b;background:linear-gradient(120deg,#e5edf4,#cbd9e6)}
+#sec-jurnal .jurnal-gps{display:inline-flex;gap:5px;align-items:center;white-space:nowrap;font-weight:800;color:#28627a}
+#sec-jurnal .jurnal-actions{display:flex;justify-content:center}
+#sec-jurnal .btn-jurnal-delete{width:34px;height:32px;border:0;border-radius:9px;color:#fff;background:linear-gradient(135deg,#ff6b6b,#dc2626);box-shadow:0 3px 8px #dc26263b}
+#sec-jurnal .btn-jurnal-delete:hover{transform:translateY(-1px);filter:brightness(.96)}
+#sec-jurnal .btn-jurnal-delete:disabled{opacity:.6;cursor:wait}
+@media(max-width:767px){#sec-jurnal .jurnal-page-hero{padding:12px;gap:11px}#sec-jurnal .jurnal-hero-icon{width:46px;height:46px;flex-basis:46px;font-size:1.45rem}#sec-jurnal .jurnal-hero-art{font-size:1.7rem;gap:5px}#sec-jurnal .jurnal-section-title{margin:-.5rem -.5rem 1rem;font-size:.95rem}#sec-jurnal .jurnal-history-toolbar{align-items:stretch!important}#sec-jurnal .jurnal-history-title{font-size:1rem}}
+</style>
 </body>
 </html>
