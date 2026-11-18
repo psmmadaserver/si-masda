@@ -1239,6 +1239,12 @@
 #sec-dashboard .dash-sarpras-footnote{display:block;text-align:right;margin-top:15px;color:#8994a8;font-size:.68rem}
 @media(max-width:767.98px){#sec-dashboard .dash-sarpras-condition-card{padding:17px 14px;border-radius:19px}#sec-dashboard .dash-sarpras-condition-head{flex-direction:column;gap:8px}#sec-dashboard .dash-sarpras-condition-head h5{font-size:1.05rem}#sec-dashboard .dash-sarpras-trend-wrap{height:170px;margin:0 0 10px}#sec-dashboard .dash-sarpras-condition-grid{gap:4px}#sec-dashboard .dash-sarpras-condition-item{padding:4px 2px}#sec-dashboard .condition-gauge{width:min(27vw,104px);padding:6px}#sec-dashboard .condition-gauge-inner strong{font-size:.9rem}#sec-dashboard .condition-mini-chart{height:34px;width:90%;gap:2px;margin:11px auto 6px;padding:0 3px}#sec-dashboard .condition-percent{font-size:1.25rem}#sec-dashboard .condition-item-label{font-size:.66rem}#sec-dashboard .dash-sarpras-footnote{text-align:left;line-height:1.45}}
 </style>
+
+<style id="simada-qr-report-extension">
+/* Rekap QR siswa: nuansa kuning, mengikuti struktur tabel QR guru */
+.student-qr-table-card{border:1px solid #f5df9b!important;background:#fffdf7}.sqr-total-badge{display:inline-flex;align-items:center;gap:5px;padding:6px 11px;border-radius:20px;background:#fff1bd;border:1px solid #f4ca55;color:#805600;font-size:11px;font-weight:800}.sqr-total-cell{font-size:11px;padding:8px 5px!important;border-color:#fff!important;color:#5a4a24}.sqr-total-spacer{background:#fff9e8!important;border-color:#f5e7bf!important}.sqr-missing{background:#e7ebf0!important}.sqr-present{background:#d1fae5!important}.sqr-late{background:#fff0b8!important}.sqr-leave{background:#fff4c9!important}.sqr-sick{background:#ffe1e1!important}.sqr-alpha{background:#ffd8d8!important}.sqr-home{background:#d8efff!important}.sqr-early{background:#f0ddff!important}.student-qr-table-card thead tr:last-child th{background:linear-gradient(110deg,#e7b51d,#d88a00);color:#fff;border-color:#fff;font-size:11px;white-space:nowrap}.student-qr-table-card tbody td{font-size:11px;vertical-align:middle}.student-qr-table-card tbody tr:nth-child(odd){background:#fffdf5}.student-qr-table-card tbody tr:nth-child(even){background:#fff8e7}.sqr-status-mark{display:inline-flex;align-items:center;justify-content:center;width:23px;height:23px;border-radius:50%;font-size:14px;font-weight:900;color:#fff;box-shadow:0 2px 4px #0002}.sqr-status-mark.is-missing{background:linear-gradient(135deg,#aeb8c4,#657386)}.sqr-status-mark.is-present{background:linear-gradient(135deg,#39d98a,#07965a)}.sqr-status-mark.is-late{background:linear-gradient(135deg,#ffd45d,#d99a00)}.sqr-status-mark.is-leave{background:linear-gradient(135deg,#ffe27b,#d6a500);color:#654800}.sqr-status-mark.is-sick{background:linear-gradient(135deg,#ff8888,#d93434)}.sqr-status-mark.is-alpha{background:linear-gradient(135deg,#ff7777,#bd2020)}.sqr-status-mark.is-home{background:linear-gradient(135deg,#69c7ff,#087ac5)}.sqr-status-mark.is-early{background:linear-gradient(135deg,#c78aff,#8135ca)}.sqr-status-empty{color:#9aa8bc}.sqr-legend{padding:12px 14px;border:1px solid #f1dfad;border-radius:13px;background:#fffbef;color:#76530a;font-size:12px}.sqr-legend-grid{display:flex;flex-wrap:wrap;gap:8px 18px;color:#5c6472}.sqr-legend-grid span{display:inline-flex;align-items:center;gap:6px}.sqr-dot{width:10px;height:10px;border-radius:50%;display:inline-block}.sqr-dot-missing{background:#8492a3}.sqr-dot-present{background:#12b76a}.sqr-dot-late{background:#e6aa00}.sqr-dot-leave{background:#d4a400}.sqr-dot-sick,.sqr-dot-alpha{background:#e5484d}.sqr-dot-home{background:#1594dc}.sqr-dot-early{background:#9747d7}.sqr-period-switch .btn{font-weight:700}.gq-period-switch .btn{font-weight:700}.student-qr-table-card .table-responsive{max-height:560px}.student-qr-table-card table{min-width:980px}
+@media(max-width:768px){.student-qr-table-card .card-body{padding:12px!important}.sqr-legend-grid{gap:8px 12px}.student-qr-table-card .d-flex.flex-wrap.gap-2.align-items-end{width:100%}.student-qr-table-card .btn-group{flex:1}}
+</style>
 </head>
 
 <style id="simada-sarpras-table-edit-style">
@@ -2177,7 +2183,7 @@
 </div>
 </div></div>
 <div class="card border-0 shadow-sm rounded-4 mb-4 guru-qr-table-card"><div class="card-body p-3 p-md-4">
-<div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3"><div><div class="d-flex flex-wrap align-items-center gap-2"><h5 class="fw-bold mb-1"><i class="bi bi-table me-2"></i>Rekap Kehadiran Guru</h5><span class="gq-total-guru-badge">Total Guru <strong id="gqTotalGuru">0 (0%)</strong></span></div><div class="small text-muted">Ringkasan status kehadiran seluruh guru pada tanggal yang dipilih.</div></div><div class="d-flex gap-2 align-items-end"><div><label class="form-label small mb-1" for="guruAttendanceDate">Tanggal</label><input class="form-control form-control-sm" id="guruAttendanceDate" onchange="loadRekapStatusKehadiranGuru()" type="date"/></div><button class="btn btn-outline-primary btn-sm" onclick="loadRekapStatusKehadiranGuru()" type="button"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button></div></div>
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3"><div><div class="d-flex flex-wrap align-items-center gap-2"><h5 class="fw-bold mb-1"><i class="bi bi-table me-2"></i>Rekap Kehadiran Guru</h5><span class="gq-total-guru-badge">Total Guru <strong id="gqTotalGuru">0 (0%)</strong></span></div><div class="small text-muted">Ringkasan status kehadiran seluruh guru pada tanggal yang dipilih.</div></div><div class="d-flex flex-wrap gap-2 align-items-end"><div id="gqDailyDateWrap"><label class="form-label small mb-1" for="guruAttendanceDate">Tanggal</label><input class="form-control form-control-sm" id="guruAttendanceDate" onchange="loadRekapStatusKehadiranGuru()" type="date"/></div><div id="gqMonthlyDateWrap" class="d-none"><label class="form-label small mb-1" for="guruAttendanceMonth">Bulan</label><input class="form-control form-control-sm" id="guruAttendanceMonth" onchange="loadRekapStatusKehadiranGuru()" type="month"/></div><div class="btn-group btn-group-sm gq-period-switch" role="group" aria-label="Jenis rekap"><button class="btn btn-primary active" id="gqDailyBtn" type="button" onclick="setGuruQrReportMode('daily')">Rekap Harian</button><button class="btn btn-outline-primary" id="gqMonthlyBtn" type="button" onclick="setGuruQrReportMode('monthly')">Rekap Bulanan</button></div><button class="btn btn-outline-primary btn-sm" onclick="loadRekapStatusKehadiranGuru()" type="button"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button></div></div>
 <div class="table-responsive"><table class="table table-bordered table-sm align-middle text-center" id="guruAttendanceSummaryTable"><thead class="table-primary"><tr id="guruAttendanceSummaryHead"><th class="gq-total-spacer" colspan="2" aria-label="Ringkasan total guru ditampilkan di samping judul"></th><th class="gq-total-cell gq-total-missing"><strong id="gqTotalBelum">0 (0%)</strong></th><th class="gq-total-cell gq-total-ontime"><strong id="gqTotalTepat">0 (0%)</strong></th><th class="gq-total-cell gq-total-late"><strong id="gqTotalTerlambat">0 (0%)</strong></th><th class="gq-total-cell gq-total-home"><strong id="gqTotalPulangTepat">0 (0%)</strong></th><th class="gq-total-cell gq-total-early"><strong id="gqTotalPulangAwal">0 (0%)</strong></th><th class="gq-total-cell gq-total-leave"><strong id="gqTotalIzin">0 (0%)</strong></th><th class="gq-total-cell gq-total-sick"><strong id="gqTotalSakit">0 (0%)</strong></th></tr><tr><th>NIP</th><th>Nama Guru</th><th>Belum Absen</th><th>Masuk Tepat Waktu</th><th>Masuk Terlambat</th><th>Pulang Tepat Waktu</th><th>Pulang Awal</th><th>Izin</th><th>Sakit</th></tr></thead><tbody id="guruAttendanceSummaryBody"><tr><td class="text-muted" colspan="9">Pilih tanggal atau tekan Refresh.</td></tr></tbody><tfoot id="guruAttendanceSummaryFoot"></tfoot></table></div>
 <div class="guru-qr-legend mt-3"><div class="guru-qr-legend-title"><i class="bi bi-info-circle-fill me-2"></i>Keterangan Simbol &amp; Status</div><div class="guru-qr-legend-grid"><div><span class="guru-status-mark is-missing">✓</span><b>Belum Absen</b><small>Belum melakukan QR Masuk pada tanggal tersebut.</small></div><div><span class="guru-status-mark is-ontime">✓</span><b>Masuk Tepat Waktu</b><small>Absen masuk sebelum jadwal dimulai.</small></div><div><span class="guru-status-mark is-late">✓</span><b>Masuk Terlambat</b><small>Absen masuk tepat pada atau setelah jadwal.</small></div><div><span class="guru-status-mark is-home-ontime">✓</span><b>Pulang Tepat Waktu</b><small>Absen pulang sesuai atau setelah jadwal selesai.</small></div><div><span class="guru-status-mark is-early">✓</span><b>Pulang Awal</b><small>Pulang sebelum jadwal selesai atau belum QR Pulang.</small></div><div><span class="guru-status-mark is-leave">✓</span><b>Izin</b><small>Tidak masuk dengan status izin tercatat.</small></div><div><span class="guru-status-mark is-sick">✓</span><b>Sakit</b><small>Tidak masuk dengan status sakit tercatat.</small></div></div><div class="small text-muted mt-2">Catatan: Status Izin/Sakit menggantikan kategori Belum Absen pada tanggal yang sama. Simbol centang menunjukkan kategori yang berlaku untuk guru tersebut.</div></div>
 </div></div>
@@ -2621,6 +2627,24 @@
 </div>
 <div class="mt-3" id="qrAttendanceResult"></div>
 </section>
+<div class="card border-0 shadow-sm rounded-4 mt-4 student-qr-table-card">
+  <div class="card-body p-3 p-md-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+      <div><div class="d-flex flex-wrap align-items-center gap-2"><h5 class="fw-bold mb-1"><i class="bi bi-table me-2"></i>Rekap Kehadiran Siswa</h5><span class="sqr-total-badge">Total Siswa <strong id="sqrTotalSiswa">0 (0,00%)</strong></span></div><div class="small text-muted">Ringkasan status kehadiran siswa pada periode yang dipilih.</div></div>
+      <div class="d-flex flex-wrap gap-2 align-items-end">
+        <div id="sqrDailyDateWrap"><label class="form-label small mb-1" for="studentAttendanceDate">Tanggal</label><input class="form-control form-control-sm" id="studentAttendanceDate" type="date" onchange="loadRekapStatusKehadiranSiswa()"/></div>
+        <div id="sqrMonthlyDateWrap" class="d-none"><label class="form-label small mb-1" for="studentAttendanceMonth">Bulan</label><input class="form-control form-control-sm" id="studentAttendanceMonth" type="month" onchange="loadRekapStatusKehadiranSiswa()"/></div>
+        <div class="btn-group btn-group-sm sqr-period-switch" role="group" aria-label="Jenis rekap">
+          <button class="btn btn-warning active" id="sqrDailyBtn" type="button" onclick="setStudentQrReportMode('daily')">Rekap Harian</button>
+          <button class="btn btn-outline-warning" id="sqrMonthlyBtn" type="button" onclick="setStudentQrReportMode('monthly')">Rekap Bulanan</button>
+        </div>
+        <button class="btn btn-outline-warning btn-sm" type="button" onclick="loadRekapStatusKehadiranSiswa()"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button>
+      </div>
+    </div>
+    <div class="table-responsive"><table class="table table-bordered table-sm align-middle text-center mb-0" id="studentAttendanceSummaryTable"><thead><tr id="studentAttendanceSummaryHead"><th class="sqr-total-spacer" colspan="2"></th><th class="sqr-total-cell sqr-missing"><strong id="sqrTotalBelum">0 (0,00%)</strong></th><th class="sqr-total-cell sqr-present"><strong id="sqrTotalHadir">0 (0,00%)</strong></th><th class="sqr-total-cell sqr-late"><strong id="sqrTotalTerlambat">0 (0,00%)</strong></th><th class="sqr-total-cell sqr-leave"><strong id="sqrTotalIzin">0 (0,00%)</strong></th><th class="sqr-total-cell sqr-sick"><strong id="sqrTotalSakit">0 (0,00%)</strong></th><th class="sqr-total-cell sqr-alpha"><strong id="sqrTotalAlpha">0 (0,00%)</strong></th><th class="sqr-total-cell sqr-home"><strong id="sqrTotalPulangTepat">0 (0,00%)</strong></th><th class="sqr-total-cell sqr-early"><strong id="sqrTotalPulangAwal">0 (0,00%)</strong></th></tr><tr><th>NISN</th><th>Nama Siswa</th><th>Belum Absen</th><th>Hadir</th><th>Terlambat</th><th>Izin</th><th>Sakit</th><th>Alpha</th><th>Pulang Tepat Waktu</th><th>Pulang Awal</th></tr></thead><tbody id="studentAttendanceSummaryBody"><tr><td colspan="10" class="text-muted">Pilih tanggal atau tekan Refresh.</td></tr></tbody></table></div>
+    <div class="sqr-legend mt-3"><div class="fw-bold mb-2"><i class="bi bi-info-circle-fill me-2"></i>Keterangan Simbol &amp; Status</div><div class="sqr-legend-grid"><span><i class="sqr-dot sqr-dot-missing"></i>Belum Absen</span><span><i class="sqr-dot sqr-dot-present"></i>Hadir</span><span><i class="sqr-dot sqr-dot-late"></i>Terlambat</span><span><i class="sqr-dot sqr-dot-leave"></i>Izin</span><span><i class="sqr-dot sqr-dot-sick"></i>Sakit</span><span><i class="sqr-dot sqr-dot-alpha"></i>Alpha</span><span><i class="sqr-dot sqr-dot-home"></i>Pulang Tepat Waktu</span><span><i class="sqr-dot sqr-dot-early"></i>Pulang Awal</span></div><div class="small text-muted mt-2">Rekap bulanan menampilkan akumulasi status pada hari efektif di bulan yang dipilih. Pulang Awal dihitung untuk siswa yang sudah absen masuk tetapi belum tercatat QR Pulang atau pulang sebelum batas waktu.</div></div>
+  </div>
+</div>
 </div>
 <div class="content-section d-none" id="sec-ppdb">
 <div class="gateway-hero mb-4 d-flex flex-wrap justify-content-between align-items-center gap-3"><div><h3 class="fw-bold mb-1"><i class="bi bi-mortarboard me-2"></i>Penerimaan Peserta Didik Baru (PPDB)</h3><p class="mb-0 opacity-75">Kelola pendaftaran calon peserta didik baru madrasah.</p></div><div class="d-flex flex-wrap gap-2 no-print"><button class="btn btn-light" onclick="exportPPDBExcel()"><i class="bi bi-file-earmark-excel text-success me-1"></i>Export Excel</button><button class="btn btn-outline-light" onclick="exportPPDBPDF()"><i class="bi bi-file-earmark-pdf me-1"></i>Export PDF</button><button class="btn btn-warning fw-bold" onclick="openPPDBForm()"><i class="bi bi-plus-lg me-1"></i>Tambah PPDB</button></div></div>
@@ -3836,7 +3860,7 @@
     if (targetKey === 'dashboard') { refreshDashboard(); refreshStatistikPembiasaan(); }
     if (targetKey === 'absensi') loadAbsensiKelasOptions();
     if (targetKey === 'absensiPembiasaan') loadAbsensiPembiasaanPage();
-    if (targetKey === 'absensiQr') { updateQrAttendanceClock(); setQrAttendanceMode((document.getElementById('qrAttendanceMode')||{}).value||'masuk'); }
+    if (targetKey === 'absensiQr') { updateQrAttendanceClock(); setQrAttendanceMode((document.getElementById('qrAttendanceMode')||{}).value||'masuk'); var sd=document.getElementById('studentAttendanceDate'); if(sd&&!sd.value)sd.value=getLocalTodayStr(); var sm=document.getElementById('studentAttendanceMonth'); if(sm&&!sm.value)sm.value=getLocalTodayStr().slice(0,7); loadRekapStatusKehadiranSiswa(); }
     if (targetKey === 'absensiGuruQr') { loadGuruLeaveOptions(); updateGuruQrMode(); var gd=document.getElementById('guruAttendanceDate'); if(gd && !gd.value) gd.value=getLocalTodayStr(); loadRekapStatusKehadiranGuru(); }
     if (targetKey === 'pengumuman') loadPengumuman();
     if (targetKey === 'profil' && schoolMap) {
@@ -5072,35 +5096,71 @@
     }).getGuruLeaveOptions();
   }
 
+  var guruQrReportMode='daily';
+  function setGuruQrReportMode(mode){
+    guruQrReportMode=mode==='monthly'?'monthly':'daily';
+    var daily=document.getElementById('gqDailyDateWrap'),monthly=document.getElementById('gqMonthlyDateWrap');
+    if(daily)daily.classList.toggle('d-none',guruQrReportMode!=='daily');
+    if(monthly)monthly.classList.toggle('d-none',guruQrReportMode!=='monthly');
+    var db=document.getElementById('gqDailyBtn'),mb=document.getElementById('gqMonthlyBtn');
+    if(db){db.classList.toggle('active',guruQrReportMode==='daily');db.classList.toggle('btn-primary',guruQrReportMode==='daily');db.classList.toggle('btn-outline-primary',guruQrReportMode!=='daily');}
+    if(mb){mb.classList.toggle('active',guruQrReportMode==='monthly');mb.classList.toggle('btn-primary',guruQrReportMode==='monthly');mb.classList.toggle('btn-outline-primary',guruQrReportMode!=='monthly');}
+    var d=document.getElementById('guruAttendanceDate'),m=document.getElementById('guruAttendanceMonth');
+    if(guruQrReportMode==='daily'&&d&&!d.value)d.value=getLocalTodayStr();
+    if(guruQrReportMode==='monthly'&&m&&!m.value)m.value=(d&&d.value?d.value:getLocalTodayStr()).slice(0,7);
+    loadRekapStatusKehadiranGuru();
+  }
   function loadRekapStatusKehadiranGuru() {
-    var dateEl=document.getElementById('guruAttendanceDate'), body=document.getElementById('guruAttendanceSummaryBody'), foot=document.getElementById('guruAttendanceSummaryFoot');
-    if(!body) return;
-    var tanggal=(dateEl&&dateEl.value)||getLocalTodayStr();
-    body.innerHTML='<tr><td colspan="9">Memuat rekap...</td></tr>';
-    if(foot) foot.innerHTML='';
-    google.script.run.withSuccessHandler(function(res){
-      res=res||{};
-      var rows=Array.isArray(res.rows)?res.rows:[], totals=res.totals||{};
-      var total=rows.length;
+    var dateEl=document.getElementById('guruAttendanceDate'),monthEl=document.getElementById('guruAttendanceMonth'),body=document.getElementById('guruAttendanceSummaryBody'),foot=document.getElementById('guruAttendanceSummaryFoot');
+    if(!body)return;
+    var monthly=guruQrReportMode==='monthly',period=monthly?((monthEl&&monthEl.value)||getLocalTodayStr().slice(0,7)):((dateEl&&dateEl.value)||getLocalTodayStr());
+    body.innerHTML='<tr><td colspan="9">Memuat rekap...</td></tr>';if(foot)foot.innerHTML='';
+    var runner=google.script.run.withSuccessHandler(function(res){
+      res=res||{};var rows=Array.isArray(res.rows)?res.rows:[],totals=res.totals||{},den=Number(res.denominator||rows.length||0);
       function count(key){var n=Number(totals[key]||0);return Number.isFinite(n)?n:0;}
-      function pct(n){return (total>0?(n/total*100):0).toFixed(2).replace('.',',')+'%';}
-      function setTotal(id,n,denominator){var el=document.getElementById(id);if(el)el.textContent=n+' ('+(denominator===0?'0,00%':pct(n))+')';}
-      setTotal('gqTotalGuru',total,total);
-      setTotal('gqTotalBelum',count('belumAbsen'),total);
-      setTotal('gqTotalTepat',count('tepatWaktu'),total);
-      setTotal('gqTotalTerlambat',count('terlambat'),total);
-      setTotal('gqTotalPulangTepat',count('pulangTepat'),total);
-      setTotal('gqTotalPulangAwal',count('pulangAwal'),total);
-      setTotal('gqTotalIzin',count('izin'),total);
-      setTotal('gqTotalSakit',count('sakit'),total);
-      if(!rows.length){body.innerHTML='<tr><td colspan="9" class="text-muted">Tidak ada data guru.</td></tr>';return;}
+      function pct(n){return (den>0?(n/den*100):0).toFixed(2).replace('.',',')+'%';}
+      function setTotal(id,n){var el=document.getElementById(id);if(el)el.textContent=n+' ('+pct(n)+')';}
+      var totalGuru=Number(res.totalGuru||rows.length||0),totalGuruEl=document.getElementById('gqTotalGuru');if(totalGuruEl)totalGuruEl.textContent=totalGuru+' (100,00%)';
+      setTotal('gqTotalBelum',count('belumAbsen'));setTotal('gqTotalTepat',count('tepatWaktu'));setTotal('gqTotalTerlambat',count('terlambat'));setTotal('gqTotalPulangTepat',count('pulangTepat'));setTotal('gqTotalPulangAwal',count('pulangAwal'));setTotal('gqTotalIzin',count('izin'));setTotal('gqTotalSakit',count('sakit'));
+      if(!rows.length){body.innerHTML='<tr><td colspan="9" class="text-muted">Tidak ada data guru pada periode ini.</td></tr>';return;}
       body.innerHTML=rows.map(function(r){
         function mark(ok,kind){return ok?'<span class="guru-status-mark '+kind+'" aria-label="Ada">✓</span>':'<span class="guru-status-empty">—</span>';}
+        if(monthly){var c=r.counts||{};return '<tr><td class="guru-nip-cell">'+escapeHtml(r.nip||'')+'</td><td class="text-start guru-name-cell">'+escapeHtml(r.nama||'')+'</td>'+['belumAbsen','tepatWaktu','terlambat','pulangTepat','pulangAwal','izin','sakit'].map(function(k){return '<td>'+((Number(c[k]||0)>0)?'<strong>'+Number(c[k])+'</strong>':'<span class="guru-status-empty">—</span>')+'</td>';}).join('')+'</tr>';}
         return '<tr><td class="guru-nip-cell">'+escapeHtml(r.nip||'')+'</td><td class="text-start guru-name-cell">'+escapeHtml(r.nama||'')+'</td><td>'+mark(r.status==='Belum Absen','is-missing')+'</td><td>'+mark(r.status==='Masuk Tepat Waktu','is-ontime')+'</td><td>'+mark(r.status==='Masuk Terlambat','is-late')+'</td><td>'+mark(r.pulang==='Pulang Tepat Waktu','is-home-ontime')+'</td><td>'+mark(r.pulang==='Pulang Awal','is-early')+'</td><td>'+mark(r.status==='Izin','is-leave')+'</td><td>'+mark(r.status==='Sakit','is-sick')+'</td></tr>';
       }).join('');
-    }).withFailureHandler(function(err){
-      body.innerHTML='<tr><td colspan="9" class="text-danger">Gagal memuat rekap: '+escapeHtml(err&&err.message||err)+'</td></tr>';
-    }).getRekapStatusKehadiranGuru(tanggal);
+    }).withFailureHandler(function(err){body.innerHTML='<tr><td colspan="9" class="text-danger">Gagal memuat rekap: '+escapeHtml(err&&err.message||err)+'</td></tr>';});
+    if(monthly)runner.getRekapStatusKehadiranGuruBulanan(period);else runner.getRekapStatusKehadiranGuru(period);
+  }
+
+  var studentQrReportMode='daily';
+  function setStudentQrReportMode(mode){
+    studentQrReportMode=mode==='monthly'?'monthly':'daily';
+    var daily=document.getElementById('sqrDailyDateWrap'),monthly=document.getElementById('sqrMonthlyDateWrap');
+    if(daily)daily.classList.toggle('d-none',studentQrReportMode!=='daily');if(monthly)monthly.classList.toggle('d-none',studentQrReportMode!=='monthly');
+    var db=document.getElementById('sqrDailyBtn'),mb=document.getElementById('sqrMonthlyBtn');
+    if(db){db.classList.toggle('active',studentQrReportMode==='daily');db.classList.toggle('btn-warning',studentQrReportMode==='daily');db.classList.toggle('btn-outline-warning',studentQrReportMode!=='daily');}
+    if(mb){mb.classList.toggle('active',studentQrReportMode==='monthly');mb.classList.toggle('btn-warning',studentQrReportMode==='monthly');mb.classList.toggle('btn-outline-warning',studentQrReportMode!=='monthly');}
+    var d=document.getElementById('studentAttendanceDate'),m=document.getElementById('studentAttendanceMonth');
+    if(studentQrReportMode==='daily'&&d&&!d.value)d.value=getLocalTodayStr();if(studentQrReportMode==='monthly'&&m&&!m.value)m.value=(d&&d.value?d.value:getLocalTodayStr()).slice(0,7);
+    loadRekapStatusKehadiranSiswa();
+  }
+  function loadRekapStatusKehadiranSiswa(){
+    var dateEl=document.getElementById('studentAttendanceDate'),monthEl=document.getElementById('studentAttendanceMonth'),body=document.getElementById('studentAttendanceSummaryBody');if(!body)return;
+    var monthly=studentQrReportMode==='monthly',period=monthly?((monthEl&&monthEl.value)||getLocalTodayStr().slice(0,7)):((dateEl&&dateEl.value)||getLocalTodayStr());
+    body.innerHTML='<tr><td colspan="10">Memuat rekap...</td></tr>';
+    var runner=google.script.run.withSuccessHandler(function(res){
+      res=res||{};var rows=Array.isArray(res.rows)?res.rows:[],totals=res.totals||{},den=Number(res.denominator||rows.length||0);
+      function count(k){var n=Number(totals[k]||0);return Number.isFinite(n)?n:0;}function pct(n){return (den>0?n/den*100:0).toFixed(2).replace('.',',')+'%';}
+      function set(id,n){var el=document.getElementById(id);if(el)el.textContent=n+' ('+pct(n)+')';}
+      var totalSiswa=Number(res.totalSiswa||rows.length||0),totalSiswaEl=document.getElementById('sqrTotalSiswa');if(totalSiswaEl)totalSiswaEl.textContent=totalSiswa+' (100,00%)';set('sqrTotalBelum',count('belumAbsen'));set('sqrTotalHadir',count('hadir'));set('sqrTotalTerlambat',count('terlambat'));set('sqrTotalIzin',count('izin'));set('sqrTotalSakit',count('sakit'));set('sqrTotalAlpha',count('alpha'));set('sqrTotalPulangTepat',count('pulangTepat'));set('sqrTotalPulangAwal',count('pulangAwal'));
+      if(!rows.length){body.innerHTML='<tr><td colspan="10" class="text-muted">'+escapeHtml(res.message||'Tidak ada data siswa pada periode ini.')+'</td></tr>';return;}
+      body.innerHTML=rows.map(function(r){
+        if(monthly){var c=r.counts||{};return '<tr><td>'+escapeHtml(r.nisn||'')+'</td><td class="text-start fw-semibold">'+escapeHtml(r.nama||'')+'</td>'+['belumAbsen','hadir','terlambat','izin','sakit','alpha','pulangTepat','pulangAwal'].map(function(k){return '<td>'+((Number(c[k]||0)>0)?'<strong>'+Number(c[k])+'</strong>':'<span class="sqr-status-empty">—</span>')+'</td>';}).join('')+'</tr>';}
+        function mark(ok,kind){return ok?'<span class="sqr-status-mark '+kind+'" aria-label="Ada">✓</span>':'<span class="sqr-status-empty">—</span>';}
+        return '<tr><td>'+escapeHtml(r.nisn||'')+'</td><td class="text-start fw-semibold">'+escapeHtml(r.nama||'')+'</td><td>'+mark(r.status==='Belum Absen','is-missing')+'</td><td>'+mark(r.status==='Hadir','is-present')+'</td><td>'+mark(r.status==='Terlambat','is-late')+'</td><td>'+mark(r.status==='Izin','is-leave')+'</td><td>'+mark(r.status==='Sakit','is-sick')+'</td><td>'+mark(r.status==='Alpha','is-alpha')+'</td><td>'+mark(r.pulang==='Pulang Tepat Waktu','is-home')+'</td><td>'+mark(r.pulang==='Pulang Awal','is-early')+'</td></tr>';
+      }).join('');
+    }).withFailureHandler(function(err){body.innerHTML='<tr><td colspan="10" class="text-danger">Gagal memuat rekap: '+escapeHtml(err&&err.message||err)+'</td></tr>';});
+    if(monthly)runner.getRekapStatusKehadiranSiswaBulanan(period);else runner.getRekapStatusKehadiranSiswa(period);
   }
 
   function loadJurnalFormOptions() {
@@ -6664,7 +6724,7 @@
       var wa=r&&r.whatsapp;var msg=(r&&r.message)||'Status berhasil diproses.';
       if(wa&&!wa.success)msg+=' Catatan notifikasi: '+(wa.message||'belum berhasil dikirim.');
       if(out)out.innerHTML='<div class="alert '+(r&&r.success?'alert-success':'alert-warning')+'"><b>'+escapeHtml(msg)+'</b>'+(r&&r.siswa?'<div>'+escapeHtml(r.siswa.nama)+' · '+escapeHtml(r.siswa.kelas)+' · '+escapeHtml(status)+'</div>':'')+'</div>';
-      if(r&&r.success){loadAbsensiGerbang();loadSiswaBelumAbsenUntukIzinSakit();}
+      if(r&&r.success){loadAbsensiGerbang();loadRekapStatusKehadiranSiswa();loadSiswaBelumAbsenUntukIzinSakit();}
     }).withFailureHandler(function(e){if(out)out.innerHTML='<div class="alert alert-danger">'+escapeHtml(e.message||e)+'</div>';}).catatIzinSakitGerbang(nisn,status,masdaGetSessionToken_());
   }
 
@@ -6751,7 +6811,7 @@
             if(el)el.innerHTML='<div class="alert '+(r&&r.success?'alert-success':'alert-warning')+'"><b>'+escapeHtml(msg)+'</b>'+(r&&r.siswa?'<div>'+escapeHtml(r.siswa.nama)+' · '+escapeHtml(r.siswa.kelas)+' · NISN '+escapeHtml(r.siswa.nisn)+'</div>':'')+'</div>';
             masdaQrBusy=false;
             loadAbsensiGerbang();
-            if(r&&r.success){refreshDashboard();if(mode==='masuk'){var t=document.getElementById('absensiSelectTanggal'),k=document.getElementById('absensiSelectKelas');if(t&&k&&String(k.value)===String(r.siswa.kelas))loadAbsensiSiswa();}
+            if(r&&r.success){refreshDashboard();loadRekapStatusKehadiranSiswa();if(mode==='masuk'){var t=document.getElementById('absensiSelectTanggal'),k=document.getElementById('absensiSelectKelas');if(t&&k&&String(k.value)===String(r.siswa.kelas))loadAbsensiSiswa();}
             if(hint)hint.innerHTML='<i class="bi bi-check-circle"></i> Absensi tersimpan. Tekan Mulai Kamera untuk memindai siswa berikutnya.';}
           }).withFailureHandler(function(e){if(out)out.innerHTML='<div class="alert alert-danger">'+escapeHtml(e.message||e)+'</div>';masdaQrBusy=false;}).catatAbsensiGerbang(nisn,mode,mode==='masuk'?status:'Hadir');
         });
