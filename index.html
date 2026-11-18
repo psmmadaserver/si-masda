@@ -2183,7 +2183,7 @@
 </div>
 </div></div>
 <div class="card border-0 shadow-sm rounded-4 mb-4 guru-qr-table-card"><div class="card-body p-3 p-md-4">
-<div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3"><div><div class="d-flex flex-wrap align-items-center gap-2"><h5 class="fw-bold mb-1"><i class="bi bi-table me-2"></i>Rekap Kehadiran Guru</h5><span class="gq-total-guru-badge">Total Guru <strong id="gqTotalGuru">0 (0%)</strong></span></div><div class="small text-muted">Ringkasan status kehadiran seluruh guru pada tanggal yang dipilih.</div></div><div class="d-flex flex-wrap gap-2 align-items-end"><div id="gqDailyDateWrap"><label class="form-label small mb-1" for="guruAttendanceDate">Tanggal</label><input class="form-control form-control-sm" id="guruAttendanceDate" onchange="loadRekapStatusKehadiranGuru()" type="date"/></div><div id="gqMonthlyDateWrap" class="d-none"><label class="form-label small mb-1" for="guruAttendanceMonth">Bulan</label><input class="form-control form-control-sm" id="guruAttendanceMonth" onchange="loadRekapStatusKehadiranGuru()" type="month"/></div><div class="btn-group btn-group-sm gq-period-switch" role="group" aria-label="Jenis rekap"><button class="btn btn-primary active" id="gqDailyBtn" type="button" onclick="setGuruQrReportMode('daily')">Rekap Harian</button><button class="btn btn-outline-primary" id="gqMonthlyBtn" type="button" onclick="setGuruQrReportMode('monthly')">Rekap Bulanan</button></div><button class="btn btn-outline-primary btn-sm" onclick="loadRekapStatusKehadiranGuru()" type="button"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button></div></div>
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3"><div><div class="d-flex flex-wrap align-items-center gap-2"><h5 class="fw-bold mb-1"><i class="bi bi-table me-2"></i>Rekap Kehadiran Guru</h5><span class="gq-total-guru-badge">Total Guru <strong id="gqTotalGuru">0 (0%)</strong></span></div><div class="small text-muted">Ringkasan status kehadiran seluruh guru pada tanggal yang dipilih.</div></div><div class="d-flex flex-wrap gap-2 align-items-end"><div id="gqDailyDateWrap"><label class="form-label small mb-1" for="guruAttendanceDate">Tanggal</label><input class="form-control form-control-sm" id="guruAttendanceDate" onchange="loadRekapStatusKehadiranGuru()" type="date"/></div><div id="gqMonthlyDateWrap" class="d-none"><label class="form-label small mb-1" for="guruAttendanceMonth">Bulan</label><input class="form-control form-control-sm" id="guruAttendanceMonth" onchange="loadRekapStatusKehadiranGuru()" type="month"/></div><div class="btn-group btn-group-sm gq-period-switch" role="group" aria-label="Jenis rekap"><button class="btn btn-primary active" id="gqDailyBtn" type="button" onclick="setGuruQrReportMode('daily')">Rekap Harian</button><button class="btn btn-outline-primary" id="gqMonthlyBtn" type="button" onclick="setGuruQrReportMode('monthly')">Rekap Bulanan</button></div><button class="btn btn-outline-danger btn-sm" onclick="exportAbsensiQrPdf('guru')" type="button"><i class="bi bi-file-earmark-pdf me-1"></i>Export PDF</button><button class="btn btn-outline-primary btn-sm" onclick="loadRekapStatusKehadiranGuru()" type="button"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button></div></div>
 <div class="table-responsive"><table class="table table-bordered table-sm align-middle text-center" id="guruAttendanceSummaryTable"><thead class="table-primary"><tr id="guruAttendanceSummaryHead"><th class="gq-total-spacer" colspan="2" aria-label="Ringkasan total guru ditampilkan di samping judul"></th><th class="gq-total-cell gq-total-missing"><strong id="gqTotalBelum">0 (0%)</strong></th><th class="gq-total-cell gq-total-ontime"><strong id="gqTotalTepat">0 (0%)</strong></th><th class="gq-total-cell gq-total-late"><strong id="gqTotalTerlambat">0 (0%)</strong></th><th class="gq-total-cell gq-total-home"><strong id="gqTotalPulangTepat">0 (0%)</strong></th><th class="gq-total-cell gq-total-early"><strong id="gqTotalPulangAwal">0 (0%)</strong></th><th class="gq-total-cell gq-total-leave"><strong id="gqTotalIzin">0 (0%)</strong></th><th class="gq-total-cell gq-total-sick"><strong id="gqTotalSakit">0 (0%)</strong></th></tr><tr><th>NIP</th><th>Nama Guru</th><th>Belum Absen</th><th>Masuk Tepat Waktu</th><th>Masuk Terlambat</th><th>Pulang Tepat Waktu</th><th>Pulang Awal</th><th>Izin</th><th>Sakit</th></tr></thead><tbody id="guruAttendanceSummaryBody"><tr><td class="text-muted" colspan="9">Pilih tanggal atau tekan Refresh.</td></tr></tbody><tfoot id="guruAttendanceSummaryFoot"></tfoot></table></div>
 <div class="guru-qr-legend mt-3"><div class="guru-qr-legend-title"><i class="bi bi-info-circle-fill me-2"></i>Keterangan Simbol &amp; Status</div><div class="guru-qr-legend-grid"><div><span class="guru-status-mark is-missing">✓</span><b>Belum Absen</b><small>Belum melakukan QR Masuk pada tanggal tersebut.</small></div><div><span class="guru-status-mark is-ontime">✓</span><b>Masuk Tepat Waktu</b><small>Absen masuk sebelum jadwal dimulai.</small></div><div><span class="guru-status-mark is-late">✓</span><b>Masuk Terlambat</b><small>Absen masuk tepat pada atau setelah jadwal.</small></div><div><span class="guru-status-mark is-home-ontime">✓</span><b>Pulang Tepat Waktu</b><small>Absen pulang sesuai atau setelah jadwal selesai.</small></div><div><span class="guru-status-mark is-early">✓</span><b>Pulang Awal</b><small>Pulang sebelum jadwal selesai atau belum QR Pulang.</small></div><div><span class="guru-status-mark is-leave">✓</span><b>Izin</b><small>Tidak masuk dengan status izin tercatat.</small></div><div><span class="guru-status-mark is-sick">✓</span><b>Sakit</b><small>Tidak masuk dengan status sakit tercatat.</small></div></div><div class="small text-muted mt-2">Catatan: Status Izin/Sakit menggantikan kategori Belum Absen pada tanggal yang sama. Simbol centang menunjukkan kategori yang berlaku untuk guru tersebut.</div></div>
 </div></div>
@@ -2638,6 +2638,7 @@
           <button class="btn btn-warning active" id="sqrDailyBtn" type="button" onclick="setStudentQrReportMode('daily')">Rekap Harian</button>
           <button class="btn btn-outline-warning" id="sqrMonthlyBtn" type="button" onclick="setStudentQrReportMode('monthly')">Rekap Bulanan</button>
         </div>
+        <button class="btn btn-outline-danger btn-sm" type="button" onclick="exportAbsensiQrPdf('siswa')"><i class="bi bi-file-earmark-pdf me-1"></i>Export PDF</button>
         <button class="btn btn-outline-warning btn-sm" type="button" onclick="loadRekapStatusKehadiranSiswa()"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button>
       </div>
     </div>
@@ -5161,6 +5162,112 @@
       }).join('');
     }).withFailureHandler(function(err){body.innerHTML='<tr><td colspan="10" class="text-danger">Gagal memuat rekap: '+escapeHtml(err&&err.message||err)+'</td></tr>';});
     if(monthly)runner.getRekapStatusKehadiranSiswaBulanan(period);else runner.getRekapStatusKehadiranSiswa(period);
+  }
+
+  // Export PDF untuk seluruh isi tabel rekap QR Guru/Siswa sesuai mode dan periode aktif.
+  // Data diambil dari seluruh baris tabel yang sudah dirender, tanpa pemotongan halaman.
+  function exportAbsensiQrPdf(jenis) {
+    try {
+      if (!window.jspdf || !window.jspdf.jsPDF) {
+        appNotify('Library PDF belum tersedia. Periksa koneksi internet lalu muat ulang aplikasi.', 'error');
+        return;
+      }
+      var isGuru = String(jenis || '').toLowerCase() === 'guru';
+      var mode = isGuru ? guruQrReportMode : studentQrReportMode;
+      var tableId = isGuru ? 'guruAttendanceSummaryTable' : 'studentAttendanceSummaryTable';
+      var table = document.getElementById(tableId);
+      if (!table) { appNotify('Tabel rekap tidak ditemukan.', 'error'); return; }
+      var body = table.querySelector('tbody');
+      var dataRows = body ? Array.prototype.slice.call(body.querySelectorAll('tr')) : [];
+      if (!dataRows.length || dataRows.every(function(tr){ return tr.querySelectorAll('td').length < 2; })) {
+        appNotify('Belum ada data tabel yang dapat diekspor.', 'warning'); return;
+      }
+      if (dataRows.some(function(tr){ return /Memuat rekap/i.test(tr.innerText || ''); })) {
+        appNotify('Rekap masih dimuat. Tunggu sampai tabel selesai diperbarui.', 'warning'); return;
+      }
+      if (dataRows.some(function(tr){ return /Gagal memuat/i.test(tr.innerText || ''); })) {
+        appNotify('Rekap gagal dimuat. Perbaiki atau refresh data sebelum export.', 'error'); return;
+      }
+      var dateValue = isGuru
+        ? (mode === 'monthly' ? (document.getElementById('guruAttendanceMonth') || {}).value : (document.getElementById('guruAttendanceDate') || {}).value)
+        : (mode === 'monthly' ? (document.getElementById('studentAttendanceMonth') || {}).value : (document.getElementById('studentAttendanceDate') || {}).value);
+      dateValue = dateValue || (mode === 'monthly' ? getLocalTodayStr().slice(0,7) : getLocalTodayStr());
+      var periodLabel = mode === 'monthly' ? ('Bulan: ' + dateValue) : ('Tanggal: ' + dateValue);
+      var title = isGuru ? 'REKAP KEHADIRAN QR GURU' : 'REKAP KEHADIRAN QR SISWA';
+      var totalBadgeId = isGuru ? 'gqTotalGuru' : 'sqrTotalSiswa';
+      var totalBadge = document.getElementById(totalBadgeId);
+      var totalLabel = isGuru ? 'Total Guru' : 'Total Siswa';
+      var headRows = table.querySelectorAll('thead tr');
+      var headerRow = headRows.length ? headRows[headRows.length - 1] : null;
+      var headers = headerRow ? Array.prototype.map.call(headerRow.querySelectorAll('th'), function(th){ return (th.innerText || th.textContent || '').trim(); }) : [];
+      var bodyRows = [];
+      dataRows.forEach(function(tr){
+        var cells = Array.prototype.slice.call(tr.querySelectorAll('td'));
+        if (cells.length !== headers.length) return;
+        bodyRows.push(cells.map(function(td){
+          var value = (td.innerText || td.textContent || '').replace(/\s+/g,' ').trim();
+          return value || '—';
+        }));
+      });
+      if (!bodyRows.length) { appNotify('Tabel belum memiliki baris data lengkap untuk diekspor.', 'warning'); return; }
+
+      var jsPDF = window.jspdf.jsPDF;
+      var doc = new jsPDF({orientation:'landscape', unit:'mm', format:'a3'});
+      var pageW = doc.internal.pageSize.getWidth();
+      var accent = isGuru ? [117, 58, 210] : [211, 153, 0];
+      doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(32,48,83);
+      doc.text(title, 12, 14);
+      doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(95,108,132);
+      doc.text('siMADA — Sistem Manajemen MAS Darul Amin', 12, 20);
+      doc.text(periodLabel + '  |  ' + (mode === 'monthly' ? 'Rekap Bulanan' : 'Rekap Harian'), 12, 26);
+      doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(42,55,82);
+      doc.text(totalLabel + ': ' + (totalBadge ? totalBadge.textContent.trim() : bodyRows.length), 12, 33);
+
+      // Ringkasan angka total di header tabel ikut dimasukkan ke PDF.
+      var totalHeaderCells = table.querySelectorAll('thead tr:first-child th');
+      var summary = [];
+      Array.prototype.forEach.call(totalHeaderCells, function(th){
+        var span = Number(th.getAttribute('colspan') || 1);
+        if (th.classList.contains('gq-total-spacer') || th.classList.contains('sqr-total-spacer')) return;
+        var categoryCell = th;
+        var categoryIndex = summary.length;
+        var categoryNamesGuru = ['Belum Absen','Masuk Tepat Waktu','Masuk Terlambat','Pulang Tepat Waktu','Pulang Awal','Izin','Sakit'];
+        var categoryNamesSiswa = ['Belum Absen','Hadir','Terlambat','Izin','Sakit','Alpha','Pulang Tepat Waktu','Pulang Awal'];
+        summary.push([(isGuru ? categoryNamesGuru : categoryNamesSiswa)[categoryIndex] || 'Status', (categoryCell.innerText || categoryCell.textContent || '').trim()]);
+      });
+      var startY = 38;
+      if (summary.length) {
+        doc.autoTable({
+          head:[['Ringkasan Status','Jumlah (Persentase)']], body:summary,
+          startY:startY, theme:'grid',
+          styles:{font:'helvetica',fontSize:7,cellPadding:1.8,textColor:[48,59,79]},
+          headStyles:{fillColor:accent,textColor:[255,255,255],fontStyle:'bold'},
+          margin:{left:12,right:12}, tableWidth:105
+        });
+        startY = (doc.lastAutoTable && doc.lastAutoTable.finalY ? doc.lastAutoTable.finalY : startY+20) + 5;
+      }
+      doc.autoTable({
+        head:[headers], body:bodyRows, startY:startY,
+        theme:'grid',
+        styles:{font:'helvetica',fontSize:7,cellPadding:2,overflow:'linebreak',valign:'middle',textColor:[43,54,75]},
+        headStyles:{fillColor:accent,textColor:[255,255,255],fontStyle:'bold',halign:'center'},
+        alternateRowStyles:{fillColor:isGuru?[247,244,253]:[255,250,232]},
+        columnStyles:{0:{cellWidth:32},1:{cellWidth:48}},
+        margin:{left:10,right:10,top:12,bottom:15},
+        didDrawPage:function(data){
+          var pageH=doc.internal.pageSize.getHeight();
+          doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(120,130,148);
+          doc.text('Dicetak melalui siMADA • MAS Darul Amin',10,pageH-7);
+          doc.text('Halaman '+doc.internal.getNumberOfPages(),pageW-10,pageH-7,{align:'right'});
+        }
+      });
+      var safePeriod = String(dateValue).replace(/[^0-9-]/g,'');
+      doc.save('Rekap_Absensi_QR_'+(isGuru?'Guru':'Siswa')+'_'+(mode==='monthly'?'Bulanan_':'Harian_')+safePeriod+'.pdf');
+      appNotify('PDF rekap '+(isGuru?'guru':'siswa')+' berhasil dibuat.', 'success');
+    } catch (err) {
+      console.error('Export PDF Absensi QR:', err);
+      appNotify('Gagal membuat PDF: ' + (err && err.message ? err.message : err), 'error');
+    }
   }
 
   function loadJurnalFormOptions() {
