@@ -4004,12 +4004,12 @@
     });
     var header=document.getElementById('dashSarprasTotalHeader');
     if(header)header.textContent=total.toLocaleString('id-ID')+' Total Unit';
-    // Grafik sengaja diurutkan dari Rusak Berat -> Rusak Ringan -> Kondisi Baik
-    // agar arah gradasi merah-kuning-hijau terbaca sesuai permintaan.
+    // Urutan grafik disamakan dengan lingkaran di bawahnya:
+    // Kondisi Baik -> Rusak Ringan -> Rusak Berat.
     renderChartSarprasTrend([
-      denominator>0?Math.round(berat/denominator*100):0,
+      denominator>0?Math.round(baik/denominator*100):0,
       denominator>0?Math.round(ringan/denominator*100):0,
-      denominator>0?Math.round(baik/denominator*100):0
+      denominator>0?Math.round(berat/denominator*100):0
     ]);
   }
 
@@ -4022,7 +4022,7 @@
     sarprasChart=new Chart(ctx,{
       type:'line',
       data:{
-        labels:['Rusak Berat','Rusak Ringan','Kondisi Baik'],
+        labels:['Kondisi Baik','Rusak Ringan','Rusak Berat'],
         datasets:[{
           data:values,
           fill:true,
@@ -4030,9 +4030,9 @@
             var chart=context.chart,area=chart.chartArea;
             if(!area) return 'rgba(255,201,40,.12)';
             var gradient=chart.ctx.createLinearGradient(area.left,0,area.right,0);
-            gradient.addColorStop(0,'rgba(255,59,48,.24)');
+            gradient.addColorStop(0,'rgba(22,201,107,.22)');
             gradient.addColorStop(.5,'rgba(255,201,40,.19)');
-            gradient.addColorStop(1,'rgba(22,201,107,.22)');
+            gradient.addColorStop(1,'rgba(255,59,48,.24)');
             return gradient;
           },
           borderColor:yellow,
@@ -4043,11 +4043,11 @@
               var p0=context.p0.x,p1=context.p1.x;
               var gradient=chart.ctx.createLinearGradient(p0,0,p1,0);
               if(context.p0DataIndex===0){
-                gradient.addColorStop(0,red);
+                gradient.addColorStop(0,green);
                 gradient.addColorStop(1,yellow);
               }else{
                 gradient.addColorStop(0,yellow);
-                gradient.addColorStop(1,green);
+                gradient.addColorStop(1,red);
               }
               return gradient;
             }
@@ -4055,7 +4055,7 @@
           borderWidth:4,tension:.28,
           pointRadius:5,pointHoverRadius:7,
           pointBackgroundColor:'#fff',
-          pointBorderColor:[red,yellow,green],
+          pointBorderColor:[green,yellow,red],
           pointBorderWidth:3
         }]
       },
@@ -4064,7 +4064,7 @@
         interaction:{intersect:false,mode:'index'},
         plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.parsed.y+'%';}}}},
         scales:{
-          x:{grid:{display:false},border:{display:false},ticks:{color:function(context){return [red,'#d99b00',green][context.index]||'#98a3b5';},font:{size:10,weight:'700'}}},
+          x:{grid:{display:false},border:{display:false},ticks:{color:function(context){return [green,'#d99b00',red][context.index]||'#98a3b5';},font:{size:10,weight:'700'}}},
           y:{display:false,min:0,max:100,grid:{display:false},border:{display:false}}
         }
       }
