@@ -3215,6 +3215,13 @@
     if (mobileBadge) mobileBadge.innerText = res.role;
 
     applyRBACMenuVisibility();
+    // Rekap QR Guru/Siswa hanya ditampilkan kepada Administrator.
+    // Kartu pemindai tetap tersedia bagi pengguna non-Administrator yang memiliki izin menu.
+    var isAdministratorSession = String(res.role || '').trim().toLowerCase() === 'administrator';
+    var guruQrRecapCard = document.querySelector('#sec-absensiGuruQr .guru-qr-table-card');
+    var siswaQrRecapCard = document.querySelector('#sec-absensiQr .student-qr-table-card');
+    if (guruQrRecapCard) guruQrRecapCard.classList.toggle('d-none', !isAdministratorSession);
+    if (siswaQrRecapCard) siswaQrRecapCard.classList.toggle('d-none', !isAdministratorSession);
     var permitCard = document.getElementById('studentPermitCard');
     if (permitCard) permitCard.classList.toggle('d-none', String(res.role).toLowerCase() !== 'siswa');
     var honorControls = document.getElementById('honorAdminControls');
@@ -3861,8 +3868,8 @@
     if (targetKey === 'dashboard') { refreshDashboard(); refreshStatistikPembiasaan(); }
     if (targetKey === 'absensi') loadAbsensiKelasOptions();
     if (targetKey === 'absensiPembiasaan') loadAbsensiPembiasaanPage();
-    if (targetKey === 'absensiQr') { updateQrAttendanceClock(); setQrAttendanceMode((document.getElementById('qrAttendanceMode')||{}).value||'masuk'); var sd=document.getElementById('studentAttendanceDate'); if(sd&&!sd.value)sd.value=getLocalTodayStr(); var sm=document.getElementById('studentAttendanceMonth'); if(sm&&!sm.value)sm.value=getLocalTodayStr().slice(0,7); loadRekapStatusKehadiranSiswa(); }
-    if (targetKey === 'absensiGuruQr') { loadGuruLeaveOptions(); updateGuruQrMode(); var gd=document.getElementById('guruAttendanceDate'); if(gd && !gd.value) gd.value=getLocalTodayStr(); loadRekapStatusKehadiranGuru(); }
+    if (targetKey === 'absensiQr') { updateQrAttendanceClock(); setQrAttendanceMode((document.getElementById('qrAttendanceMode')||{}).value||'masuk'); if (isAdminUser()) { var sd=document.getElementById('studentAttendanceDate'); if(sd&&!sd.value)sd.value=getLocalTodayStr(); var sm=document.getElementById('studentAttendanceMonth'); if(sm&&!sm.value)sm.value=getLocalTodayStr().slice(0,7); loadRekapStatusKehadiranSiswa(); } }
+    if (targetKey === 'absensiGuruQr') { loadGuruLeaveOptions(); updateGuruQrMode(); if (isAdminUser()) { var gd=document.getElementById('guruAttendanceDate'); if(gd && !gd.value) gd.value=getLocalTodayStr(); loadRekapStatusKehadiranGuru(); } }
     if (targetKey === 'pengumuman') loadPengumuman();
     if (targetKey === 'profil' && schoolMap) {
       setTimeout(function() { schoolMap.invalidateSize(); }, 300);
@@ -5098,6 +5105,7 @@
     loadRekapStatusKehadiranGuru();
   }
   function loadRekapStatusKehadiranGuru() {
+    if (!isAdminUser()) return;
     var dateEl=document.getElementById('guruAttendanceDate'),monthEl=document.getElementById('guruAttendanceMonth'),body=document.getElementById('guruAttendanceSummaryBody'),foot=document.getElementById('guruAttendanceSummaryFoot');
     if(!body)return;
     var monthly=guruQrReportMode==='monthly',period=monthly?((monthEl&&monthEl.value)||getLocalTodayStr().slice(0,7)):((dateEl&&dateEl.value)||getLocalTodayStr());
@@ -5132,6 +5140,7 @@
     loadRekapStatusKehadiranSiswa();
   }
   function loadRekapStatusKehadiranSiswa(){
+    if (!isAdminUser()) return;
     var dateEl=document.getElementById('studentAttendanceDate'),monthEl=document.getElementById('studentAttendanceMonth'),body=document.getElementById('studentAttendanceSummaryBody');if(!body)return;
     var monthly=studentQrReportMode==='monthly',period=monthly?((monthEl&&monthEl.value)||getLocalTodayStr().slice(0,7)):((dateEl&&dateEl.value)||getLocalTodayStr());
     body.innerHTML='<tr><td colspan="10">Memuat rekap...</td></tr>';
@@ -5153,6 +5162,7 @@
   // Export PDF untuk seluruh isi tabel rekap QR Guru/Siswa sesuai mode dan periode aktif.
   // Data diambil dari seluruh baris tabel yang sudah dirender, tanpa pemotongan halaman.
   function exportAbsensiQrPdf(jenis) {
+    if (!isAdminUser()) { appNotify('Rekap absensi QR hanya dapat diakses Administrator.', 'error'); return; }
     try {
       if (!window.jspdf || !window.jspdf.jsPDF) {
         appNotify('Library PDF belum tersedia. Periksa koneksi internet lalu muat ulang aplikasi.', 'error');
