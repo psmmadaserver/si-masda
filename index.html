@@ -1137,6 +1137,20 @@
 .simada-guru-qr-page #guruAttendanceSummaryFoot td:nth-child(9){background:#fecaca;color:#991b1b}
 .simada-guru-qr-page .guru-qr-table-card .small.text-muted{padding:12px 14px;margin-top:14px!important;border:1px solid #e7ddf7;border-radius:12px;background:linear-gradient(110deg,#faf5ff,#f4f0ff);color:#59658a!important;line-height:1.65}
 @media(max-width:767.98px){.simada-guru-qr-page .guru-qr-hero .card-body{padding:18px!important}.simada-guru-qr-page #guruQrReader{width:100%;max-width:100%!important}.simada-guru-qr-page #guruAttendanceSummaryTable thead th{font-size:.72rem;padding:10px 7px}.simada-guru-qr-page #guruAttendanceSummaryTable tbody td{padding:8px 7px}.simada-guru-qr-page .guru-status-mark{width:25px;height:25px}}
+
+/* Ringkasan total dipindahkan ke baris paling atas di dalam tabel; kolom dan baris data tetap. */
+.simada-guru-qr-page #guruAttendanceSummaryTable thead tr#guruAttendanceSummaryHead th{padding:9px 7px;color:#20315f;font-size:.73rem;line-height:1.25;text-align:center;border:1px solid #dbe5f5;vertical-align:middle;background:#eef4ff}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead tr#guruAttendanceSummaryHead th strong{display:inline-block;margin-top:4px;font-size:.88rem;font-weight:900;color:#172653;white-space:nowrap}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead tr#guruAttendanceSummaryHead .gq-total-all{background:linear-gradient(135deg,#dbeafe,#bfdbfe);color:#17458c}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead tr#guruAttendanceSummaryHead .gq-total-missing{background:linear-gradient(135deg,#e2e8f0,#cbd5e1)}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead tr#guruAttendanceSummaryHead .gq-total-ontime{background:linear-gradient(135deg,#dcfce7,#bbf7d0)}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead tr#guruAttendanceSummaryHead .gq-total-late{background:linear-gradient(135deg,#fef3c7,#fde68a)}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead tr#guruAttendanceSummaryHead .gq-total-home{background:linear-gradient(135deg,#dbeafe,#bfdbfe)}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead tr#guruAttendanceSummaryHead .gq-total-early{background:linear-gradient(135deg,#f3e8ff,#e9d5ff)}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead tr#guruAttendanceSummaryHead .gq-total-leave{background:linear-gradient(135deg,#fef9c3,#fef08a)}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead tr#guruAttendanceSummaryHead .gq-total-sick{background:linear-gradient(135deg,#fee2e2,#fecaca)}
+.simada-guru-qr-page #guruAttendanceSummaryTable thead tr:not(#guruAttendanceSummaryHead) th{background:linear-gradient(135deg,#2563eb,#0891b2)!important;color:#fff!important}
+@media(max-width:767.98px){.simada-guru-qr-page #guruAttendanceSummaryTable thead tr#guruAttendanceSummaryHead th{font-size:.65rem;padding:8px 5px}.simada-guru-qr-page #guruAttendanceSummaryTable thead tr#guruAttendanceSummaryHead th strong{font-size:.75rem}}
 </style>
 <style id="simada-guru-qr-legend-style">.simada-guru-qr-page .guru-qr-legend{padding:15px 16px;border:1px solid #e6dcf6;border-radius:15px;background:linear-gradient(115deg,#fbf8ff,#f3edff)}.simada-guru-qr-page .guru-qr-legend-title{font-weight:900;color:#54219b;margin-bottom:12px}.simada-guru-qr-page .guru-qr-legend-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}.simada-guru-qr-page .guru-qr-legend-grid>div{display:grid;grid-template-columns:30px 1fr;column-gap:7px;align-items:center;padding:7px;border-right:1px solid #ddd1ef}.simada-guru-qr-page .guru-qr-legend-grid .guru-status-mark{grid-row:span 2}.simada-guru-qr-page .guru-qr-legend-grid b{font-size:.76rem;color:#28345d;line-height:1.2}.simada-guru-qr-page .guru-qr-legend-grid small{font-size:.68rem;color:#687493;line-height:1.35;margin-top:3px}@media(max-width:1100px){.simada-guru-qr-page .guru-qr-legend-grid{grid-template-columns:repeat(4,minmax(0,1fr))}}@media(max-width:600px){.simada-guru-qr-page .guru-qr-legend-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.simada-guru-qr-page .guru-qr-legend-grid>div{border-right:0;border-bottom:1px solid #e5dcf2}}</style>
 <style id="simada-premium-menu-refresh-v1">
@@ -1211,6 +1225,21 @@
 @media(max-width:767.98px){#sec-dashboard .dash-sarpras-condition-card{padding:17px 14px;border-radius:19px}#sec-dashboard .dash-sarpras-condition-head{flex-direction:column;gap:8px}#sec-dashboard .dash-sarpras-condition-head h5{font-size:1.05rem}#sec-dashboard .dash-sarpras-trend-wrap{height:170px;margin:0 0 10px}#sec-dashboard .dash-sarpras-condition-grid{gap:4px}#sec-dashboard .dash-sarpras-condition-item{padding:4px 2px}#sec-dashboard .condition-gauge{width:min(27vw,104px);padding:6px}#sec-dashboard .condition-gauge-inner strong{font-size:.9rem}#sec-dashboard .condition-mini-chart{height:34px;width:90%;gap:2px;margin:11px auto 6px;padding:0 3px}#sec-dashboard .condition-percent{font-size:1.25rem}#sec-dashboard .condition-item-label{font-size:.66rem}#sec-dashboard .dash-sarpras-footnote{text-align:left;line-height:1.45}}
 </style>
 </head>
+
+<style id="simada-sarpras-table-edit-style">
+#sec-sarpras .table{--bs-table-border-color:#dce7f5;vertical-align:middle}
+#sec-sarpras .table thead th{background:linear-gradient(115deg,#1769dc,#08a6bd);color:#fff;border-color:rgba(255,255,255,.2);font-size:.78rem;font-weight:850;white-space:nowrap;padding:11px 10px}
+#sec-sarpras .table tbody td{padding:9px 10px;font-size:.82rem}
+#sec-sarpras .table tbody tr:nth-child(even) td{background:#f3f8ff}
+#sec-sarpras .table tbody tr:hover td{background:#eaf3ff}
+#sec-sarpras .sarpras-id-cell{font-weight:750;color:#405477;white-space:nowrap}
+#sec-sarpras .sarpras-number-badge{display:inline-flex;min-width:42px;justify-content:center;align-items:center;padding:4px 9px;border-radius:9px;border:1px solid;font-weight:850;font-variant-numeric:tabular-nums;box-shadow:inset 0 1px 0 rgba(255,255,255,.8)}
+#sec-sarpras .sarpras-number-total{color:#1455b8;background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#60a5fa}
+#sec-sarpras .sarpras-number-good{color:#087443;background:linear-gradient(135deg,#ecfdf5,#bbf7d0);border-color:#4ade80}
+#sec-sarpras .sarpras-number-light{color:#a16207;background:linear-gradient(135deg,#fffbeb,#fef08a);border-color:#facc15}
+#sec-sarpras .sarpras-number-heavy{color:#b91c1c;background:linear-gradient(135deg,#fff1f2,#fecaca);border-color:#fb7185}
+#sec-sarpras .table .btn-outline-primary,#sec-sarpras .table .btn-outline-danger{border-radius:9px;min-width:34px}
+</style>
 <body>
 <div aria-atomic="false" aria-live="polite" id="appNotificationStack"></div>
 <!-- LOADING SCREEN DINAMIS -->
@@ -1835,8 +1864,6 @@
 <div class="dash-bar-item"><div class="dash-bar-label"><span>Terlambat</span><strong id="dashGuruPctTerlambat">0%</strong></div><div class="dash-bar-track"><div class="dash-bar-fill" id="dashBarGuruTerlambat" style="width:0%"></div></div></div>
 <div class="dash-bar-item"><div class="dash-bar-label"><span>Izin</span><strong id="dashGuruPctIzin">0%</strong></div><div class="dash-bar-track"><div class="dash-bar-fill" id="dashBarGuruIzin" style="width:0%"></div></div></div>
 <div class="dash-bar-item"><div class="dash-bar-label"><span>Sakit</span><strong id="dashGuruPctSakit">0%</strong></div><div class="dash-bar-track"><div class="dash-bar-fill" id="dashBarGuruSakit" style="width:0%"></div></div></div>
-<div class="dash-bar-item"><div class="dash-bar-label"><span>Pulang Tepat Waktu <small>(dari QR pulang)</small></span><strong id="dashGuruPctPulangTepat">0%</strong></div><div class="dash-bar-track"><div class="dash-bar-fill" id="dashBarGuruPulangTepat" style="width:0%"></div></div></div>
-<div class="dash-bar-item"><div class="dash-bar-label"><span>Pulang Awal <small>(dari QR pulang)</small></span><strong id="dashGuruPctPulangAwal">0%</strong></div><div class="dash-bar-track"><div class="dash-bar-fill" id="dashBarGuruPulangAwal" style="width:0%"></div></div></div>
 </div>
 
 </div>
@@ -2136,7 +2163,7 @@
 </div></div>
 <div class="card border-0 shadow-sm rounded-4 mb-4 guru-qr-table-card"><div class="card-body p-3 p-md-4">
 <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3"><div><h5 class="fw-bold mb-1"><i class="bi bi-table me-2"></i>Rekap Kehadiran Guru</h5><div class="small text-muted">Ringkasan status kehadiran seluruh guru pada tanggal yang dipilih.</div></div><div class="d-flex gap-2 align-items-end"><div><label class="form-label small mb-1" for="guruAttendanceDate">Tanggal</label><input class="form-control form-control-sm" id="guruAttendanceDate" onchange="loadRekapStatusKehadiranGuru()" type="date"/></div><button class="btn btn-outline-primary btn-sm" onclick="loadRekapStatusKehadiranGuru()" type="button"><i class="bi bi-arrow-clockwise me-1"></i>Refresh</button></div></div>
-<div class="table-responsive"><table class="table table-bordered table-sm align-middle text-center" id="guruAttendanceSummaryTable"><thead class="table-primary"><tr><th>NIP</th><th>Nama Guru</th><th>Belum Absen</th><th>Masuk Tepat Waktu</th><th>Masuk Terlambat</th><th>Pulang Tepat Waktu</th><th>Pulang Awal</th><th>Izin</th><th>Sakit</th></tr></thead><tbody id="guruAttendanceSummaryBody"><tr><td class="text-muted" colspan="9">Pilih tanggal atau tekan Refresh.</td></tr></tbody><tfoot id="guruAttendanceSummaryFoot"></tfoot></table></div>
+<div class="table-responsive"><table class="table table-bordered table-sm align-middle text-center" id="guruAttendanceSummaryTable"><thead class="table-primary"><tr id="guruAttendanceSummaryHead"><th class="gq-total-cell gq-total-all" colspan="2">Total Guru<br><strong id="gqTotalGuru">0 (0%)</strong></th><th class="gq-total-cell gq-total-missing">Belum Absen<br><strong id="gqTotalBelum">0 (0%)</strong></th><th class="gq-total-cell gq-total-ontime">Masuk Tepat Waktu<br><strong id="gqTotalTepat">0 (0%)</strong></th><th class="gq-total-cell gq-total-late">Masuk Terlambat<br><strong id="gqTotalTerlambat">0 (0%)</strong></th><th class="gq-total-cell gq-total-home">Pulang Tepat Waktu<br><strong id="gqTotalPulangTepat">0 (0%)</strong></th><th class="gq-total-cell gq-total-early">Pulang Awal<br><strong id="gqTotalPulangAwal">0 (0%)</strong></th><th class="gq-total-cell gq-total-leave">Izin<br><strong id="gqTotalIzin">0 (0%)</strong></th><th class="gq-total-cell gq-total-sick">Sakit<br><strong id="gqTotalSakit">0 (0%)</strong></th></tr><tr><th>NIP</th><th>Nama Guru</th><th>Belum Absen</th><th>Masuk Tepat Waktu</th><th>Masuk Terlambat</th><th>Pulang Tepat Waktu</th><th>Pulang Awal</th><th>Izin</th><th>Sakit</th></tr></thead><tbody id="guruAttendanceSummaryBody"><tr><td class="text-muted" colspan="9">Pilih tanggal atau tekan Refresh.</td></tr></tbody><tfoot id="guruAttendanceSummaryFoot"></tfoot></table></div>
 <div class="guru-qr-legend mt-3"><div class="guru-qr-legend-title"><i class="bi bi-info-circle-fill me-2"></i>Keterangan Simbol &amp; Status</div><div class="guru-qr-legend-grid"><div><span class="guru-status-mark is-missing">✓</span><b>Belum Absen</b><small>Belum melakukan QR Masuk pada tanggal tersebut.</small></div><div><span class="guru-status-mark is-ontime">✓</span><b>Masuk Tepat Waktu</b><small>Absen masuk sebelum jadwal dimulai.</small></div><div><span class="guru-status-mark is-late">✓</span><b>Masuk Terlambat</b><small>Absen masuk tepat pada atau setelah jadwal.</small></div><div><span class="guru-status-mark is-home-ontime">✓</span><b>Pulang Tepat Waktu</b><small>Absen pulang sesuai atau setelah jadwal selesai.</small></div><div><span class="guru-status-mark is-early">✓</span><b>Pulang Awal</b><small>Pulang sebelum jadwal selesai atau belum QR Pulang.</small></div><div><span class="guru-status-mark is-leave">✓</span><b>Izin</b><small>Tidak masuk dengan status izin tercatat.</small></div><div><span class="guru-status-mark is-sick">✓</span><b>Sakit</b><small>Tidak masuk dengan status sakit tercatat.</small></div></div><div class="small text-muted mt-2">Catatan: Status Izin/Sakit menggantikan kategori Belum Absen pada tanggal yang sama. Simbol centang menunjukkan kategori yang berlaku untuk guru tersebut.</div></div>
 </div></div>
 </div>
@@ -2357,7 +2384,8 @@
 <div class="content-section d-none" id="sec-sarpras">
 <h4 class="fw-bold mb-3 mb-md-4">Inventaris Madrasah (SarPras)</h4>
 <div class="card p-3 p-md-4 shadow-sm border-0 mb-4 no-print">
-<h6 class="fw-bold mb-3"><i class="bi bi-plus-circle me-1 text-primary"></i>Tambah Fasilitas Barang Baru</h6>
+<h6 class="fw-bold mb-3" id="spFormTitle"><i class="bi bi-plus-circle me-1 text-primary"></i>Tambah Fasilitas Barang Baru</h6>
+<input id="spEditId" type="hidden" value=""/>
 <div class="row g-2">
 <div class="col-12 col-md-3">
 <label class="form-label fw-semibold small">Nama Barang</label>
@@ -2390,7 +2418,8 @@
 <input class="form-control form-control-sm" id="spKeterangan" placeholder="Opsional (Catatan khusus...)" type="text"/>
 </div>
 <div class="col-12 text-end mt-2">
-<button class="btn btn-primary btn-sm px-4" onclick="submitSarpras()" type="button"><i class="bi bi-save me-1"></i> Simpan Barang Sarpras</button>
+<button class="btn btn-primary btn-sm px-4" id="spSubmitBtn" onclick="submitSarpras()" type="button"><i class="bi bi-save me-1"></i> Simpan Barang Sarpras</button>
+<button class="btn btn-outline-secondary btn-sm px-3 d-none" id="spCancelEditBtn" onclick="cancelEditSarpras()" type="button"><i class="bi bi-x-circle me-1"></i> Batal Edit</button>
 </div>
 </div>
 </div>
@@ -5031,13 +5060,32 @@
   function loadRekapStatusKehadiranGuru() {
     var dateEl=document.getElementById('guruAttendanceDate'), body=document.getElementById('guruAttendanceSummaryBody'), foot=document.getElementById('guruAttendanceSummaryFoot');
     if(!body) return;
-    var tanggal=(dateEl&&dateEl.value)||getLocalTodayStr(); body.innerHTML='<tr><td colspan="9">Memuat rekap...</td></tr>'; if(foot)foot.innerHTML='';
+    var tanggal=(dateEl&&dateEl.value)||getLocalTodayStr();
+    body.innerHTML='<tr><td colspan="9">Memuat rekap...</td></tr>';
+    if(foot) foot.innerHTML='';
     google.script.run.withSuccessHandler(function(res){
-      res=res||{};var rows=Array.isArray(res.rows)?res.rows:[], totals=res.totals||{};
+      res=res||{};
+      var rows=Array.isArray(res.rows)?res.rows:[], totals=res.totals||{};
+      var total=rows.length;
+      function count(key){var n=Number(totals[key]||0);return Number.isFinite(n)?n:0;}
+      function pct(n){return (total>0?(n/total*100):0).toFixed(2).replace('.',',')+'%';}
+      function setTotal(id,n,denominator){var el=document.getElementById(id);if(el)el.textContent=n+' ('+(denominator===0?'0,00%':pct(n))+')';}
+      setTotal('gqTotalGuru',total,total);
+      setTotal('gqTotalBelum',count('belumAbsen'),total);
+      setTotal('gqTotalTepat',count('tepatWaktu'),total);
+      setTotal('gqTotalTerlambat',count('terlambat'),total);
+      setTotal('gqTotalPulangTepat',count('pulangTepat'),total);
+      setTotal('gqTotalPulangAwal',count('pulangAwal'),total);
+      setTotal('gqTotalIzin',count('izin'),total);
+      setTotal('gqTotalSakit',count('sakit'),total);
       if(!rows.length){body.innerHTML='<tr><td colspan="9" class="text-muted">Tidak ada data guru.</td></tr>';return;}
-      body.innerHTML=rows.map(function(r){function mark(ok,kind){return ok?'<span class="guru-status-mark '+kind+'" aria-label="Ada">✓</span>':'<span class="guru-status-empty">—</span>';}return '<tr><td class="guru-nip-cell">'+escapeHtml(r.nip||'')+'</td><td class="text-start guru-name-cell">'+escapeHtml(r.nama||'')+'</td><td>'+mark(r.status==='Belum Absen','is-missing')+'</td><td>'+mark(r.status==='Masuk Tepat Waktu','is-ontime')+'</td><td>'+mark(r.status==='Masuk Terlambat','is-late')+'</td><td>'+mark(r.pulang==='Pulang Tepat Waktu','is-home-ontime')+'</td><td>'+mark(r.pulang==='Pulang Awal','is-early')+'</td><td>'+mark(r.status==='Izin','is-leave')+'</td><td>'+mark(r.status==='Sakit','is-sick')+'</td></tr>';}).join('');
-      if(foot)foot.innerHTML='<tr class="table-light fw-bold"><td colspan="2">Total Guru: '+rows.length+'</td><td>'+(totals.belumAbsen||0)+'</td><td>'+(totals.tepatWaktu||0)+'</td><td>'+(totals.terlambat||0)+'</td><td>'+(totals.pulangTepat||0)+'</td><td>'+(totals.pulangAwal||0)+'</td><td>'+(totals.izin||0)+'</td><td>'+(totals.sakit||0)+'</td></tr>';
-    }).withFailureHandler(function(err){body.innerHTML='<tr><td colspan="9" class="text-danger">Gagal memuat rekap: '+escapeHtml(err&&err.message||err)+'</td></tr>';}).getRekapStatusKehadiranGuru(tanggal);
+      body.innerHTML=rows.map(function(r){
+        function mark(ok,kind){return ok?'<span class="guru-status-mark '+kind+'" aria-label="Ada">✓</span>':'<span class="guru-status-empty">—</span>';}
+        return '<tr><td class="guru-nip-cell">'+escapeHtml(r.nip||'')+'</td><td class="text-start guru-name-cell">'+escapeHtml(r.nama||'')+'</td><td>'+mark(r.status==='Belum Absen','is-missing')+'</td><td>'+mark(r.status==='Masuk Tepat Waktu','is-ontime')+'</td><td>'+mark(r.status==='Masuk Terlambat','is-late')+'</td><td>'+mark(r.pulang==='Pulang Tepat Waktu','is-home-ontime')+'</td><td>'+mark(r.pulang==='Pulang Awal','is-early')+'</td><td>'+mark(r.status==='Izin','is-leave')+'</td><td>'+mark(r.status==='Sakit','is-sick')+'</td></tr>';
+      }).join('');
+    }).withFailureHandler(function(err){
+      body.innerHTML='<tr><td colspan="9" class="text-danger">Gagal memuat rekap: '+escapeHtml(err&&err.message||err)+'</td></tr>';
+    }).getRekapStatusKehadiranGuru(tanggal);
   }
 
   function loadJurnalFormOptions() {
@@ -5961,38 +6009,68 @@
   }
 
   function renderSarprasTable() {
-    var filter = document.getElementById('filterKategoriSarpras').value;
+    var filterEl = document.getElementById('filterKategoriSarpras');
+    var filter = filterEl ? filterEl.value : '';
     var tbody = document.getElementById('tblSarpras');
-
-    var filtered = globalSarprasData;
+    var filtered = globalSarprasData || [];
     if (filter) {
-      filtered = globalSarprasData.filter(function(s) { return String(s[2]).trim() === filter; });
-      document.getElementById('sarprasTableTitle').innerHTML = '<i class="bi bi-box-seam me-1 text-primary"></i> Inventaris Kategori: <b>' + filter + '</b>';
+      filtered = filtered.filter(function(s) { return String(s[2]).trim() === filter; });
+      document.getElementById('sarprasTableTitle').innerHTML = '<i class="bi bi-box-seam me-1 text-primary"></i> Inventaris Kategori: <b>' + escapeHtml(filter) + '</b>';
     } else {
       document.getElementById('sarprasTableTitle').innerHTML = '<i class="bi bi-box-seam me-1 text-primary"></i> Daftar Inventaris SarPras';
     }
-
-    if (filtered.length === 0) {
+    if (!filtered.length) {
       tbody.innerHTML = '<tr><td colspan="9" class="text-center text-muted">Data SarPras Kosong</td></tr>';
       return;
     }
-
     var html = '';
     filtered.forEach(function(s) {
+      var idArg = "'" + String(s[0] || '').replace(/'/g, "\\'") + "'";
       html += '<tr>';
-      html += '  <td>' + s[0] + '</td><td>' + s[1] + '</td><td><span class="badge bg-light text-dark border">' + (s[2] || 'Umum') + '</span></td><td>' + s[3] + '</td>';
-      html += '  <td><span class="text-success fw-bold">' + s[4] + '</span></td>';
-      html += '  <td><span class="text-warning fw-bold">' + s[5] + '</span></td>';
-      html += '  <td><span class="text-danger fw-bold">' + s[6] + '</span></td>';
-      html += '  <td><span class="text-muted small">' + (s[7] || '-') + '</span></td>';
-      html += '  <td class="no-print"><button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteSarpras(\'' + s[0] + '\')"><i class="bi bi-trash"></i></button></td>';
+      html += '<td class="sarpras-id-cell">' + escapeHtml(s[0] || '-') + '</td>';
+      html += '<td class="fw-semibold">' + escapeHtml(s[1] || '-') + '</td>';
+      html += '<td><span class="badge bg-light text-dark border">' + escapeHtml(s[2] || 'Umum') + '</span></td>';
+      html += '<td><span class="sarpras-number-badge sarpras-number-total">' + escapeHtml(s[3] || '0') + '</span></td>';
+      html += '<td><span class="sarpras-number-badge sarpras-number-good">' + escapeHtml(s[4] || '0') + '</span></td>';
+      html += '<td><span class="sarpras-number-badge sarpras-number-light">' + escapeHtml(s[5] || '0') + '</span></td>';
+      html += '<td><span class="sarpras-number-badge sarpras-number-heavy">' + escapeHtml(s[6] || '0') + '</span></td>';
+      html += '<td><span class="text-muted small">' + escapeHtml(s[7] || '-') + '</span></td>';
+      html += '<td class="no-print text-nowrap"><button type="button" class="btn btn-sm btn-outline-primary me-1" title="Edit barang" aria-label="Edit barang" onclick="editSarpras(' + idArg + ')"><i class="bi bi-pencil-square"></i></button><button type="button" class="btn btn-sm btn-outline-danger" title="Hapus barang" aria-label="Hapus barang" onclick="deleteSarpras(' + idArg + ')"><i class="bi bi-trash"></i></button></td>';
       html += '</tr>';
     });
     tbody.innerHTML = html;
   }
 
+  function editSarpras(id) {
+    var item = (globalSarprasData || []).find(function(row) { return String(row[0]) === String(id); });
+    if (!item) { appNotify('Data barang tidak ditemukan. Muat ulang daftar SarPras.', 'error'); return; }
+    document.getElementById('spEditId').value = String(item[0] || '');
+    document.getElementById('spNama').value = item[1] || '';
+    document.getElementById('spKategori').value = item[2] || 'Umum';
+    document.getElementById('spJumlah').value = item[3] || 0;
+    document.getElementById('spBaik').value = item[4] || 0;
+    document.getElementById('spRRingan').value = item[5] || 0;
+    document.getElementById('spRBerat').value = item[6] || 0;
+    document.getElementById('spKeterangan').value = item[7] || '';
+    document.getElementById('spFormTitle').innerHTML = '<i class="bi bi-pencil-square me-1 text-primary"></i>Edit Fasilitas Barang';
+    document.getElementById('spSubmitBtn').innerHTML = '<i class="bi bi-check2-circle me-1"></i> Perbarui Barang Sarpras';
+    document.getElementById('spCancelEditBtn').classList.remove('d-none');
+    var formCard = document.getElementById('spFormTitle').closest('.card');
+    if (formCard) formCard.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+
+  function cancelEditSarpras() {
+    document.getElementById('spEditId').value = '';
+    ['spNama','spKategori','spJumlah','spBaik','spRRingan','spRBerat','spKeterangan'].forEach(function(id) { document.getElementById(id).value = ''; });
+    document.getElementById('spFormTitle').innerHTML = '<i class="bi bi-plus-circle me-1 text-primary"></i>Tambah Fasilitas Barang Baru';
+    document.getElementById('spSubmitBtn').innerHTML = '<i class="bi bi-save me-1"></i> Simpan Barang Sarpras';
+    document.getElementById('spCancelEditBtn').classList.add('d-none');
+  }
+
   function submitSarpras() {
+    var editId = document.getElementById('spEditId').value.trim();
     var data = {
+      id: editId,
       nama: document.getElementById('spNama').value.trim(),
       kategori: document.getElementById('spKategori').value.trim() || 'Umum',
       jumlah: document.getElementById('spJumlah').value,
@@ -6001,25 +6079,20 @@
       rusakBerat: document.getElementById('spRBerat').value || 0,
       keterangan: document.getElementById('spKeterangan').value.trim()
     };
-
-    if (!data.nama || !data.jumlah) {
+    if (!data.nama || data.jumlah === '') {
       appNotify('Nama Barang dan Jumlah Wajib diisi!');
       return;
     }
-
-    google.script.run.withSuccessHandler(function(res) {
+    var runner = google.script.run.withSuccessHandler(function(res) {
       appNotify(res);
-      document.getElementById('spNama').value = '';
-      document.getElementById('spKategori').value = '';
-      document.getElementById('spJumlah').value = '';
-      document.getElementById('spBaik').value = '';
-      document.getElementById('spRRingan').value = '';
-      document.getElementById('spRBerat').value = '';
-      document.getElementById('spKeterangan').value = '';
-      
+      cancelEditSarpras();
       loadSarprasData();
       refreshDashboard();
-    }).simpanSarpras(data);
+    }).withFailureHandler(function(err) {
+      appNotify((editId ? 'Gagal memperbarui' : 'Gagal menyimpan') + ' data SarPras: ' + (err && err.message ? err.message : err), 'error');
+    });
+    if (editId) runner.updateSarprasById(data);
+    else runner.simpanSarpras(data);
   }
 
   async function deleteSarpras(id) {
