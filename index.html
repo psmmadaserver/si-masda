@@ -1193,9 +1193,13 @@
 #sec-dashboard .dash-sarpras-vocibus-title{font-size:.8rem;letter-spacing:.13em;font-weight:900;color:#566176;margin:8px 0 15px}
 #sec-dashboard .dash-sarpras-condition-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
 #sec-dashboard .dash-sarpras-condition-item{--gauge-a:#20c9d8;--gauge-b:#7655e8;display:flex;flex-direction:column;align-items:center;min-width:0;text-align:center;padding:4px 12px 8px}
-#sec-dashboard .condition-baik{--gauge-a:#21c6d7;--gauge-b:#7655e8}
-#sec-dashboard .condition-ringan{--gauge-a:#19c5d6;--gauge-b:#ed9c35}
-#sec-dashboard .condition-berat{--gauge-a:#22c5d6;--gauge-b:#e04d83}
+#sec-dashboard .condition-baik{--gauge-a:#16c96b;--gauge-b:#16c96b;--condition-color:#16b95f}
+#sec-dashboard .condition-ringan{--gauge-a:#ffd43b;--gauge-b:#f5bd16;--condition-color:#d99b00}
+#sec-dashboard .condition-berat{--gauge-a:#ff4d4f;--gauge-b:#f5222d;--condition-color:#ef3038}
+#sec-dashboard .condition-baik .condition-percent{color:#16b95f}
+#sec-dashboard .condition-ringan .condition-percent{color:#d99b00}
+#sec-dashboard .condition-berat .condition-percent{color:#ef3038}
+#sec-dashboard .condition-mini-chart span{background:linear-gradient(180deg,var(--gauge-a) 0%,color-mix(in srgb,var(--gauge-a) 35%,white) 100%)}
 #sec-dashboard .condition-gauge{width:clamp(94px,13vw,132px);aspect-ratio:1;border-radius:50%;padding:8px;background:conic-gradient(from -10deg,var(--gauge-b) 0deg, var(--gauge-b) calc(var(--gauge-pct)*3.6deg),#e9edf4 calc(var(--gauge-pct)*3.6deg),#e9edf4 360deg);display:grid;place-items:center;box-shadow:0 3px 12px rgba(75,95,145,.08)}
 #sec-dashboard .condition-gauge-inner{width:100%;height:100%;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px #f0f3f8}
 #sec-dashboard .condition-gauge-inner strong{font-size:1.05rem;color:#52617c;font-weight:900;line-height:1.15}#sec-dashboard .condition-gauge-inner span{font-size:.53rem;letter-spacing:.12em;color:#98a3b5;font-weight:800;margin-top:3px}
@@ -1852,19 +1856,19 @@
   <div class="dash-sarpras-vocibus-title">KONDISI INVENTARIS</div>
   <div class="dash-sarpras-condition-grid">
     <article class="dash-sarpras-condition-item condition-baik">
-      <div class="condition-gauge" id="dashSarprasGaugeBaik" style="--gauge-pct:0;--gauge-a:#20c9d8;--gauge-b:#7655e8"><div class="condition-gauge-inner"><strong id="dashSarprasCountBaik">0</strong><span>UNIT</span></div></div>
+      <div class="condition-gauge" id="dashSarprasGaugeBaik" style="--gauge-pct:0"><div class="condition-gauge-inner"><strong id="dashSarprasCountBaik">0</strong><span>UNIT</span></div></div>
       <div class="condition-mini-chart"><span style="--mini-h:30%"></span><span style="--mini-h:55%"></span><span style="--mini-h:82%"></span><span style="--mini-h:48%"></span><span style="--mini-h:68%"></span><span style="--mini-h:42%"></span><span style="--mini-h:75%"></span></div>
       <strong class="condition-percent" id="dashSarprasPctBaik">0%</strong>
       <span class="condition-item-label">Kondisi Baik</span>
     </article>
     <article class="dash-sarpras-condition-item condition-ringan">
-      <div class="condition-gauge" id="dashSarprasGaugeRingan" style="--gauge-pct:0;--gauge-a:#20c9d8;--gauge-b:#7655e8"><div class="condition-gauge-inner"><strong id="dashSarprasCountRingan">0</strong><span>UNIT</span></div></div>
+      <div class="condition-gauge" id="dashSarprasGaugeRingan" style="--gauge-pct:0"><div class="condition-gauge-inner"><strong id="dashSarprasCountRingan">0</strong><span>UNIT</span></div></div>
       <div class="condition-mini-chart"><span style="--mini-h:42%"></span><span style="--mini-h:68%"></span><span style="--mini-h:36%"></span><span style="--mini-h:75%"></span><span style="--mini-h:52%"></span><span style="--mini-h:62%"></span><span style="--mini-h:32%"></span></div>
       <strong class="condition-percent" id="dashSarprasPctRingan">0%</strong>
       <span class="condition-item-label">Rusak Ringan</span>
     </article>
     <article class="dash-sarpras-condition-item condition-berat">
-      <div class="condition-gauge" id="dashSarprasGaugeBerat" style="--gauge-pct:0;--gauge-a:#20c9d8;--gauge-b:#7655e8"><div class="condition-gauge-inner"><strong id="dashSarprasCountBerat">0</strong><span>UNIT</span></div></div>
+      <div class="condition-gauge" id="dashSarprasGaugeBerat" style="--gauge-pct:0"><div class="condition-gauge-inner"><strong id="dashSarprasCountBerat">0</strong><span>UNIT</span></div></div>
       <div class="condition-mini-chart"><span style="--mini-h:25%"></span><span style="--mini-h:48%"></span><span style="--mini-h:35%"></span><span style="--mini-h:66%"></span><span style="--mini-h:42%"></span><span style="--mini-h:58%"></span><span style="--mini-h:30%"></span></div>
       <strong class="condition-percent" id="dashSarprasPctBerat">0%</strong>
       <span class="condition-item-label">Rusak Berat</span>
@@ -4000,7 +4004,13 @@
     });
     var header=document.getElementById('dashSarprasTotalHeader');
     if(header)header.textContent=total.toLocaleString('id-ID')+' Total Unit';
-    renderChartSarprasTrend(items.map(function(x){return denominator>0?Math.round(x.value/denominator*100):0;}));
+    // Grafik sengaja diurutkan dari Rusak Berat -> Rusak Ringan -> Kondisi Baik
+    // agar arah gradasi merah-kuning-hijau terbaca sesuai permintaan.
+    renderChartSarprasTrend([
+      denominator>0?Math.round(berat/denominator*100):0,
+      denominator>0?Math.round(ringan/denominator*100):0,
+      denominator>0?Math.round(baik/denominator*100):0
+    ]);
   }
 
   function renderChartSarprasTrend(values) {
@@ -4008,13 +4018,56 @@
     if(!canvas || typeof Chart==='undefined') return;
     if(sarprasChart) sarprasChart.destroy();
     var ctx=canvas.getContext('2d');
-    var fill=ctx.createLinearGradient(0,0,0,205);
-    fill.addColorStop(0,'rgba(39,199,216,.42)');
-    fill.addColorStop(1,'rgba(39,199,216,.015)');
+    var red='#ff3b30', yellow='#ffc928', green='#16c96b';
     sarprasChart=new Chart(ctx,{
       type:'line',
-      data:{labels:['Baik','Rusak Ringan','Rusak Berat'],datasets:[{data:values,fill:true,backgroundColor:fill,borderColor:'#22bfd2',borderWidth:3,tension:.28,pointRadius:5,pointHoverRadius:6,pointBackgroundColor:'#fff',pointBorderColor:'#22bfd2',pointBorderWidth:3}]},
-      options:{responsive:true,maintainAspectRatio:false,interaction:{intersect:false,mode:'index'},plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.parsed.y+'%';}}}},scales:{x:{grid:{display:false},border:{display:false},ticks:{color:'#98a3b5',font:{size:10,weight:'600'}}},y:{display:false,min:0,max:100,grid:{display:false},border:{display:false}}}}
+      data:{
+        labels:['Rusak Berat','Rusak Ringan','Kondisi Baik'],
+        datasets:[{
+          data:values,
+          fill:true,
+          backgroundColor:function(context){
+            var chart=context.chart,area=chart.chartArea;
+            if(!area) return 'rgba(255,201,40,.12)';
+            var gradient=chart.ctx.createLinearGradient(area.left,0,area.right,0);
+            gradient.addColorStop(0,'rgba(255,59,48,.24)');
+            gradient.addColorStop(.5,'rgba(255,201,40,.19)');
+            gradient.addColorStop(1,'rgba(22,201,107,.22)');
+            return gradient;
+          },
+          borderColor:yellow,
+          segment:{
+            borderColor:function(context){
+              var chart=context.chart,area=chart.chartArea;
+              if(!area) return yellow;
+              var p0=context.p0.x,p1=context.p1.x;
+              var gradient=chart.ctx.createLinearGradient(p0,0,p1,0);
+              if(context.p0DataIndex===0){
+                gradient.addColorStop(0,red);
+                gradient.addColorStop(1,yellow);
+              }else{
+                gradient.addColorStop(0,yellow);
+                gradient.addColorStop(1,green);
+              }
+              return gradient;
+            }
+          },
+          borderWidth:4,tension:.28,
+          pointRadius:5,pointHoverRadius:7,
+          pointBackgroundColor:'#fff',
+          pointBorderColor:[red,yellow,green],
+          pointBorderWidth:3
+        }]
+      },
+      options:{
+        responsive:true,maintainAspectRatio:false,
+        interaction:{intersect:false,mode:'index'},
+        plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){return c.parsed.y+'%';}}}},
+        scales:{
+          x:{grid:{display:false},border:{display:false},ticks:{color:function(context){return [red,'#d99b00',green][context.index]||'#98a3b5';},font:{size:10,weight:'700'}}},
+          y:{display:false,min:0,max:100,grid:{display:false},border:{display:false}}
+        }
+      }
     });
   }
 
