@@ -894,6 +894,24 @@
 #sec-absensiPembiasaan .pb-choice input:focus-visible + span{outline:3px solid rgba(35,112,255,.22);outline-offset:2px}
 #sec-absensiPembiasaan .pb-choice input:disabled + span{opacity:.65;cursor:wait}
 @media(max-width:768px){#sec-absensi .att-pill{min-width:68px;min-height:24px;padding:3px 7px;font-size:10.5px;border-width:1.6px}#sec-absensi .table-responsive{overflow-x:auto}#sec-absensiPembiasaan .pb-choice span{min-width:54px;min-height:23px;padding:2px 7px;font-size:10.5px;border-width:1.6px}}
+
+/* Toggle Ya/Tidak 3 posisi: tengah = belum memilih, kiri = Ya, kanan = Tidak */
+#sec-absensiPembiasaan .pb-switch{position:relative;width:178px;height:38px;display:inline-flex;align-items:center;border:2px solid #e0ad00;border-radius:999px;padding:3px;background:linear-gradient(90deg,#f3fff5 0%,#fff 50%,#fff4f4 100%);box-shadow:0 3px 8px rgba(20,45,85,.12),inset 0 1px 3px rgba(255,255,255,.9);cursor:pointer;user-select:none;overflow:hidden}
+#sec-absensiPembiasaan .pb-switch .pb-track{position:absolute;inset:3px;border-radius:999px;display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;pointer-events:none}
+#sec-absensiPembiasaan .pb-switch .pb-label{z-index:1;text-align:center;font-size:11px;font-weight:850;color:#fff;opacity:.34;transition:opacity .18s ease,filter .18s ease}
+#sec-absensiPembiasaan .pb-switch .pb-label.ya{background:#08a52b;border-radius:999px 0 0 999px;height:100%;display:flex;align-items:center;justify-content:center}
+#sec-absensiPembiasaan .pb-switch .pb-label.tidak{background:#e31b23;border-radius:0 999px 999px 0;height:100%;display:flex;align-items:center;justify-content:center}
+#sec-absensiPembiasaan .pb-switch .pb-label.mid{color:#bd8b00;opacity:.65}
+#sec-absensiPembiasaan .pb-switch .pb-knob{position:absolute;z-index:2;left:calc(50% - 16px);top:3px;width:32px;height:28px;border-radius:50%;background:linear-gradient(145deg,#fff,#e9edf4);border:1px solid #d5dbe5;box-shadow:0 2px 5px rgba(0,0,0,.25);transition:left .2s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+#sec-absensiPembiasaan .pb-switch[data-value="Ya"] .pb-knob{left:5px}
+#sec-absensiPembiasaan .pb-switch[data-value="Tidak"] .pb-knob{left:calc(100% - 37px)}
+#sec-absensiPembiasaan .pb-switch[data-value="Ya"] .pb-label.ya,#sec-absensiPembiasaan .pb-switch[data-value="Tidak"] .pb-label.tidak{opacity:1;filter:none}
+#sec-absensiPembiasaan .pb-switch[data-value="Ya"] .pb-label.tidak,#sec-absensiPembiasaan .pb-switch[data-value="Tidak"] .pb-label.ya{opacity:.18;filter:grayscale(1)}
+#sec-absensiPembiasaan .pb-switch[data-value=""] .pb-label.ya,#sec-absensiPembiasaan .pb-switch[data-value=""] .pb-label.tidak{opacity:.78}
+#sec-absensiPembiasaan .pb-switch:focus-visible{outline:3px solid rgba(35,112,255,.25);outline-offset:3px}
+#sec-absensiPembiasaan .pb-switch:disabled{opacity:.6;cursor:wait}
+@media(max-width:768px){#sec-absensiPembiasaan .pb-switch{width:150px;height:34px}#sec-absensiPembiasaan .pb-switch .pb-knob{height:24px;width:28px}#sec-absensiPembiasaan .pb-switch[data-value="Ya"] .pb-knob{left:5px}#sec-absensiPembiasaan .pb-switch[data-value="Tidak"] .pb-knob{left:calc(100% - 33px)}}
+
 </style>
 <style id="masda-homepage-redesign">
 /* Halaman awal siMADA — desain responsif, tanpa mengubah layanan autentikasi */
@@ -1780,10 +1798,9 @@
 <li class="nav-item" data-menu="absensiQr"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('absensiQr', event)"><i class="bi bi-qr-code-scan me-2"></i> Absensi QR Siswa</a></li>
 <li class="nav-item" data-menu="absensi"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('absensi', event)"><i class="bi bi-calendar-check me-2"></i> Absensi Pelajaran</a></li>
 <li class="nav-item" data-menu="absensiPembiasaan"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('absensiPembiasaan', event)"><i class="bi bi-moon-stars me-2"></i> Absensi Pembiasaan</a></li>
+<li class="nav-item dropdown masda-admin-nav" id="navAdministrasi"><a class="nav-link d-flex align-items-center" href="javascript:void(0)" data-bs-toggle="collapse" data-bs-target="#administrasiSubmenu" aria-expanded="false"><i class="bi bi-folder2-open me-2"></i> Administrasi <i class="bi bi-chevron-down ms-auto small"></i></a><div class="collapse" id="administrasiSubmenu"><ul class="nav flex-column ms-3 border-start border-light border-opacity-25 ps-2"><li class="nav-item" data-menu="bendahara"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('bendahara', event)"><i class="bi bi-dot me-1"></i> Bendahara</a></li><li class="nav-item" data-menu="kesiswaan"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('kesiswaan', event)"><i class="bi bi-dot me-1"></i> Kesiswaan</a></li><li class="nav-item" data-menu="sarpras"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('sarpras', event)"><i class="bi bi-dot me-1"></i> SarPras</a></li></ul></div></li>
 <li class="nav-item" data-menu="ppdb"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('ppdb', event)"><i class="bi bi-mortarboard me-2"></i> PPDB</a></li>
 <li class="nav-item" data-menu="pengumuman"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('pengumuman', event)"><i class="bi bi-megaphone me-2"></i> Pengumuman</a></li>
-<li class="nav-item" data-menu="kesiswaan"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('kesiswaan', event)"><i class="bi bi-person-badge me-2"></i> Kesiswaan</a></li>
-<li class="nav-item" data-menu="sarpras"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('sarpras', event)"><i class="bi bi-box-seam me-2"></i> SarPras</a></li>
 <li class="nav-item" data-menu="pengaturan"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('pengaturan', event)"><i class="bi bi-gear me-2"></i> Pengaturan User</a></li>
 <li class="nav-item" data-menu="website"><a class="nav-link" href="javascript:void(0)" onclick="switchNav('website', event)"><i class="bi bi-globe me-2"></i> Link Terkait</a></li>
 <li class="nav-item mt-4"><a class="nav-link text-danger" href="javascript:void(0)" onclick="logout(event)"><i class="bi bi-box-arrow-right me-2"></i> Keluar</a></li>
@@ -2414,6 +2431,16 @@
 <div class="table-responsive"><table class="table table-hover align-middle"><thead class="table-light"><tr><th>NISN</th><th>Nama Siswa</th><th>Kelas</th><th class="text-center">Sholat Dhuha</th><th class="text-center">Sholat Dzuhur</th></tr></thead><tbody id="tblAbsensiPembiasaan"><tr><td class="text-center text-muted" colspan="5">Memuat data...</td></tr></tbody></table></div>
 </div>
 </div>
+
+<!-- BENDAHARA / PEMBAYARAN SISWA -->
+<div class="content-section d-none" id="sec-bendahara">
+ <div class="card shadow-sm border-0 mb-3" style="border-top:4px solid #2675ff!important;border-radius:16px"><div class="card-body py-3"><h3 class="fw-bold mb-0" style="color:#17336c"><i class="bi bi-cash-coin me-2"></i>Bendahara – Pembayaran Siswa</h3><div class="small text-muted">Kelola tagihan dan pencatatan pembayaran siswa berdasarkan data Master Siswa.</div></div></div>
+ <div class="card border-0 shadow-sm p-3 mb-3"><div class="row g-2 align-items-end"><div class="col-12 col-md-3"><label class="form-label small fw-semibold">Filter Kelas</label><select id="bendaharaFilterKelas" class="form-select form-select-sm" onchange="loadBendahara()"><option value="">Semua Kelas</option></select></div><div class="col-12 col-md-3"><label class="form-label small fw-semibold">Jenis Pembayaran</label><select id="bendaharaFilterJenis" class="form-select form-select-sm" onchange="loadBendahara()"><option value="">Semua</option><option>Lambang Seragam</option><option>Raport</option><option>Ujian Semester</option><option>Wisuda</option><option>Biaya Akhir Tahun</option></select></div><div class="col-12 col-md-6 d-flex gap-2 justify-content-md-end"><button class="btn btn-success btn-sm" onclick="bukaFormTagihanBendahara()"><i class="bi bi-plus-circle me-1"></i>Tambah Tagihan</button><button class="btn btn-primary btn-sm" onclick="exportBendaharaPdf()"><i class="bi bi-file-pdf me-1"></i>Export PDF</button></div></div></div>
+ <div class="row g-3 mb-3"><div class="col-6 col-xl-3"><div class="card border-0 shadow-sm p-3 h-100" style="background:linear-gradient(120deg,#1685f8,#04b5d3);color:white"><small>Total Tagihan</small><div class="fs-4 fw-bold" id="bendTotalTagihan">Rp 0</div></div></div><div class="col-6 col-xl-3"><div class="card border-0 shadow-sm p-3 h-100" style="background:linear-gradient(120deg,#18a957,#43d66b);color:white"><small>Sudah Dibayar</small><div class="fs-4 fw-bold" id="bendSudahDibayar">Rp 0</div></div></div><div class="col-6 col-xl-3"><div class="card border-0 shadow-sm p-3 h-100" style="background:linear-gradient(120deg,#e94b5c,#ff8b8b);color:white"><small>Belum Dibayar</small><div class="fs-4 fw-bold" id="bendBelumDibayar">Rp 0</div></div></div><div class="col-6 col-xl-3"><div class="card border-0 shadow-sm p-3 h-100" style="background:linear-gradient(120deg,#8453db,#b178ff);color:white"><small>Jumlah Tagihan Siswa</small><div class="fs-4 fw-bold" id="bendJumlahSiswa">0</div></div></div></div>
+ <div class="card border-0 shadow-sm p-3"><div class="table-responsive"><table class="table table-hover table-sm align-middle"><thead class="text-white" style="background:linear-gradient(90deg,#1764ed,#08b7d1)"><tr><th>NISN</th><th>Nama Siswa</th><th>Kelas</th><th>Jenis Pembayaran</th><th>Tagihan</th><th>Dibayar</th><th>Sisa</th><th>Status</th><th class="no-print">Aksi</th></tr></thead><tbody id="tblBendahara"><tr><td colspan="9" class="text-center text-muted">Memuat data...</td></tr></tbody></table></div></div>
+</div>
+<div class="modal fade" id="modalTagihanBendahara" tabindex="-1"><div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title fw-bold">Tambah Tagihan Pembayaran</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="mb-2"><label class="form-label small">Jenis Pembayaran</label><select id="bendJenisBaru" class="form-select"><option>Lambang Seragam</option><option>Raport</option><option>Ujian Semester</option><option>Wisuda</option><option>Biaya Akhir Tahun</option></select></div><div class="mb-2"><label class="form-label small">Kelas</label><select id="bendKelasBaru" class="form-select"><option value="">Semua Kelas</option></select><div class="form-text">Pilih Semua Kelas untuk membuat tagihan bagi seluruh siswa aktif di Data Master.</div></div><div class="mb-2"><label class="form-label small">Nominal Tagihan (Rp)</label><input id="bendNominalBaru" type="number" min="1" class="form-control" placeholder="Contoh: 150000"></div><div class="mb-2"><label class="form-label small">Tahun Ajaran</label><input id="bendTahunAjaran" class="form-control" placeholder="2026/2027"></div><div><label class="form-label small">Keterangan (opsional)</label><input id="bendKeteranganBaru" class="form-control"></div></div><div class="modal-footer"><button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button><button class="btn btn-success" onclick="simpanTagihanBendaharaUI()">Buat Tagihan</button></div></div></div></div>
+
 <!-- KESISWAAN -->
 <div class="content-section d-none" id="sec-kesiswaan">
 <div class="card shadow-sm border-0 mb-3" style="border-top:4px solid #214cff!important;border-radius:16px"><div class="card-body py-3 d-flex align-items-center justify-content-between flex-wrap gap-2"><div><h4 class="fw-bold mb-1" style="color:#17336c">Kesiswaan Madrasah</h4><div class="text-muted small">Pelanggaran, pembinaan, dan prestasi peserta didik</div></div><span class="badge rounded-pill text-bg-primary" id="kesTahunPelajaran">Tahun Pelajaran</span></div></div>
@@ -3032,7 +3059,7 @@
 <button class="btn btn-outline-secondary btn-xs" onclick="toggleAllRbacCheckboxes(false)" type="button">Reset</button>
 </div>
 </div>
-<p class="text-muted small mb-2" style="font-size: 0.75rem;">Atur setiap menu: tidak diizinkan, hanya melihat, atau boleh mengedit/mengisi data. Untuk akun guru, pengaturan ini juga tampil sama pada formulir Tambah/Edit Data Guru.</p>
+<p class="text-muted small mb-2" style="font-size: 0.75rem;">Atur setiap menu: tidak diizinkan, hanya melihat, atau boleh mengedit/mengisi data. Hak akses seluruh menu dikelola terpusat melalui Pengaturan User.</p>
 <div class="row g-2">
 <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_dashboard">Dashboard Analytics</label><select class="form-select form-select-sm rbac-mode" data-menu="dashboard" id="rbac_dashboard"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div>
 <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_profil">Profil Madrasah</label><select class="form-select form-select-sm rbac-mode" data-menu="profil" id="rbac_profil"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div>
@@ -3041,7 +3068,7 @@
 <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_jurnal">Jurnal Guru</label><select class="form-select form-select-sm rbac-mode" data-menu="jurnal" id="rbac_jurnal"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_operatorAbsensiGuru">Operator Absensi Guru QR</label><select class="form-select form-select-sm rbac-mode" data-menu="operatorAbsensiGuru" id="rbac_operatorAbsensiGuru"><option value="off">Tidak diizinkan</option><option value="edit">Diizinkan memindai kartu guru lain</option></select><div class="form-text">Khusus TU/guru petugas yang diberi kuasa Administrator.</div></div>
 <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_honor">Honor Guru</label><select class="form-select form-select-sm rbac-mode" data-menu="honor" id="rbac_honor"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div>
 <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_absensi">Absensi Pelajaran</label><select class="form-select form-select-sm rbac-mode" data-menu="absensi" id="rbac_absensi"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_absensiPembiasaan">Absensi Pembiasaan</label><select class="form-select form-select-sm rbac-mode" data-menu="absensiPembiasaan" id="rbac_absensiPembiasaan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div>
-<div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_kesiswaan">Kesiswaan</label><select class="form-select form-select-sm rbac-mode" data-menu="kesiswaan" id="rbac_kesiswaan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div>
+<div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_bendahara">Administrasi - Bendahara</label><select class="form-select form-select-sm rbac-mode" data-menu="bendahara" id="rbac_bendahara"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mencatat pembayaran</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_kesiswaan">Kesiswaan</label><select class="form-select form-select-sm rbac-mode" data-menu="kesiswaan" id="rbac_kesiswaan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div>
 <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_sarpras">SarPras</label><select class="form-select form-select-sm rbac-mode" data-menu="sarpras" id="rbac_sarpras"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div>
 <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_hariEfektif">Hari Efektif</label><select class="form-select form-select-sm rbac-mode" data-menu="hariEfektif" id="rbac_hariEfektif"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_pengaturan">Pengaturan User</label><select class="form-select form-select-sm rbac-mode" data-menu="pengaturan" id="rbac_pengaturan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div>
 <div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_website">Link Terkait</label><select class="form-select form-select-sm rbac-mode" data-menu="website" id="rbac_website"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_absensiGuruQr">Absensi QR Guru</label><select class="form-select form-select-sm rbac-mode" data-menu="absensiGuruQr" id="rbac_absensiGuruQr"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengelola</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_whatsapp">WhatsApp Gateway</label><select class="form-select form-select-sm rbac-mode" data-menu="whatsapp" id="rbac_whatsapp"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_absensiQr">Absensi QR Siswa</label><select class="form-select form-select-sm rbac-mode" data-menu="absensiQr" id="rbac_absensiQr"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_ppdb">PPDB</label><select class="form-select form-select-sm rbac-mode" data-menu="ppdb" id="rbac_ppdb"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="rbac_pengumuman">Pengumuman</label><select class="form-select form-select-sm rbac-mode" data-menu="pengumuman" id="rbac_pengumuman"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengedit</option></select></div>
@@ -3719,12 +3746,13 @@
       if (hasAccess(menuKey)) item.classList.remove('d-none');
       else item.classList.add('d-none');
     });
+    var adminNav=document.getElementById('navAdministrasi'); if(adminNav){var anyAdmin=['bendahara','kesiswaan','sarpras'].some(function(k){return hasAccess(k);});adminNav.classList.toggle('d-none',!anyAdmin);}
     syncMobileBottomNav();
   }
 
   function getFirstAvailableMenu() {
     if (hasAccess('dashboard')) return 'dashboard';
-    var allKeys = ['dashboard', 'profil', 'struktur', 'master', 'hariEfektif', 'jurnal', 'honor', 'absensi', 'absensiPembiasaan', 'kesiswaan', 'sarpras', 'pengaturan', 'website', 'whatsapp', 'absensiGuruQr', 'absensiQr', 'ppdb', 'pengumuman'];
+    var allKeys = ['dashboard', 'profil', 'struktur', 'master', 'hariEfektif', 'jurnal', 'honor', 'absensi', 'absensiPembiasaan', 'bendahara', 'kesiswaan', 'sarpras', 'pengaturan', 'website', 'whatsapp', 'absensiGuruQr', 'absensiQr', 'ppdb', 'pengumuman'];
     for (var i = 0; i < allKeys.length; i++) {
       if (hasAccess(allKeys[i])) return allKeys[i];
     }
@@ -3775,6 +3803,7 @@
     }
 
     if (currentUser) showMasdaLoader(targetKey);
+    if(['bendahara','kesiswaan','sarpras'].indexOf(targetKey)>-1){var sub=document.getElementById('administrasiSubmenu');if(sub&&!sub.classList.contains('show'))bootstrap.Collapse.getOrCreateInstance(sub,{toggle:false}).show();}
     document.querySelectorAll('.content-section').forEach(function(sec) { sec.classList.add('d-none'); });
     document.querySelectorAll('#sidebarNavList .nav-link').forEach(function(lnk) { lnk.classList.remove('active'); });
 
@@ -3799,6 +3828,7 @@
     // untuk memuat data menu berjalan asynchronous dan tidak boleh mengunci UI.
     if (currentUser) hideMasdaLoader(250);
     applyMenuEditMode(targetKey);
+    if(targetKey==='bendahara') initBendahara();
 
     var activeNavItem = document.querySelector('#sidebarNavList .nav-item[data-menu="' + targetKey + '"] .nav-link');
     if (activeNavItem) activeNavItem.classList.add('active');
@@ -5804,28 +5834,18 @@
       list=(list||[]).slice().sort(function(a,b){var c=String(a.kelas||'').localeCompare(String(b.kelas||''),'id',{numeric:true,sensitivity:'base'});return c||String(a.nama||'').localeCompare(String(b.nama||''),'id',{sensitivity:'base'});});
       pembiasaanRowsCache=list;
       if(!list||!list.length){body.innerHTML='<tr><td colspan="5" class="text-center text-muted">Tidak ada siswa pada kelas tersebut.</td></tr>';return;}
-      body.innerHTML=list.map(function(s){return '<tr data-nisn="'+escapeHtml(s.nisn)+'" data-nama="'+escapeHtml(s.nama)+'"><td>'+escapeHtml(s.nisn)+'</td><td>'+escapeHtml(s.nama)+'</td><td>'+escapeHtml(s.kelas)+'</td>'+['dhuha','dzuhur'].map(function(f){var value=s[f]||'';return '<td class="text-center"><div class="d-flex justify-content-center align-items-center gap-3 flex-wrap">'+['Ya','Tidak'].map(function(choice){var id='pb_'+f+'_'+String(s.nisn).replace(/[^a-zA-Z0-9_-]/g,'')+'_'+choice;return '<label class="pb-choice pb-choice-'+(choice==='Ya'?'ya':'tidak')+'"><input id="'+id+'" type="checkbox" '+(value===choice?'checked':'')+' aria-label="'+f+' '+choice+'" onchange="ubahStatusPembiasaan(this,\''+f+'\',\''+choice+'\')"><span>'+choice+'</span></label>';}).join('')+'</div></td>';}).join('')+'</tr>';}).join('');
+      body.innerHTML=list.map(function(s){return '<tr data-nisn="'+escapeHtml(s.nisn)+'" data-nama="'+escapeHtml(s.nama)+'"><td>'+escapeHtml(s.nisn)+'</td><td>'+escapeHtml(s.nama)+'</td><td>'+escapeHtml(s.kelas)+'</td>'+['dhuha','dzuhur'].map(function(f){var value=s[f]||'';return '<td class="text-center"><button type="button" class="pb-switch" data-value="'+escapeHtml(value)+'" aria-label="Pilih '+f+'" onclick="geserStatusPembiasaan(this,\''+f+'\',event)" onpointerup="geserStatusPembiasaan(this,\''+f+'\',event)"><span class="pb-track"><span class="pb-label ya">Ya</span><span class="pb-label mid">·</span><span class="pb-label tidak">Tidak</span></span><span class="pb-knob"></span></button></td>';}).join('')+'</tr>';}).join('');
     }).withFailureHandler(function(e){body.innerHTML='<tr><td colspan="5" class="text-danger text-center">'+escapeHtml(e.message||e)+'</td></tr>';}).getAbsensiPembiasaan(date,kelas);
   }
-  function ubahStatusPembiasaan(input,field,value){
-    var row=input.closest('tr'), nisn=row.dataset.nisn;
-    var cached=pembiasaanRowsCache.find(function(x){return x.nisn===nisn;})||{};
-    var oldValue=cached[field]||'';
-    // Pilihan awal kosong; setelah Ya/Tidak dipilih, hanya pilihan tersebut yang aktif.
-    if(!input.checked){input.checked=true;return;}
-    if(value!=='Ya' && value!=='Tidak')return;
-    if(value===oldValue){input.checked=true;return;}
-    var cell=input.closest('td'), checks=cell.querySelectorAll('input[type="checkbox"]');
-    checks.forEach(function(c){c.disabled=true;c.checked=c.getAttribute('aria-label')===field+' '+value;});
-    var item={tanggal:document.getElementById('pembiasaanTanggal').value,nisn:nisn,dhuha:field==='dhuha'?value:(cached.dhuha||''),dzuhur:field==='dzuhur'?value:(cached.dzuhur||''),changedField:field};
-    google.script.run.withSuccessHandler(function(res){
-      cached[field]=value; checks.forEach(function(c){c.disabled=false;});
-      if(res&&res.whatsapp){var failed=res.whatsapp.filter(function(x){return !x.success;});if(failed.length)appNotify('Absensi tersimpan, tetapi notifikasi WA gagal: '+(failed[0].message||'periksa koneksi/token'));}
-      refreshStatistikPembiasaan();
-    }).withFailureHandler(function(e){
-      checks.forEach(function(c){c.disabled=false;c.checked=c.getAttribute('aria-label')===field+' '+oldValue;});
-      appNotify('Gagal menyimpan absensi: '+(e.message||e));
-    }).simpanAbsensiPembiasaan(item);
+  function geserStatusPembiasaan(button,field,event){
+    var rect=button.getBoundingClientRect(),x=(event&&typeof event.clientX==='number'?event.clientX:(rect.left+rect.width/2))-rect.left;
+    var oldValue=button.dataset.value||'',nextValue=x<rect.width*.46?'Ya':(x>rect.width*.54?'Tidak':oldValue);
+    // Area tengah mempertahankan posisi netral/posisi sebelumnya; sisi kiri memilih Ya, sisi kanan memilih Tidak.
+    if(!nextValue||nextValue===oldValue)return;
+    var row=button.closest('tr'),nisn=row.dataset.nisn,cached=pembiasaanRowsCache.find(function(z){return String(z.nisn)===String(nisn);})||{};
+    var item={tanggal:document.getElementById('pembiasaanTanggal').value,nisn:nisn,dhuha:field==='dhuha'?nextValue:(cached.dhuha||''),dzuhur:field==='dzuhur'?nextValue:(cached.dzuhur||''),changedField:field};
+    button.disabled=true;button.dataset.value=nextValue;
+    google.script.run.withSuccessHandler(function(res){cached[field]=nextValue;button.dataset.value=nextValue;button.disabled=false;appNotify(res&&res.message?res.message:res);}).withFailureHandler(function(err){button.dataset.value=oldValue;button.disabled=false;appNotify('Gagal menyimpan: '+(err&&err.message?err.message:err),'error');}).simpanAbsensiPembiasaan(item);
   }
   function saveTemplatePembiasaan(){
     google.script.run.withSuccessHandler(function(r){appNotify(r.message||'Format tersimpan.');}).withFailureHandler(function(e){appNotify(e.message||e);}).simpanTemplateAbsensiPembiasaan({dhuha:document.getElementById('pembiasaanTemplateDhuha').value,dzuhur:document.getElementById('pembiasaanTemplateDzuhur').value});
@@ -6055,6 +6075,26 @@
   // KESISWAAN V2
   // ==========================================
   var kesPortalCache = null;
+
+  // ================= BENDAHARA =================
+  var bendaharaRowsCache=[];
+  function rupiahBendahara(v){return 'Rp '+(Number(v)||0).toLocaleString('id-ID');}
+  function initBendahara(){
+    google.script.run.withSuccessHandler(function(master){var rows=(master&&master.kelas)||[],opts='<option value="">Semua Kelas</option>';rows.forEach(function(r){var nm=String(r[1]||r[0]||'').trim();if(nm)opts+='<option value="'+escapeHtml(nm)+'">'+escapeHtml(nm)+'</option>';});['bendaharaFilterKelas','bendKelasBaru'].forEach(function(id){var el=document.getElementById(id);if(el){var keep=el.value;el.innerHTML=opts;el.value=keep;}});loadBendahara();}).withFailureHandler(function(e){appNotify('Gagal memuat kelas: '+(e.message||e),'error');}).getMasterData();
+  }
+  function loadBendahara(){
+    var kelas=(document.getElementById('bendaharaFilterKelas')||{}).value||'',jenis=(document.getElementById('bendaharaFilterJenis')||{}).value||'';
+    var body=document.getElementById('tblBendahara');if(!body)return;body.innerHTML='<tr><td colspan="9" class="text-center">Memuat pembayaran...</td></tr>';
+    google.script.run.withSuccessHandler(function(rows){bendaharaRowsCache=rows||[];var total=0,paid=0,uniq={};bendaharaRowsCache.forEach(function(x){total+=x.nominal;paid+=x.dibayar;uniq[x.nisn]=1;});document.getElementById('bendTotalTagihan').textContent=rupiahBendahara(total);document.getElementById('bendSudahDibayar').textContent=rupiahBendahara(paid);document.getElementById('bendBelumDibayar').textContent=rupiahBendahara(total-paid);document.getElementById('bendJumlahSiswa').textContent=Object.keys(uniq).length+' Siswa';
+      if(!bendaharaRowsCache.length){body.innerHTML='<tr><td colspan="9" class="text-center text-muted">Belum ada tagihan untuk filter ini. Gunakan Tambah Tagihan untuk memulai.</td></tr>';return;}
+      body.innerHTML=bendaharaRowsCache.map(function(x){var sisa=Math.max(0,x.nominal-x.dibayar);return '<tr><td>'+escapeHtml(x.nisn)+'</td><td>'+escapeHtml(x.nama)+'</td><td>'+escapeHtml(x.kelas)+'</td><td>'+escapeHtml(x.jenis)+'</td><td>'+rupiahBendahara(x.nominal)+'</td><td>'+rupiahBendahara(x.dibayar)+'</td><td>'+rupiahBendahara(sisa)+'</td><td><span class="badge '+(x.status==='Lunas'?'text-bg-success':'text-bg-danger')+'">'+escapeHtml(x.status)+'</span></td><td class="no-print">'+(sisa>0?'<button class="btn btn-success btn-sm" onclick="catatBayarBendahara(\''+escapeHtml(x.id)+'\','+sisa+')"><i class="bi bi-cash"></i> Bayar</button>':'<span class="text-success small">Selesai</span>')+'</td></tr>';}).join('');
+    }).withFailureHandler(function(e){body.innerHTML='<tr><td colspan="9" class="text-danger text-center">'+escapeHtml(e.message||e)+'</td></tr>';}).getBendaharaData(kelas,jenis);
+  }
+  function bukaFormTagihanBendahara(){var y=document.getElementById('bendTahunAjaran');if(y&&!y.value){var n=new Date().getFullYear();y.value=n+'/'+(n+1);}bootstrap.Modal.getOrCreateInstance(document.getElementById('modalTagihanBendahara')).show();}
+  function simpanTagihanBendaharaUI(){var data={jenis:document.getElementById('bendJenisBaru').value,kelas:document.getElementById('bendKelasBaru').value,nominal:Number(document.getElementById('bendNominalBaru').value||0),tahunAjaran:document.getElementById('bendTahunAjaran').value,keterangan:document.getElementById('bendKeteranganBaru').value};if(!(data.nominal>0)){appNotify('Masukkan nominal tagihan yang benar.','error');return;}google.script.run.withSuccessHandler(function(r){appNotify(r.message||'Tagihan dibuat.');bootstrap.Modal.getOrCreateInstance(document.getElementById('modalTagihanBendahara')).hide();loadBendahara();}).withFailureHandler(function(e){appNotify('Gagal membuat tagihan: '+(e.message||e),'error');}).simpanTagihanBendahara(data);}
+  function catatBayarBendahara(id,sisa){var raw=prompt('Masukkan nominal pembayaran (maksimal '+rupiahBendahara(sisa)+'):',String(sisa));if(raw===null)return;var n=Number(String(raw).replace(/[^0-9]/g,''));if(!(n>0)){appNotify('Nominal pembayaran tidak valid.','error');return;}var ket=prompt('Keterangan pembayaran (opsional):','');google.script.run.withSuccessHandler(function(r){appNotify(r);loadBendahara();}).withFailureHandler(function(e){appNotify('Gagal mencatat pembayaran: '+(e.message||e),'error');}).catatPembayaranBendahara(id,n,ket||'');}
+  function exportBendaharaPdf(){var rows=bendaharaRowsCache.map(function(x){return [x.nisn,x.nama,x.kelas,x.jenis,rupiahBendahara(x.nominal),rupiahBendahara(x.dibayar),rupiahBendahara(x.nominal-x.dibayar),x.status];});generatePdfTable('Laporan Pembayaran Siswa',['NISN','Nama Siswa','Kelas','Jenis Pembayaran','Tagihan','Dibayar','Sisa','Status'],rows);}
+
   function loadKesiswaanData() {
     var student = String(currentUser && currentUser.role || '').toLowerCase() === 'siswa';
     document.getElementById('kesAdminPanel').classList.toggle('d-none', student);
