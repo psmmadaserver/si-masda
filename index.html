@@ -2271,6 +2271,15 @@
 <label class="form-check form-check-inline"><input class="form-check-input he-weekday" type="checkbox" value="7"/> Minggu</label>
 </div></div>
 </div>
+<div class="mt-3"><div class="fw-semibold small mb-2">Jam Pulang Khusus per Hari (opsional)</div><div class="small text-secondary mb-2">Kosongkan jika menggunakan jam pulang umum. Pengaturan ini hanya berlaku untuk guru tanpa jadwal mengajar.</div><div class="row g-2">
+<div class="col-6 col-md-3"><label class="form-label small">Senin</label><input class="form-control form-control-sm he-pulang-hari" id="hePulang1" type="time"></div>
+<div class="col-6 col-md-3"><label class="form-label small">Selasa</label><input class="form-control form-control-sm he-pulang-hari" id="hePulang2" type="time"></div>
+<div class="col-6 col-md-3"><label class="form-label small">Rabu</label><input class="form-control form-control-sm he-pulang-hari" id="hePulang3" type="time"></div>
+<div class="col-6 col-md-3"><label class="form-label small">Kamis</label><input class="form-control form-control-sm he-pulang-hari" id="hePulang4" type="time"></div>
+<div class="col-6 col-md-3"><label class="form-label small">Jumat</label><input class="form-control form-control-sm he-pulang-hari" id="hePulang5" type="time"></div>
+<div class="col-6 col-md-3"><label class="form-label small">Sabtu</label><input class="form-control form-control-sm he-pulang-hari" id="hePulang6" type="time"></div>
+<div class="col-6 col-md-3"><label class="form-label small">Minggu</label><input class="form-control form-control-sm he-pulang-hari" id="hePulang7" type="time"></div>
+</div></div>
 <div class="mt-3"><button class="btn btn-primary" onclick="saveHariEfektifSettingsUI()" type="button"><i class="bi bi-save me-1"></i>Simpan Jam &amp; Hari Efektif</button></div>
 </div>
 <div class="card border-0 shadow-sm p-3 p-md-4 mb-4">
@@ -2278,12 +2287,13 @@
 <div class="d-flex align-items-center gap-2"><label class="small fw-semibold" for="heTahun">Tahun</label><select class="form-select form-select-sm" id="heTahun" onchange="loadHariEfektif()" style="width:110px"></select></div>
 </div>
 <div class="row g-2 align-items-end mb-3">
-<div class="col-12 col-md-3"><label class="form-label small fw-semibold">Tanggal</label><input class="form-control" id="heTanggal" type="date"/></div>
-<div class="col-12 col-md-3"><label class="form-label small fw-semibold">Jenis Hari</label><select class="form-select" id="heJenis"><option>Libur Nasional</option><option>Cuti Bersama</option><option>Libur Madrasah</option><option>Hari Efektif</option><option>Kegiatan Khusus</option></select></div>
-<div class="col-12 col-md-4"><label class="form-label small fw-semibold">Keterangan</label><input class="form-control" id="heKeterangan" placeholder="Contoh: Idulfitri / Tahun Baru Islam" type="text"/></div>
-<div class="col-12 col-md-2 d-grid"><button class="btn btn-success" onclick="saveKalenderAkademikUI()" type="button"><i class="bi bi-plus-lg me-1"></i>Simpan Tanggal</button></div>
+<div class="col-12 col-md-2"><label class="form-label small fw-semibold">Tanggal</label><input class="form-control" id="heTanggal" type="date"/></div>
+<div class="col-12 col-md-2"><label class="form-label small fw-semibold">Jenis Hari</label><select class="form-select" id="heJenis"><option>Libur Nasional</option><option>Cuti Bersama</option><option>Libur Madrasah</option><option>Hari Efektif</option><option>Kegiatan Khusus</option></select></div>
+<div class="col-12 col-md-3"><label class="form-label small fw-semibold">Keterangan</label><input class="form-control" id="heKeterangan" placeholder="Contoh: Idulfitri / Tahun Baru Islam" type="text"/></div>
+<div class="col-12 col-md-2"><label class="form-label small fw-semibold">Jam Pulang Khusus</label><input class="form-control" id="heJamPulangKhusus" type="time"/><div class="form-text">Opsional</div></div>
+<div class="col-12 col-md-3 d-grid"><button class="btn btn-success" onclick="saveKalenderAkademikUI()" type="button"><i class="bi bi-plus-lg me-1"></i>Simpan Tanggal</button></div>
 </div>
-<div class="table-responsive"><table class="table table-hover table-bordered align-middle mb-0"><thead class="table-light"><tr><th style="width:145px">Tanggal</th><th style="width:170px">Jenis</th><th>Keterangan</th><th style="width:95px">Aksi</th></tr></thead><tbody id="heEventsBody"><tr><td class="text-center text-secondary p-4" colspan="4">Memuat kalender...</td></tr></tbody></table></div>
+<div class="table-responsive"><table class="table table-hover table-bordered align-middle mb-0"><thead class="table-light"><tr><th style="width:145px">Tanggal</th><th style="width:170px">Jenis</th><th>Keterangan</th><th>Jam Pulang Khusus</th><th style="width:95px">Aksi</th></tr></thead><tbody id="heEventsBody"><tr><td class="text-center text-secondary p-4" colspan="5">Memuat kalender...</td></tr></tbody></table></div>
 <div class="small text-secondary mt-3"><i class="bi bi-lightbulb me-1"></i>Untuk tanggal libur nasional, admin dapat memasukkan tanggal dan keterangannya berdasarkan kalender resmi pemerintah/Kementerian Agama. Tanggal yang disimpan akan menjadi acuan absensi QR.</div>
 </div>
 </div>
@@ -2934,6 +2944,7 @@
 <option value="Kamis">Kamis</option>
 <option value="Jumat">Jumat</option>
 <option value="Sabtu">Sabtu</option>
+<option value="Minggu">Minggu</option>
 </select>
 </div>
 <div class="mb-2">
@@ -5001,7 +5012,7 @@
   }
 
   // --- MASTER JADWAL: KARTU PER HARI ---
-  var MASTER_JADWAL_DAYS = ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  var MASTER_JADWAL_DAYS = ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'];
   function normalizeJadwalDay(value) {
     var v = String(value || '').trim().toLowerCase();
     var found = MASTER_JADWAL_DAYS.find(function(day){ return day.toLowerCase() === v; });
@@ -6913,28 +6924,29 @@
   function loadHariEfektif(){
     initHariEfektifYearSelect();
     var y=document.getElementById('heTahun').value, body=document.getElementById('heEventsBody');
-    if(body)body.innerHTML='<tr><td colspan="4" class="text-center text-secondary p-4">Memuat kalender...</td></tr>';
+    if(body)body.innerHTML='<tr><td colspan="5" class="text-center text-secondary p-4">Memuat kalender...</td></tr>';
     google.script.run.withSuccessHandler(function(cfg){
       document.getElementById('heJamMasuk').value=cfg.jamMasuk||'07:00';
       document.getElementById('heJamPulang').value=cfg.jamPulang||'13:00';
+      for(var d=1;d<=7;d++){var inp=document.getElementById('hePulang'+d);if(inp)inp.value=(cfg.jamPulangPerHari||{})[String(d)]||'';}
       document.querySelectorAll('.he-weekday').forEach(function(el){el.checked=(cfg.hariEfektif||[]).indexOf(Number(el.value))>=0;});
       var rows=cfg.events||[];
-      if(!rows.length){body.innerHTML='<tr><td colspan="4" class="text-center text-secondary p-4">Belum ada tanggal khusus pada tahun '+escapeHtml(String(y))+'. Tambahkan hari libur atau hari efektif khusus di atas.</td></tr>';return;}
+      if(!rows.length){body.innerHTML='<tr><td colspan="5" class="text-center text-secondary p-4">Belum ada tanggal khusus pada tahun '+escapeHtml(String(y))+'. Tambahkan hari libur atau hari efektif khusus di atas.</td></tr>';return;}
       body.innerHTML=rows.map(function(ev){
         var badge=ev.jenis==='Hari Efektif'||ev.jenis==='Kegiatan Khusus'?'text-bg-success':(ev.jenis==='Libur Nasional'?'text-bg-danger':'text-bg-warning');
-        return '<tr><td class="text-nowrap">'+escapeHtml(ev.tanggal)+'</td><td><span class="badge '+badge+'">'+escapeHtml(ev.jenis)+'</span></td><td>'+escapeHtml(ev.keterangan)+'</td><td><button class="btn btn-sm btn-outline-danger" type="button" onclick="hapusKalenderAkademikUI(&quot;'+escapeHtml(ev.tanggal)+'&quot;)"><i class="bi bi-trash"></i></button></td></tr>';
+        return '<tr><td class="text-nowrap">'+escapeHtml(ev.tanggal)+'</td><td><span class="badge '+badge+'">'+escapeHtml(ev.jenis)+'</span></td><td>'+escapeHtml(ev.keterangan)+'</td><td>'+(ev.jamPulang?escapeHtml(ev.jamPulang):'<span class="text-muted">Mengikuti pengaturan biasa</span>')+'</td><td><button class="btn btn-sm btn-outline-danger" type="button" onclick="hapusKalenderAkademikUI(&quot;'+escapeHtml(ev.tanggal)+'&quot;)"><i class="bi bi-trash"></i></button></td></tr>';
       }).join('');
-    }).withFailureHandler(function(e){if(body)body.innerHTML='<tr><td colspan="4" class="text-danger text-center p-4">'+escapeHtml(e.message||e)+'</td></tr>';}).getHariEfektifConfig(y,masdaGetSessionToken_());
+    }).withFailureHandler(function(e){if(body)body.innerHTML='<tr><td colspan="5" class="text-danger text-center p-4">'+escapeHtml(e.message||e)+'</td></tr>';}).getHariEfektifConfig(y,masdaGetSessionToken_());
   }
   function saveHariEfektifSettingsUI(){
-    var cfg={jamMasuk:document.getElementById('heJamMasuk').value,jamPulang:document.getElementById('heJamPulang').value,hariEfektif:Array.from(document.querySelectorAll('.he-weekday:checked')).map(function(el){return Number(el.value);})};
+    var jamPulangPerHari={};for(var d=1;d<=7;d++){var inp=document.getElementById('hePulang'+d);if(inp&&inp.value)jamPulangPerHari[String(d)]=inp.value;}var cfg={jamMasuk:document.getElementById('heJamMasuk').value,jamPulang:document.getElementById('heJamPulang').value,jamPulangPerHari:jamPulangPerHari,hariEfektif:Array.from(document.querySelectorAll('.he-weekday:checked')).map(function(el){return Number(el.value);})};
     google.script.run.withSuccessHandler(function(r){appNotify(r.message||'Pengaturan tersimpan.','success');loadHariEfektif();}).withFailureHandler(function(e){appNotify(e.message||e,'error');}).saveHariEfektifSettings(cfg,masdaGetSessionToken_());
   }
   function saveKalenderAkademikUI(){
-    var ev={tanggal:document.getElementById('heTanggal').value,jenis:document.getElementById('heJenis').value,keterangan:document.getElementById('heKeterangan').value.trim()};
+    var ev={tanggal:document.getElementById('heTanggal').value,jenis:document.getElementById('heJenis').value,keterangan:document.getElementById('heKeterangan').value.trim(),jamPulang:document.getElementById('heJamPulangKhusus').value};
     if(!ev.tanggal||!ev.keterangan){appNotify('Tanggal dan keterangan wajib diisi.','error');return;}
     if(ev.tanggal.substring(0,4)!==document.getElementById('heTahun').value){appNotify('Tanggal harus berada pada tahun yang dipilih.','error');return;}
-    google.script.run.withSuccessHandler(function(r){appNotify(r.message||'Tanggal kalender tersimpan.','success');document.getElementById('heKeterangan').value='';loadHariEfektif();}).withFailureHandler(function(e){appNotify(e.message||e,'error');}).saveKalenderAkademikEvent(ev,masdaGetSessionToken_());
+    google.script.run.withSuccessHandler(function(r){appNotify(r.message||'Tanggal kalender tersimpan.','success');document.getElementById('heKeterangan').value='';document.getElementById('heJamPulangKhusus').value='';loadHariEfektif();}).withFailureHandler(function(e){appNotify(e.message||e,'error');}).saveKalenderAkademikEvent(ev,masdaGetSessionToken_());
   }
   function hapusKalenderAkademikUI(tanggal){
     if(!confirm('Hapus tanggal '+tanggal+' dari kalender akademik?'))return;
