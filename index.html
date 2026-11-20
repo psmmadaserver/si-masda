@@ -112,7 +112,8 @@
       #mainApp .mobile-brand-logo { width: 30px; height: 30px; object-fit: contain; border-radius: 7px; flex: 0 0 auto; }
       #mainApp .mobile-logout-btn { width: 32px; height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center; color: #475569; border: 1px solid #dbe2ea; background: #fff; border-radius: 9px; }
       #sidebarMenu.offcanvas-md { --bs-offcanvas-width: max-content; width: max-content; max-width: 86vw; }
-      #sidebarMenu.sidebar { min-height: 100dvh; height: 100dvh !important; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+      #sidebarMenu.sidebar { min-height: 100dvh !important; height: 100dvh !important; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; box-sizing:border-box; }
+      #sidebarMenu.sidebar::after { position:absolute !important; inset:0 !important; width:100% !important; height:100% !important; min-height:100% !important; box-sizing:border-box !important; }
       #sidebarMenu.sidebar::-webkit-scrollbar { display: none; width: 0; height: 0; }
       #sidebarMenu #sidebarNavList { width: max-content; min-width: 235px; max-width: calc(86vw - 2rem); }
       #sidebarMenu #sidebarNavList .nav-link { white-space: nowrap; padding-right: 1rem; }
@@ -136,7 +137,7 @@
     }
     /* Bingkai pelangi tebal dan bercahaya, tidak ikut berputar. */
     .sidebar::after {
-      content:""; position:absolute; inset:0; z-index:3; border:4px solid transparent;
+      content:""; display:block; position:absolute; inset:0; width:100%; height:100%; box-sizing:border-box; z-index:3; border:4px solid transparent;
       border-radius:inherit; pointer-events:none;
       background:linear-gradient(135deg,#ff55dc 0%,#7655ff 20%,#00dfff 42%,#20f0b0 62%,#fff06b 82%,#ff8b45 100%) border-box;
       -webkit-mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0);
