@@ -119,138 +119,71 @@
       #sidebarMenu .offcanvas-header { min-width: 235px; }
     }
 
-    /* Lapisan modal master: modal harus berada di atas backdrop dan tetap bisa diklik. */
-    .modal { z-index: 1060; }
-    .modal-backdrop { z-index: 1050; }
-    .modal .modal-content { position: relative; pointer-events: auto; }
-    /* Dialog konfirmasi independen: tidak menggunakan .modal/.modal-backdrop Bootstrap. */
-    .app-confirm-overlay { position: fixed !important; inset: 0 !important; z-index: 2147483000 !important; align-items: center; justify-content: center; padding: 1rem; background: rgba(15,23,42,.58); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); pointer-events: auto; }
-    .app-confirm-overlay.is-visible { display: flex !important; }
-    .app-confirm-card { position: relative; z-index: 1; pointer-events: auto; width: min(100%, 460px); background: #fff; color: #1e293b; border-radius: 16px; box-shadow: 0 24px 70px rgba(0,0,0,.3); overflow: hidden; animation: appConfirmIn .16s ease-out; }
-    .app-confirm-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.15rem 1.25rem .25rem; }
-    .app-confirm-message { padding: 1rem 1.25rem 1.2rem; white-space: pre-line; overflow-wrap: anywhere; }
-    .app-confirm-actions { display: flex; justify-content: flex-end; gap: .5rem; padding: 0 1.25rem 1.25rem; }
-    @keyframes appConfirmIn { from { opacity: 0; transform: translateY(8px) scale(.98); } to { opacity: 1; transform: translateY(0) scale(1); } }
-
-    /* SIDEBAR SI MADA — versi terang sesuai desain yang disetujui.
-       Efek hanya berada pada wadah sidebar; menu, RBAC, dan handler klik tidak diubah. */
+    /* SIDEBAR SI MADA — garis tepi bercahaya dan gelembung kristal bergerak. */
     .sidebar {
-      min-height: 100vh;
-      color: #fff;
-      position: relative;
-      isolation: isolate;
-      overflow: hidden;
-      scrollbar-width: none;
-      border-radius: 22px;
-      border: 2px solid rgba(255,255,255,.72);
-      background: linear-gradient(145deg, #0878d8 0%, #06a9ed 30%, #08c7dc 58%, #087fe2 82%, #0752b8 100%) !important;
-      background-size: 260% 260%;
-      animation: masdaSidebarFlow 12s ease-in-out infinite;
-      box-shadow: 0 12px 34px rgba(0,105,190,.24), inset 0 0 28px rgba(255,255,255,.14);
+      min-height: 100vh; color:#fff; position:relative; isolation:isolate; overflow:hidden;
+      scrollbar-width:none; border-radius:22px; border:4px solid transparent;
+      background:linear-gradient(145deg,#0878d8 0%,#06a9ed 30%,#08c7dc 58%,#087fe2 82%,#0752b8 100%) padding-box;
+      box-shadow:0 12px 34px rgba(0,105,190,.30),0 0 12px rgba(56,225,255,.42),inset 0 0 28px rgba(255,255,255,.17);
     }
-    /* Kilau air dan gelembung transparan bergerak di belakang isi menu. */
+    /* Kilau dan pantulan air di bawah menu. */
     .sidebar::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at 13% 18%, rgba(255,255,255,.76) 0 2px, rgba(125,235,255,.42) 3px 7px, transparent 8px 22px),
-        radial-gradient(circle at 78% 27%, rgba(255,255,255,.8) 0 3px, rgba(112,231,255,.34) 4px 12px, transparent 13px 31px),
-        radial-gradient(circle at 38% 57%, rgba(255,255,255,.72) 0 2px, rgba(96,220,255,.35) 3px 9px, transparent 10px 25px),
-        radial-gradient(circle at 85% 76%, rgba(255,255,255,.82) 0 3px, rgba(108,226,255,.32) 4px 13px, transparent 14px 34px),
-        radial-gradient(ellipse at 12% 10%, rgba(255,255,255,.22), transparent 38%),
-        radial-gradient(ellipse at 90% 90%, rgba(0,255,220,.22), transparent 42%);
-      background-size: 180px 260px, 230px 310px, 210px 280px, 250px 330px, 100% 100%, 100% 100%;
-      animation: masdaSidebarBubbles 18s linear infinite, masdaSidebarShimmer 7s ease-in-out infinite alternate;
-      opacity: .9;
+      content:""; position:absolute; inset:0; z-index:0; pointer-events:none;
+      background:radial-gradient(ellipse at 12% 10%,rgba(255,255,255,.25),transparent 38%),radial-gradient(ellipse at 90% 90%,rgba(0,255,220,.24),transparent 42%);
+      animation:masdaSidebarShimmer 7s ease-in-out infinite alternate;
     }
-    /* Bingkai pelangi tetap pada tempatnya; satu kilau berjalan mengitari
-       sisi kanan, bawah, kiri, lalu atas secara berurutan. */
+    /* Bingkai pelangi tebal dan bercahaya, tidak ikut berputar. */
     .sidebar::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 3;
-      border: 3px solid transparent;
-      border-radius: inherit;
-      pointer-events: none;
-      background: linear-gradient(145deg, #ff4fd8, #7047ff 22%, #00d9ff 42%, #20e6a5 62%, #ffe45c 80%, #ff8b35) border-box;
-      -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      filter: drop-shadow(0 0 4px rgba(255,255,255,.24));
+      content:""; position:absolute; inset:0; z-index:3; border:4px solid transparent;
+      border-radius:inherit; pointer-events:none;
+      background:linear-gradient(135deg,#ff55dc 0%,#7655ff 20%,#00dfff 42%,#20f0b0 62%,#fff06b 82%,#ff8b45 100%) border-box;
+      -webkit-mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor; mask-composite:exclude;
+      filter:drop-shadow(0 0 4px rgba(255,255,255,.95)) drop-shadow(0 0 9px rgba(0,220,255,.85));
     }
-    .sidebar-border-runner {
-      position: absolute;
-      inset: 0;
-      z-index: 4;
-      border-radius: inherit;
-      pointer-events: none;
-      offset-path: inset(1px round 20px);
-      offset-rotate: 0deg;
-      animation: masdaSidebarBorderTravel 7s linear infinite;
-    }
-    .sidebar-border-runner::before {
-      content: "";
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 42px;
-      height: 4px;
-      border-radius: 10px;
-      background: linear-gradient(90deg, transparent, #fff, #fff4a8, transparent);
-      box-shadow: 0 0 7px 2px rgba(255,255,255,.9), 0 0 13px 3px rgba(0,225,255,.72);
-    }
-    .sidebar > * { position: relative; z-index: 1; }
-    .sidebar > .sidebar-border-runner { position: absolute; z-index: 4; }
-    .sidebar #sidebarNavList { position: relative; z-index: 1; }
-    .sidebar .nav-link {
-      color: rgba(255,255,255,.97);
-      text-shadow: 0 1px 3px rgba(0,45,105,.34);
-      margin-bottom: 6px;
-      border-radius: 11px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: color .22s ease, background .22s ease, transform .22s ease, box-shadow .22s ease;
-      border: 1px solid transparent;
-    }
-    .sidebar .nav-link.active,
-    .sidebar .nav-link:hover {
-      color: #fff;
-      background: linear-gradient(100deg, rgba(255,255,255,.30), rgba(0,210,255,.28), rgba(255,255,255,.16));
-      border-color: rgba(220,250,255,.48);
-      box-shadow: 0 5px 18px rgba(2,38,105,.20), inset 0 1px 0 rgba(255,255,255,.24);
-      transform: translateX(2px);
-    }
-    .sidebar .nav-link.active {
-      background: linear-gradient(100deg, #00c8ed, #0878ef 58%, #2455e8);
-      box-shadow: 0 5px 20px rgba(3,75,175,.32), inset 0 1px 0 rgba(255,255,255,.34);
-    }
-    @keyframes masdaSidebarFlow {
-      0%, 100% { background-position: 0% 45%; }
-      50% { background-position: 100% 55%; }
-    }
-    @keyframes masdaSidebarBubbles {
-      from { background-position: 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
-      to { background-position: 0 -260px, 0 -310px, 0 -280px, 0 -330px, 0 0, 0 0; }
-    }
-    @keyframes masdaSidebarShimmer {
-      from { opacity: .62; }
-      to { opacity: 1; }
-    }
-    @keyframes masdaSidebarBorderTravel {
-      from { offset-distance: 0%; }
-      to { offset-distance: 100%; }
-    }
-    /* Hilangkan batang scrollbar sidebar, tetapi scrolling tetap aktif. */
-    #sidebarMenu.sidebar::-webkit-scrollbar { display: none; width: 0; height: 0; }
-    #sidebarMenu.sidebar { scrollbar-width: none; -ms-overflow-style: none; }
-    @media (prefers-reduced-motion: reduce) {
-      .sidebar, .sidebar::before, .sidebar::after, .sidebar-border-runner { animation: none !important; }
-      .sidebar .nav-link { transition: none !important; }
-    }
+    /* Empat kilau terpisah: atas ke kanan, kanan ke bawah, bawah ke kiri, kiri ke atas. */
+    .sidebar-border-runner { position:absolute; inset:0; z-index:4; pointer-events:none; border-radius:inherit; }
+    .sidebar-border-runner span { position:absolute; display:block; border-radius:20px; opacity:0; }
+    .sidebar-border-runner .edge-top,.sidebar-border-runner .edge-bottom { width:68px; height:4px; background:linear-gradient(90deg,transparent,#fff,#fff7b0,#fff,transparent); box-shadow:0 0 7px 3px #fff,0 0 15px 4px rgba(0,225,255,.95); }
+    .sidebar-border-runner .edge-right,.sidebar-border-runner .edge-left { width:4px; height:68px; background:linear-gradient(180deg,transparent,#fff,#fff7b0,#fff,transparent); box-shadow:0 0 7px 3px #fff,0 0 15px 4px rgba(0,225,255,.95); }
+    .sidebar-border-runner .edge-top { top:0; left:4px; animation:masdaEdgeTop 7s linear infinite; }
+    .sidebar-border-runner .edge-right { right:0; top:4px; animation:masdaEdgeRight 7s linear infinite 1.75s; }
+    .sidebar-border-runner .edge-bottom { bottom:0; right:4px; animation:masdaEdgeBottom 7s linear infinite 3.5s; }
+    .sidebar-border-runner .edge-left { left:0; bottom:4px; animation:masdaEdgeLeft 7s linear infinite 5.25s; }
+    /* Gelembung kristal dengan highlight, cincin refleksi, dan ukuran bervariasi. */
+    .sidebar-bubble-field { position:absolute; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
+    .sidebar-bubble { position:absolute; display:block; border-radius:50%; border:1px solid rgba(255,255,255,.78);
+      background:radial-gradient(circle at 29% 22%,rgba(255,255,255,.98) 0 2%,rgba(255,255,255,.65) 4%,transparent 13%),
+      radial-gradient(ellipse at 34% 30%,rgba(255,255,255,.42),transparent 34%),
+      radial-gradient(circle at 68% 74%,rgba(0,128,255,.28),transparent 38%),
+      radial-gradient(circle at 50% 50%,rgba(90,231,255,.08) 0 48%,rgba(255,255,255,.62) 53%,rgba(69,211,255,.44) 58%,rgba(255,255,255,.12) 66%,rgba(255,255,255,.03) 72%,transparent 75%);
+      box-shadow:inset -5px -7px 12px rgba(0,83,190,.22),inset 3px 3px 9px rgba(255,255,255,.68),0 0 12px rgba(120,239,255,.24);
+      backdrop-filter:blur(1px); -webkit-backdrop-filter:blur(1px); }
+    .sidebar-bubble::before { content:""; position:absolute; width:35%; height:15%; top:17%; left:17%; border-radius:50%; transform:rotate(-35deg); background:linear-gradient(90deg,rgba(255,255,255,.9),rgba(255,255,255,.05)); filter:blur(.5px); }
+    .sidebar-bubble::after { content:""; position:absolute; width:16%; height:7%; right:20%; bottom:19%; border-radius:50%; background:rgba(255,255,255,.8); filter:blur(1px); }
+    .sidebar-bubble.b1 { width:54px;height:54px;left:5%;top:14%;animation:bubbleRise 13s ease-in-out infinite; }
+    .sidebar-bubble.b2 { width:82px;height:82px;right:7%;top:29%;animation:bubbleFall 17s ease-in-out infinite 1s; }
+    .sidebar-bubble.b3 { width:34px;height:34px;left:72%;top:53%;animation:bubbleRise 11s ease-in-out infinite 2s; }
+    .sidebar-bubble.b4 { width:66px;height:66px;left:9%;top:70%;animation:bubbleFall 19s ease-in-out infinite 1.5s; }
+    .sidebar-bubble.b5 { width:96px;height:96px;right:5%;top:83%;animation:bubbleRise 21s ease-in-out infinite 3s; }
+    .sidebar-bubble.b6 { width:42px;height:42px;right:27%;top:5%;animation:bubbleFall 14s ease-in-out infinite 2.5s; }
+    .sidebar > * { position:relative; z-index:1; }
+    .sidebar > .sidebar-border-runner,.sidebar > .sidebar-bubble-field { position:absolute; z-index:4; }
+    .sidebar > .sidebar-bubble-field { z-index:0; }
+    .sidebar #sidebarNavList { position:relative; z-index:1; }
+    .sidebar .nav-link { color:rgba(255,255,255,.97); text-shadow:0 1px 3px rgba(0,45,105,.34); margin-bottom:6px; border-radius:11px; font-weight:500; cursor:pointer; transition:color .22s ease,background .22s ease,transform .22s ease,box-shadow .22s ease; border:1px solid transparent; }
+    .sidebar .nav-link.active,.sidebar .nav-link:hover { color:#fff; background:linear-gradient(100deg,rgba(255,255,255,.30),rgba(0,210,255,.28),rgba(255,255,255,.16)); border-color:rgba(220,250,255,.48); box-shadow:0 5px 18px rgba(2,38,105,.20),inset 0 1px 0 rgba(255,255,255,.24); transform:translateX(2px); }
+    .sidebar .nav-link.active { background:linear-gradient(100deg,#00c8ed,#0878ef 58%,#2455e8); box-shadow:0 5px 20px rgba(3,75,175,.32),inset 0 1px 0 rgba(255,255,255,.34); }
+    @keyframes masdaSidebarShimmer { from{opacity:.65} to{opacity:1} }
+    @keyframes masdaEdgeTop { 0%{left:4px;opacity:0} 8%{opacity:1} 25%{left:calc(100% - 72px);opacity:1} 25.1%,100%{opacity:0} }
+    @keyframes masdaEdgeRight { 0%{top:4px;opacity:0} 8%{opacity:1} 25%{top:calc(100% - 72px);opacity:1} 25.1%,100%{opacity:0} }
+    @keyframes masdaEdgeBottom { 0%{right:4px;opacity:0} 8%{opacity:1} 25%{right:calc(100% - 72px);opacity:1} 25.1%,100%{opacity:0} }
+    @keyframes masdaEdgeLeft { 0%{bottom:4px;opacity:0} 8%{opacity:1} 25%{bottom:calc(100% - 72px);opacity:1} 25.1%,100%{opacity:0} }
+    @keyframes bubbleRise { 0%,100%{transform:translate3d(0,16px,0) scale(.96)} 50%{transform:translate3d(12px,-42px,0) scale(1.06)} }
+    @keyframes bubbleFall { 0%,100%{transform:translate3d(0,-18px,0) scale(1.02)} 50%{transform:translate3d(-13px,48px,0) scale(.94)} }
+    #sidebarMenu.sidebar::-webkit-scrollbar { display:none;width:0;height:0; }
+    #sidebarMenu.sidebar { scrollbar-width:none;-ms-overflow-style:none; }
+    @media (prefers-reduced-motion:reduce) { .sidebar,.sidebar::before,.sidebar-border-runner span,.sidebar-bubble { animation:none!important; } .sidebar .nav-link{transition:none!important;} }
 
     /* Utility tambahan */
     .fs-7 { font-size: 0.78rem !important; }
@@ -1894,7 +1827,8 @@
 <!-- SIDEBAR MENU BERBASIS RBAC -->
 <div class="col-md-3 col-lg-2">
 <div aria-labelledby="sidebarMenuLabel" class="offcanvas-md offcanvas-start sidebar p-3 no-print h-100" id="sidebarMenu" tabindex="-1">
-<span class="sidebar-border-runner" aria-hidden="true"></span>
+<span class="sidebar-border-runner" aria-hidden="true"><i class="edge-top"></i><i class="edge-right"></i><i class="edge-bottom"></i><i class="edge-left"></i></span>
+<span class="sidebar-bubble-field" aria-hidden="true"><i class="sidebar-bubble b1"></i><i class="sidebar-bubble b2"></i><i class="sidebar-bubble b3"></i><i class="sidebar-bubble b4"></i><i class="sidebar-bubble b5"></i><i class="sidebar-bubble b6"></i></span>
 <!-- HEADER OFFCANVAS HP -->
 <div class="offcanvas-header d-md-none text-white border-bottom border-secondary pb-2 mb-3">
 <h5 class="offcanvas-title fw-bold d-flex align-items-center" id="sidebarMenuLabel"><img alt="Logo siMADA" id="sidebarMobileLogo" src="" style="display:none;width:30px;height:30px;object-fit:contain;margin-right:10px;border-radius:7px"/> siMADA</h5>
