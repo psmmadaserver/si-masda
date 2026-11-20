@@ -112,7 +112,8 @@
       #mainApp .mobile-brand-logo { width: 30px; height: 30px; object-fit: contain; border-radius: 7px; flex: 0 0 auto; }
       #mainApp .mobile-logout-btn { width: 32px; height: 32px; padding: 0; display: inline-flex; align-items: center; justify-content: center; color: #475569; border: 1px solid #dbe2ea; background: #fff; border-radius: 9px; }
       #sidebarMenu.offcanvas-md { --bs-offcanvas-width: max-content; width: max-content; max-width: 86vw; }
-      #sidebarMenu.sidebar { min-height: 100dvh; height: 100dvh !important; overflow-y: auto; overscroll-behavior: contain; }
+      #sidebarMenu.sidebar { min-height: 100dvh; height: 100dvh !important; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; }
+      #sidebarMenu.sidebar::-webkit-scrollbar { display: none; width: 0; height: 0; }
       #sidebarMenu #sidebarNavList { width: max-content; min-width: 235px; max-width: calc(86vw - 2rem); }
       #sidebarMenu #sidebarNavList .nav-link { white-space: nowrap; padding-right: 1rem; }
       #sidebarMenu .offcanvas-header { min-width: 235px; }
@@ -138,7 +139,8 @@
       color: #fff;
       position: relative;
       isolation: isolate;
-      overflow-x: hidden;
+      overflow: hidden;
+      scrollbar-width: none;
       border-radius: 22px;
       border: 2px solid rgba(255,255,255,.72);
       background: linear-gradient(145deg, #0878d8 0%, #06a9ed 30%, #08c7dc 58%, #087fe2 82%, #0752b8 100%) !important;
@@ -164,23 +166,45 @@
       animation: masdaSidebarBubbles 18s linear infinite, masdaSidebarShimmer 7s ease-in-out infinite alternate;
       opacity: .9;
     }
-    /* Bingkai pelangi gelap-terang berputar; area tengah transparan. */
+    /* Bingkai pelangi tetap pada tempatnya; satu kilau berjalan mengitari
+       sisi kanan, bawah, kiri, lalu atas secara berurutan. */
     .sidebar::after {
       content: "";
       position: absolute;
-      inset: -1px;
+      inset: 0;
       z-index: 3;
+      border: 3px solid transparent;
       border-radius: inherit;
-      padding: 3px;
       pointer-events: none;
-      background: conic-gradient(from 0deg, #ff4fd8, #7047ff, #00d9ff, #20e6a5, #ffe45c, #ff8b35, #ff4fd8);
-      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      background: linear-gradient(145deg, #ff4fd8, #7047ff 22%, #00d9ff 42%, #20e6a5 62%, #ffe45c 80%, #ff8b35) border-box;
+      -webkit-mask: linear-gradient(#000 0 0) padding-box, linear-gradient(#000 0 0);
       -webkit-mask-composite: xor;
       mask-composite: exclude;
-      animation: masdaSidebarBorderSpin 8s linear infinite;
-      filter: drop-shadow(0 0 5px rgba(255,255,255,.35));
+      filter: drop-shadow(0 0 4px rgba(255,255,255,.24));
+    }
+    .sidebar-border-runner {
+      position: absolute;
+      inset: 0;
+      z-index: 4;
+      border-radius: inherit;
+      pointer-events: none;
+      offset-path: inset(1px round 20px);
+      offset-rotate: 0deg;
+      animation: masdaSidebarBorderTravel 7s linear infinite;
+    }
+    .sidebar-border-runner::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 42px;
+      height: 4px;
+      border-radius: 10px;
+      background: linear-gradient(90deg, transparent, #fff, #fff4a8, transparent);
+      box-shadow: 0 0 7px 2px rgba(255,255,255,.9), 0 0 13px 3px rgba(0,225,255,.72);
     }
     .sidebar > * { position: relative; z-index: 1; }
+    .sidebar > .sidebar-border-runner { position: absolute; z-index: 4; }
     .sidebar #sidebarNavList { position: relative; z-index: 1; }
     .sidebar .nav-link {
       color: rgba(255,255,255,.97);
@@ -216,11 +240,15 @@
       from { opacity: .62; }
       to { opacity: 1; }
     }
-    @keyframes masdaSidebarBorderSpin {
-      to { transform: rotate(360deg); }
+    @keyframes masdaSidebarBorderTravel {
+      from { offset-distance: 0%; }
+      to { offset-distance: 100%; }
     }
+    /* Hilangkan batang scrollbar sidebar, tetapi scrolling tetap aktif. */
+    #sidebarMenu.sidebar::-webkit-scrollbar { display: none; width: 0; height: 0; }
+    #sidebarMenu.sidebar { scrollbar-width: none; -ms-overflow-style: none; }
     @media (prefers-reduced-motion: reduce) {
-      .sidebar, .sidebar::before, .sidebar::after { animation: none !important; }
+      .sidebar, .sidebar::before, .sidebar::after, .sidebar-border-runner { animation: none !important; }
       .sidebar .nav-link { transition: none !important; }
     }
 
@@ -1866,6 +1894,7 @@
 <!-- SIDEBAR MENU BERBASIS RBAC -->
 <div class="col-md-3 col-lg-2">
 <div aria-labelledby="sidebarMenuLabel" class="offcanvas-md offcanvas-start sidebar p-3 no-print h-100" id="sidebarMenu" tabindex="-1">
+<span class="sidebar-border-runner" aria-hidden="true"></span>
 <!-- HEADER OFFCANVAS HP -->
 <div class="offcanvas-header d-md-none text-white border-bottom border-secondary pb-2 mb-3">
 <h5 class="offcanvas-title fw-bold d-flex align-items-center" id="sidebarMenuLabel"><img alt="Logo siMADA" id="sidebarMobileLogo" src="" style="display:none;width:30px;height:30px;object-fit:contain;margin-right:10px;border-radius:7px"/> siMADA</h5>
