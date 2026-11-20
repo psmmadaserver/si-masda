@@ -819,6 +819,16 @@
 #loginPage.login-student-mode #loginAlert{margin-top:12px!important;}
 @media(max-width:600px){#loginPage{padding:8px 12px 24px}#loginPage .login-container{margin-top:8px;padding:0}#loginPage .login-card{padding:24px 20px!important}#loginPage .login-home-back{margin-bottom:10px}}
 </style>
+<style id="modal-siswa-rbac-fix">
+/* Form Tambah/Edit Siswa: area isi dapat digulir, tombol Simpan tetap terlihat */
+#modalSiswa .modal-dialog.modal-siswa-dialog{width:calc(100% - 1rem);max-width:560px;margin:.5rem auto;height:calc(100% - 1rem)}
+#modalSiswa .modal-content{display:flex;flex-direction:column;max-height:calc(100dvh - 1rem);height:100%;overflow:hidden}
+#modalSiswa .modal-header{flex:0 0 auto}
+#modalSiswa .modal-body{flex:1 1 auto;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-bottom:1rem}
+#modalSiswa .modal-footer{flex:0 0 auto;position:sticky;bottom:0;z-index:6;background:#fff;border-top:1px solid #e5e7eb;box-shadow:0 -5px 14px rgba(15,23,42,.06);padding:12px 16px}
+#modalSiswa #btnSaveSiswaModal{min-width:140px;font-weight:700}
+@media(max-width:576px){#modalSiswa .modal-dialog.modal-siswa-dialog{width:calc(100% - .75rem);margin:.375rem auto;height:calc(100% - .75rem)}#modalSiswa .modal-content{max-height:calc(100dvh - .75rem)}#modalSiswa .modal-footer{padding:10px 12px}#modalSiswa #btnSaveSiswaModal{width:100%}}
+</style>
 <style>
 /* PPDB: tombol simpan selalu terlihat di bagian bawah jendela edit/verifikasi */
 #modalPPDB .modal-content{display:flex;max-height:calc(100vh - 2rem)}
@@ -2832,7 +2842,7 @@
 </div>
 <!-- MODAL SISWA -->
 <div class="modal fade" id="modalSiswa" tabindex="-1">
-<div class="modal-dialog"><div class="modal-content">
+<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-siswa-dialog"><div class="modal-content">
 <div class="modal-header"><h5 class="modal-title" id="modalSiswaTitle">Tambah Siswa</h5><button class="btn-close" data-bs-dismiss="modal" type="button"></button></div>
 <div class="modal-body">
 <input id="msOldNisn" type="hidden"/>
@@ -2857,9 +2867,14 @@
 <label class="form-label fw-semibold">No. HP WhatsApp Wali</label>
 <input class="form-control mb-2" id="msNoHpWali" placeholder="Contoh: 081234567890" type="tel"/>
 <div class="form-text mb-2">Nomor ini digunakan untuk notifikasi absensi siswa.</div>
-<div class="border rounded-3 p-3 mt-3 bg-light"><div class="fw-bold small text-primary mb-1"><i class="bi bi-shield-lock me-1"></i>Hak Akses Menu Akun Siswa</div><div class="small text-muted mb-2">Admin dapat menentukan menu yang boleh dibuka dan apakah siswa hanya melihat atau boleh mengisi data.</div><div class="row g-2" id="msStudentRbacGrid"></div></div></div>
+<div class="border rounded-3 p-3 mt-3 bg-light"><div class="fw-bold small text-primary mb-1"><i class="bi bi-shield-lock me-1"></i>Hak Akses Menu Akun Siswa</div><div class="small text-muted mb-2">Admin dapat menentukan menu yang boleh dibuka dan apakah siswa hanya melihat atau boleh mengisi data.</div><div class="row g-2"><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_dashboard">Dashboard Analytics</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="dashboard" id="msRbac_dashboard"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_profil">Profil Madrasah</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="profil" id="msRbac_profil"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_struktur">Struktur Organisasi</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="struktur" id="msRbac_struktur"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_master">Data Master</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="master" id="msRbac_master"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div>
+<div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_hariEfektif">Hari Efektif</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="hariEfektif" id="msRbac_hariEfektif"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div>
+<div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_absensiPembiasaan">Absensi Pembiasaan</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="absensiPembiasaan" id="msRbac_absensiPembiasaan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div>
+<div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_bendahara">Administrasi - Bendahara</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="bendahara" id="msRbac_bendahara"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div>
+<div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_ppdb">PPDB</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="ppdb" id="msRbac_ppdb"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div>
+<div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_pengumuman">Pengumuman</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="pengumuman" id="msRbac_pengumuman"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_jurnal">Jurnal Guru</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="jurnal" id="msRbac_jurnal"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_honor">Honor Guru</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="honor" id="msRbac_honor"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_absensi">Absensi Pelajaran</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="absensi" id="msRbac_absensi"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_kesiswaan">Kesiswaan</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="kesiswaan" id="msRbac_kesiswaan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_sarpras">SarPras</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="sarpras" id="msRbac_sarpras"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_pengaturan">Pengaturan User</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="pengaturan" id="msRbac_pengaturan"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_website">Link Terkait</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="website" id="msRbac_website"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_absensiGuruQr">Absensi QR Guru</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="absensiGuruQr" id="msRbac_absensiGuruQr"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengelola</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_whatsapp">WhatsApp Gateway</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="whatsapp" id="msRbac_whatsapp"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div><div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_absensiQr">Absensi QR / Izin Siswa</label><select class="form-select form-select-sm ms-rbac-mode" data-menu="absensiQr" id="msRbac_absensiQr"><option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div></div></div>
 </div>
-<div class="modal-footer"><button class="btn btn-primary" onclick="saveSiswaModal()" type="button">Simpan Siswa</button></div></div></div>
+<div class="modal-footer"><button class="btn btn-primary" id="btnSaveSiswaModal" onclick="saveSiswaModal()" type="button"><i class="bi bi-save me-1"></i>Simpan Siswa</button></div></div></div>
 </div>
 <!-- MODAL JADWAL MAPEL -->
 <div class="modal fade" id="modalJadwal" tabindex="-1">
@@ -4836,46 +4851,9 @@
     showMasterModal('modalSiswa');
   }
 
-  // Daftar RBAC Akun Siswa mengikuti seluruh menu sidebar aktif.
-  var STUDENT_RBAC_MENU_LIST = [
-    ['dashboard','Dashboard Analytics'], ['profil','Profil Madrasah'],
-    ['struktur','Struktur Organisasi'], ['master','Data Master'],
-    ['hariEfektif','Hari Efektif'], ['jurnal','Jurnal Guru'],
-    ['honor','Honor Guru'], ['whatsapp','WhatsApp Gateway'],
-    ['absensiGuruQr','Absensi QR Guru'], ['absensiQr','Absensi QR / Izin Siswa'],
-    ['absensi','Absensi Pelajaran'], ['absensiPembiasaan','Absensi Pembiasaan'],
-    ['bendahara','Administrasi - Bendahara'], ['kesiswaan','Kesiswaan'],
-    ['sarpras','SarPras'], ['ppdb','PPDB'], ['pengumuman','Pengumuman'],
-    ['pengaturan','Pengaturan User'], ['website','Link Terkait']
-  ];
-  function renderStudentRbacMenuOptions() {
-    var grid = document.getElementById('msStudentRbacGrid');
-    if (!grid) return;
-    grid.innerHTML = STUDENT_RBAC_MENU_LIST.map(function(item) {
-      var key = item[0], label = item[1];
-      return '<div class="col-12 col-md-6"><label class="form-label small mb-1" for="msRbac_' + key + '">' + escapeHtml(label) + '</label>' +
-        '<select class="form-select form-select-sm ms-rbac-mode" data-menu="' + key + '" id="msRbac_' + key + '">' +
-        '<option value="off">Tidak diizinkan</option><option value="view">Hanya melihat</option><option value="edit">Melihat &amp; mengisi/mengedit</option></select></div>';
-    }).join('');
-  }
-
-  // Bersihkan tombol hapus duplikat di area utama Bendahara. Penghapusan tetap
-  // tersedia melalui daftar kelola di dalam modal Tambah Jenis Pembayaran.
-  function bersihkanTombolHapusJenisPembayaranDuplikat() {
-    var root = document.getElementById('sec-bendahara');
-    if (!root) return;
-    root.querySelectorAll('button').forEach(function(btn) {
-      var label = (btn.textContent || '').replace(/\s+/g, ' ').trim().toLowerCase();
-      if (label === 'hapus jenis pembayaran' || label === 'hapus jenis pembayaran bendahara') btn.remove();
-    });
-  }
-  document.addEventListener('DOMContentLoaded', bersihkanTombolHapusJenisPembayaranDuplikat);
-  bersihkanTombolHapusJenisPembayaranDuplikat();
-
   // Default deny: menu siswa baru tidak aktif sebelum admin memberi izin.
   var STUDENT_RBAC_DEFAULT = {};
   function setStudentRbacModes(saved) {
-    renderStudentRbacMenuOptions();
     var detail = {}, akses = '';
     if (saved) { akses = saved.akses || ''; try { detail = typeof saved.aksesDetail === 'string' ? JSON.parse(saved.aksesDetail || '{}') : (saved.aksesDetail || {}); } catch(e) { detail = {}; } }
     document.querySelectorAll('.ms-rbac-mode').forEach(function(el) {
@@ -4941,18 +4919,30 @@
       noHpWali: document.getElementById('msNoHpWali').value.trim(),
       foto: document.getElementById('msFotoData').value || ''
     };
-    var studentAccess = collectStudentRbacModes(); data.akses = studentAccess.akses; data.aksesDetail = studentAccess.aksesDetail;
+    var studentAccess = collectStudentRbacModes();
+    data.akses = studentAccess.akses;
+    // Kirim sebagai JSON string agar seluruh pilihan RBAC tersimpan konsisten
+    // melalui google.script.run; backend simpanSiswa memang menerima format string.
+    data.aksesDetail = JSON.stringify(studentAccess.aksesDetail);
 
     if (!data.nisn || !data.nama || !data.kelas) {
-      appNotify('NISN, Nama, dan Kelas wajib diisi!');
+      appNotify('NISN, Nama, dan Kelas wajib diisi!', 'warning');
       return;
     }
 
+    var btn = document.getElementById('btnSaveSiswaModal');
+    if (btn && btn.disabled) return;
+    if (btn) { btn.disabled = true; btn.dataset.oldHtml = btn.innerHTML; btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Menyimpan...'; }
+
     google.script.run.withSuccessHandler(function(res) {
-      appNotify(res);
+      if (btn) { btn.disabled = false; btn.innerHTML = btn.dataset.oldHtml || '<i class="bi bi-save me-1"></i>Simpan Siswa'; }
+      appNotify(res || 'Data siswa berhasil disimpan.');
       hideModal('modalSiswa');
       loadMasterData();
       refreshDashboard();
+    }).withFailureHandler(function(err) {
+      if (btn) { btn.disabled = false; btn.innerHTML = btn.dataset.oldHtml || '<i class="bi bi-save me-1"></i>Simpan Siswa'; }
+      appNotify('Gagal menyimpan data siswa dan RBAC: ' + (err && err.message ? err.message : err), 'danger');
     }).simpanSiswa(data);
   }
 
