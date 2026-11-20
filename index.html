@@ -1336,6 +1336,22 @@
   @media(max-width:575.98px){.bend-summary-card{min-height:94px;padding:11px 10px;gap:8px;border-width:3px;border-radius:15px}.bend-card-icon{flex-basis:40px;width:40px;height:40px;font-size:22px;border-radius:12px}.bend-card-content small{font-size:10px}.bend-card-value{font-size:15px}}
 </style>
 
+
+<style id="bendahara-student-profile-design">
+.bend-student-profile{position:relative;border-radius:22px!important;color:#fff;background:linear-gradient(118deg,#0752a5 0%,#087bc8 48%,#eaf7ff 100%);border:1px solid rgba(255,255,255,.85)!important;isolation:isolate}
+.bend-student-profile:before,.bend-student-profile:after{content:"";position:absolute;z-index:0;left:-8%;width:116%;height:58%;pointer-events:none;border-radius:48% 52% 0 0/35% 42% 0 0;transform:rotate(-4deg)}
+.bend-student-profile:before{bottom:-23%;background:linear-gradient(105deg,rgba(15,210,130,.92),rgba(95,236,174,.7) 45%,rgba(255,255,255,.2));clip-path:ellipse(72% 48% at 50% 50%)}
+.bend-student-profile:after{bottom:-31%;background:linear-gradient(105deg,rgba(255,255,255,.7),rgba(45,180,255,.38),rgba(255,255,255,.25));clip-path:ellipse(72% 48% at 50% 50%);transform:rotate(5deg)}
+.bend-profile-waves{position:absolute;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:radial-gradient(ellipse at 92% 12%,rgba(255,255,255,.58),transparent 42%),linear-gradient(120deg,rgba(0,50,140,.15),transparent 65%)}
+.bend-profile-content{position:relative;z-index:1}
+.bend-student-summary .bend-student-stat{height:100%;min-height:112px;padding:12px 10px;border-radius:17px;border:1.5px solid rgba(255,255,255,.88);background:rgba(255,255,255,.19);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 5px 18px rgba(8,40,100,.12);display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:5px}
+.bend-student-stat>i{font-size:1.65rem;line-height:1.1;margin-bottom:2px;text-shadow:0 2px 5px rgba(0,0,0,.12)}
+.bend-student-stat small{font-size:.78rem;font-weight:700;color:#fff}
+.bend-student-stat .fw-bold{font-size:1.03rem;line-height:1.25}
+.bend-stat-total>i,.bend-stat-total .fw-bold{color:#ffe0e4}.bend-stat-paid>i,.bend-stat-paid .fw-bold{color:#caffdf}.bend-stat-balance>i,.bend-stat-balance .fw-bold{color:#fff0b2}
+@media(max-width:420px){.bend-student-profile .card-body{padding:16px!important}.bend-student-summary{--bs-gutter-x:.45rem}.bend-student-summary .bend-student-stat{min-height:96px;padding:9px 7px}.bend-student-stat>i{font-size:1.35rem}.bend-student-stat small{font-size:.69rem}.bend-student-stat .fw-bold{font-size:.88rem}}
+</style>
+
 </head>
 
 <style id="simada-sarpras-table-edit-style">
@@ -2478,10 +2494,10 @@
 <!-- BENDAHARA / PEMBAYARAN SISWA -->
 <div class="content-section d-none" id="sec-bendahara">
  <div id="bendaharaSiswaPanel" class="d-none">
-  <div class="card border-0 shadow-sm mb-3 overflow-hidden" style="border-radius:20px;background:linear-gradient(120deg,#123b83,#087cc5);color:#fff"><div class="card-body p-4"><div class="small opacity-75 mb-1">PORTAL PEMBAYARAN SISWA</div><h3 class="fw-bold mb-1" id="bendSiswaNama">Pembayaran Saya</h3><div id="bendSiswaIdentitas" class="small opacity-75"></div><div class="row g-2 mt-3"><div class="col-4"><div class="rounded-3 p-2" style="background:#ffffff20"><div class="d-flex align-items-center gap-2"><i class="bi bi-receipt-cutoff fs-5"></i><small>Total Tagihan</small></div><div class="fw-bold" id="bendSiswaTotal">Rp 0</div></div></div><div class="col-4"><div class="rounded-3 p-2" style="background:#ffffff20"><div class="d-flex align-items-center gap-2"><i class="bi bi-check-circle-fill fs-5"></i><small>Dibayar</small></div><div class="fw-bold" id="bendSiswaDibayar">Rp 0</div></div></div><div class="col-4"><div class="rounded-3 p-2" style="background:#ffffff20"><div class="d-flex align-items-center gap-2"><i class="bi bi-wallet2 fs-5"></i><small>Sisa</small></div><div class="fw-bold" id="bendSiswaSisa">Rp 0</div></div></div></div></div></div>
-  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3"><h5 class="fw-bold mb-0" style="color:#17336c"><i class="bi bi-wallet2 me-2"></i>Rincian Pembayaran Saya</h5><button class="btn btn-outline-primary btn-sm" onclick="loadBendaharaSiswa()"><i class="bi bi-arrow-clockwise me-1"></i>Perbarui</button></div>
+  <div class="bend-student-profile card border-0 shadow-sm mb-3 overflow-hidden"><div class="card-body p-4"><div class="bend-profile-waves" aria-hidden="true"></div><div class="bend-profile-content"><div class="small opacity-75 mb-1">PORTAL PEMBAYARAN SISWA</div><h3 class="fw-bold mb-1" id="bendSiswaNama">Pembayaran Saya</h3><div id="bendSiswaIdentitas" class="small opacity-75"></div><div class="row g-2 mt-3 bend-student-summary"><div class="col-4"><div class="bend-student-stat bend-stat-total"><i class="bi bi-receipt-cutoff"></i><small>Total Tagihan</small><div class="fw-bold" id="bendSiswaTotal">Rp 0</div></div></div><div class="col-4"><div class="bend-student-stat bend-stat-paid"><i class="bi bi-check-circle-fill"></i><small>Dibayar</small><div class="fw-bold" id="bendSiswaDibayar">Rp 0</div></div></div><div class="col-4"><div class="bend-student-stat bend-stat-balance"><i class="bi bi-wallet2"></i><small>Sisa</small><div class="fw-bold" id="bendSiswaSisa">Rp 0</div></div></div></div></div></div></div>
+  <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-3"><h5 class="fw-bold mb-0" style="color:#17336c"><i class="bi bi-wallet2 me-2"></i>Rincian Pembayaran Saya</h5><div class="d-flex gap-2"><button class="btn btn-outline-primary btn-sm" onclick="loadBendaharaSiswa()"><i class="bi bi-arrow-clockwise me-1"></i>Perbarui</button><button type="button" class="btn btn-primary btn-sm" onclick="cetakKwitansiSiswa()"><i class="bi bi-printer me-1"></i>Cetak Kwitansi</button></div></div>
   <div id="bendSiswaCards" class="row g-3"><div class="col-12 text-center text-muted py-4">Memuat data pembayaran...</div></div>
-  <div class="card border-0 shadow-sm p-3 mt-3"><div class="d-flex flex-wrap align-items-center justify-content-between gap-2"><div><h6 class="fw-bold mb-1"><i class="bi bi-receipt me-2 text-primary"></i>Kwitansi Pembayaran Siswa</h6><div class="small text-muted">Satu kwitansi untuk seluruh jenis pembayaran yang ditetapkan Bendahara.</div></div><button type="button" class="btn btn-primary" onclick="cetakKwitansiSiswa()"><i class="bi bi-printer me-1"></i>Cetak Kwitansi</button></div><div id="bendSiswaKwitansi" class="small text-muted mt-2">Kwitansi dapat dicetak meskipun pembayaran belum lunas.</div></div>
+
  </div>
  <div id="bendaharaAdminPanel">
  <div class="card shadow-sm border-0 mb-3" style="border-top:4px solid #2675ff!important;border-radius:16px"><div class="card-body py-3"><h3 class="fw-bold mb-0" style="color:#17336c"><i class="bi bi-cash-coin me-2"></i>Bendahara – Pembayaran Siswa</h3><div class="small text-muted">Kelola tagihan dan pencatatan pembayaran siswa berdasarkan data Master Siswa.</div></div></div>
@@ -6198,7 +6214,7 @@
       document.getElementById('bendSiswaTotal').textContent=rupiahBendahara(total);document.getElementById('bendSiswaDibayar').textContent=rupiahBendahara(paid);document.getElementById('bendSiswaSisa').textContent=rupiahBendahara(Math.max(0,total-paid));
       if(!rows.length){box.innerHTML='<div class="col-12"><div class="alert alert-info mb-0">Belum ada tagihan pembayaran yang tercatat untuk akun Anda.</div></div>';}
       else box.innerHTML=rows.map(function(x){var sisa=Math.max(0,Number(x.nominal)-Number(x.dibayar)),done=sisa<=0;return '<div class="col-12 col-md-6"><div class="card h-100 border-0 shadow-sm" style="border-radius:16px;border-left:5px solid '+(done?'#16a36a':'#e4a11b')+'!important"><div class="card-body"><div class="d-flex justify-content-between align-items-start gap-2"><div><div class="fw-bold text-dark">'+escapeHtml(x.jenis)+'</div><div class="small text-muted">Tahun ajaran '+escapeHtml(x.tahunAjaran||'-')+'</div></div><span class="badge '+(done?'text-bg-success':'text-bg-warning')+'">'+(done?'Lunas':'Belum Lunas')+'</span></div><div class="row g-2 mt-2"><div class="col-4"><small class="text-muted">Tagihan</small><div class="fw-semibold">'+rupiahBendahara(x.nominal)+'</div></div><div class="col-4"><small class="text-muted">Dibayar</small><div class="fw-semibold text-success">'+rupiahBendahara(x.dibayar)+'</div></div><div class="col-4"><small class="text-muted">Sisa</small><div class="fw-semibold '+(sisa?'text-danger':'text-success')+'">'+rupiahBendahara(sisa)+'</div></div></div></div></div></div>';}).join('');
-      var hb=document.getElementById('bendSiswaKwitansi');if(hb)hb.textContent='Nomor kwitansi: '+(r.nomorKwitansi||'-')+' · Status: '+((r.ringkasan&&r.ringkasan.status)||'BELUM LUNAS')+'. Kwitansi memuat seluruh tagihan siswa.';
+
     }).withFailureHandler(function(e){box.innerHTML='<div class="col-12"><div class="alert alert-danger">'+escapeHtml(e.message||e)+'</div></div>';}).getBendaharaSaya(masdaGetSessionToken_());
   }
   function buatHtmlKwitansiBendahara_(r){
