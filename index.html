@@ -2198,7 +2198,7 @@
 </div>
 <div class="table-responsive">
 <table class="table table-bordered align-middle">
-<thead class="table-light"><tr><th>Foto</th><th>NIP</th><th>Nama Lengkap</th><th>No. HP</th><th>Mata Pelajaran</th><th>Tarif/Jam</th><th>Tj. Transport</th><th>Tj. Jabatan</th><th>Jabatan</th><th>Username</th><th>Password Awal</th><th style="width: 110px;">Aksi</th></tr></thead>
+<thead class="table-light"><tr><th>Foto</th><th>NIP</th><th>Nama Lengkap</th><th>No. HP</th><th>Mata Pelajaran</th><th>Tarif/Jam</th><th>Tj. Transport</th><th>Tj. Jabatan</th><th>Jabatan</th><th>Status Sertifikasi</th><th>Username</th><th>Password Awal</th><th style="width: 110px;">Aksi</th></tr></thead>
 <tbody id="tblMasterGuru"></tbody>
 </table>
 </div>
@@ -2872,6 +2872,9 @@
 <input class="form-control mb-2" id="mgTarif" min="0" placeholder="Tarif honor per jam" type="number" value="0"/>
 <label class="form-label fw-semibold">Jabatan Guru</label>
 <input class="form-control mb-2" id="mgJabatanNama" placeholder="Contoh: Wali Kelas, Waka Kurikulum" type="text" value="Guru"/>
+<label class="form-label fw-semibold">Status Sertifikasi</label>
+<select class="form-select mb-2" id="mgStatusSertifikasi"><option value="Sertifikasi">Sertifikasi</option><option value="Non-Sertifikasi" selected>Non-Sertifikasi</option></select>
+<div class="form-text mb-2">Sertifikasi mengikuti jam Hari Efektif; Non-Sertifikasi yang memiliki jadwal mengikuti jam pelajaran pertama dan terakhir.</div>
 <label class="form-label fw-semibold">Kategori Perhitungan Honor</label>
 <select class="form-select mb-2" id="mgKategoriHonor">
 <option value="Pengajar">Pengajar — honor berdasarkan jurnal mengajar</option>
@@ -4656,7 +4659,7 @@
   // --- MASTER GURU ---
   function renderTableGuru(list) {
     var tbody=document.getElementById('tblMasterGuru');
-    if(!list||!list.length){tbody.innerHTML='<tr><td colspan="12" class="text-center text-muted">Data Guru Kosong</td></tr>';return;}
+    if(!list||!list.length){tbody.innerHTML='<tr><td colspan="13" class="text-center text-muted">Data Guru Kosong</td></tr>';return;}
     var html='';
     sortedMasterGuru(list).forEach(function(g){
       var nip=escapeHtml(g[0]||''), nama=escapeHtml(g[1]||'-');
@@ -4667,6 +4670,7 @@
       html+='<td>'+escapeHtml(g[3]||'-')+'</td><td class="text-end text-nowrap">'+formatRupiah(Number(g[10])||0)+'</td>';
       html+='<td class="text-end text-nowrap">'+formatRupiah(Number(g[4])||0)+'</td><td class="text-end text-nowrap">'+formatRupiah(Number(g[5])||0)+'</td>';
       html+='<td><span class="badge rounded-pill text-bg-light border">'+escapeHtml(g[12]||'Guru')+'</span></td>';
+      html+='<td><span class="badge '+(g[16]==='Sertifikasi'?'text-bg-success':'text-bg-secondary')+'">'+escapeHtml(g[16]||'Non-Sertifikasi')+'</span></td>';
       html+='<td>'+escapeHtml(g[6]||'-')+'</td><td class="text-muted">'+(g[7]?'••••••••':'-')+'</td>';
       html+='<td class="text-nowrap"><button type="button" class="btn btn-sm btn-outline-info me-1" title="Cetak ID Card Guru" data-nip="'+nip+'" onclick="printGuruIdCard(this.dataset.nip)"><i class="bi bi-person-badge"></i></button><button class="btn btn-sm btn-outline-primary me-1" title="Edit data guru" data-nip="'+nip+'" onclick="editGuru(this.dataset.nip)"><i class="bi bi-pencil"></i></button><button type="button" class="btn btn-sm btn-outline-danger" title="Hapus guru" data-nip="'+nip+'" onclick="deleteGuru(this.dataset.nip)"><i class="bi bi-trash"></i></button></td></tr>';
     });
@@ -4699,7 +4703,7 @@
   function openModalGuru() {
     ['mgOldNip','mgNip','mgNama','mgNoHp','mgMapel','mgUsername','mgPassword'].forEach(function(id){document.getElementById(id).value='';});
     document.getElementById('mgTransport').value='0';document.getElementById('mgJabatan').value='0';
-    document.getElementById('mgTarif').value='0';document.getElementById('mgJabatanNama').value='Guru';document.getElementById('mgKategoriHonor').value='Pengajar';
+    document.getElementById('mgTarif').value='0';document.getElementById('mgJabatanNama').value='Guru';document.getElementById('mgKategoriHonor').value='Pengajar';document.getElementById('mgStatusSertifikasi').value='Non-Sertifikasi';
     document.getElementById('mgFotoFile').value='';document.getElementById('mgFotoData').value='';document.getElementById('mgFotoPreview').innerHTML='';mgFotoDataUrl='';
     document.getElementById('mgPassword').placeholder='Tentukan password guru';
     document.getElementById('modalGuruTitle').innerText='Tambah Data Guru';
@@ -4711,7 +4715,7 @@
     document.getElementById('mgMapel').value=g[3]||'';document.getElementById('mgTransport').value=g[4]||0;document.getElementById('mgJabatan').value=g[5]||0;
     document.getElementById('mgUsername').value=g[6]||'';document.getElementById('mgPassword').value='';
     document.getElementById('mgPassword').placeholder=g[7]?'Password tersimpan (isi jika ingin mengganti)':'Tentukan password guru';
-    document.getElementById('mgTarif').value=g[10]||0;document.getElementById('mgJabatanNama').value=g[12]||'Guru';document.getElementById('mgKategoriHonor').value=g[15]||'Pengajar';
+    document.getElementById('mgTarif').value=g[10]||0;document.getElementById('mgJabatanNama').value=g[12]||'Guru';document.getElementById('mgKategoriHonor').value=g[15]||'Pengajar';document.getElementById('mgStatusSertifikasi').value=g[16]||'Non-Sertifikasi';
     mgFotoDataUrl=String(g[11]||'');document.getElementById('mgFotoData').value=mgFotoDataUrl;document.getElementById('mgFotoFile').value='';
     document.getElementById('mgFotoPreview').innerHTML=mgFotoDataUrl?'<img src="'+escapeHtml(mgFotoDataUrl)+'" style="width:76px;height:76px;object-fit:cover;border-radius:14px;border:1px solid #dbe3ef" alt="Foto guru">':'';
     document.getElementById('modalGuruTitle').innerText='Edit Data Guru';
@@ -4721,7 +4725,7 @@
     var data={oldNip:document.getElementById('mgOldNip').value,nip:document.getElementById('mgNip').value.trim(),
       nama:document.getElementById('mgNama').value.trim(),noHp:document.getElementById('mgNoHp').value.trim(),mapel:document.getElementById('mgMapel').value.trim(),
       transport:document.getElementById('mgTransport').value,tjJabatan:document.getElementById('mgJabatan').value,
-      tarif:document.getElementById('mgTarif').value,jabatanNama:document.getElementById('mgJabatanNama').value.trim(),kategoriHonor:document.getElementById('mgKategoriHonor').value,
+      tarif:document.getElementById('mgTarif').value,jabatanNama:document.getElementById('mgJabatanNama').value.trim(),kategoriHonor:document.getElementById('mgKategoriHonor').value,statusSertifikasi:document.getElementById('mgStatusSertifikasi').value,
       foto:document.getElementById('mgFotoData').value||mgFotoDataUrl,username:document.getElementById('mgUsername').value.trim(),
       password:document.getElementById('mgPassword').value.trim()};
     if(!data.nip||!data.nama){appNotify('NIP dan Nama Guru wajib diisi!');return;}
