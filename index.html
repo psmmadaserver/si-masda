@@ -1381,6 +1381,27 @@
 @media(max-width:420px){.bend-student-profile .card-body{padding:16px!important}.bend-student-summary{--bs-gutter-x:.45rem}.bend-student-summary .bend-student-stat{min-height:96px;padding:9px 7px}.bend-student-stat>i{font-size:1.35rem}.bend-student-stat small{font-size:.69rem}.bend-student-stat .fw-bold{font-size:.88rem}}
 </style>
 
+
+<style id="simadu-global-sticky-table-header-v1">
+/* Semua tabel aplikasi: area isi dapat digulir, kepala tabel tetap terlihat. */
+#mainApp .content-section .table-responsive{
+  max-height:min(68vh,640px); overflow:auto; position:relative;
+  overscroll-behavior:contain; -webkit-overflow-scrolling:touch;
+}
+#mainApp .content-section .table-responsive thead th{
+  position:sticky; top:0; z-index:8;
+}
+/* Tabel dengan dua baris header (misalnya ringkasan total + nama kolom). */
+#mainApp .content-section .table-responsive thead:has(tr:nth-child(2)) tr:first-child th{top:0;z-index:10}
+#mainApp .content-section .table-responsive thead:has(tr:nth-child(2)) tr:nth-child(2) th{top:34px;z-index:9}
+#mainApp .content-section .table-responsive thead th{
+  box-shadow:0 1px 0 rgba(255,255,255,.18),0 2px 3px rgba(15,23,42,.06);
+}
+.login-password-group .form-control{min-width:0}
+.login-password-toggle{min-width:46px;border-color:#ced8e5;background:#f8fafc}
+.login-password-toggle:hover{background:#eaf1fb}
+@media print{#mainApp .content-section .table-responsive{max-height:none!important;overflow:visible!important}}
+</style>
 </head>
 
 <style id="simada-sarpras-table-edit-style">
@@ -1776,11 +1797,11 @@
 </div>
 <div class="mb-3">
 <label class="form-label fw-semibold">Username</label>
-<input class="form-control form-control-lg fs-6" id="loginUser" placeholder="Masukkan username" type="text" value="admin"/>
+<input autocomplete="off" autocapitalize="none" spellcheck="false" class="form-control form-control-lg fs-6" id="loginUser" name="simadu-login-user" placeholder="Masukkan username" type="text"/>
 </div>
 <div class="mb-3">
 <label class="form-label fw-semibold">Password</label>
-<input class="form-control form-control-lg fs-6" id="loginPass" placeholder="Masukkan password" type="password" value="AdminMDA2026!"/>
+<div class="input-group login-password-group"><input autocomplete="new-password" class="form-control form-control-lg fs-6" id="loginPass" name="simadu-login-secret" placeholder="Masukkan password" type="password"/><button class="btn btn-outline-secondary login-password-toggle" id="toggleLoginPassword" type="button" aria-label="Perlihatkan password" aria-pressed="false" onclick="toggleLoginPassword()"><i class="bi bi-eye" id="toggleLoginPasswordIcon"></i></button></div>
 </div>
 <button class="btn btn-primary w-100 py-2 fw-semibold fs-6" id="btnLogin" onclick="handleLogin()" type="button">
 <span class="spinner-border spinner-border-sm d-none" id="loginSpinner" role="status"></span> Masuk Aplikasi <i class="bi bi-arrow-right ms-1"></i>
@@ -3769,6 +3790,20 @@
         setTimeout(function(){ if (hasAccess('absensiQr')) switchNav('absensiQr'); }, 600);
       } else { hideMasdaLoader(0); alertBox.innerHTML = '<div class="alert alert-danger py-2 small">' + escapeHtml(res.message || 'Login siswa gagal') + '</div>'; }
     }).withFailureHandler(function(err){hideMasdaLoader(0);alertBox.innerHTML='<div class="alert alert-danger py-2 small">'+escapeHtml(err.message || err)+'</div>';}).loginSiswaDenganNisn(nisn);
+  }
+
+  function toggleLoginPassword() {
+    var input = document.getElementById('loginPass');
+    var icon = document.getElementById('toggleLoginPasswordIcon');
+    var button = document.getElementById('toggleLoginPassword');
+    if (!input) return;
+    var reveal = input.type === 'password';
+    input.type = reveal ? 'text' : 'password';
+    if (icon) icon.className = reveal ? 'bi bi-eye-slash' : 'bi bi-eye';
+    if (button) {
+      button.setAttribute('aria-label', reveal ? 'Sembunyikan password' : 'Perlihatkan password');
+      button.setAttribute('aria-pressed', reveal ? 'true' : 'false');
+    }
   }
 
   function handleLogin() {
