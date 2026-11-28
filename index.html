@@ -1382,25 +1382,34 @@
 </style>
 
 
-<style id="simadu-global-sticky-table-header-v1">
-/* Semua tabel aplikasi: area isi dapat digulir, kepala tabel tetap terlihat. */
-#mainApp .content-section .table-responsive{
-  max-height:min(68vh,640px); overflow:auto; position:relative;
-  overscroll-behavior:contain; -webkit-overflow-scrolling:touch;
+<style id="simadu-global-sticky-table-header-v2">
+/* Tombol/filter di atas tabel tetap mengikuti halaman; hanya area tabel yang discroll. */
+#mainApp .table-responsive {
+  position: relative; max-height: min(68vh, 640px); overflow: auto !important;
+  overscroll-behavior: contain; -webkit-overflow-scrolling: touch; scrollbar-gutter: stable;
 }
-#mainApp .content-section .table-responsive thead th{
-  position:sticky; top:0; z-index:8;
+#mainApp .table-responsive > table { margin-bottom: 0; border-collapse: separate; border-spacing: 0; }
+#mainApp .table-responsive > table > thead > tr > th,
+#mainApp .table-responsive > table > thead > tr > td {
+  position: sticky !important; top: var(--simadu-sticky-top, 0px) !important;
+  z-index: var(--simadu-sticky-z, 20) !important; background-clip: padding-box;
+  box-shadow: 0 1px 0 rgba(15, 23, 42, .12);
 }
-/* Tabel dengan dua baris header (misalnya ringkasan total + nama kolom). */
-#mainApp .content-section .table-responsive thead:has(tr:nth-child(2)) tr:first-child th{top:0;z-index:10}
-#mainApp .content-section .table-responsive thead:has(tr:nth-child(2)) tr:nth-child(2) th{top:34px;z-index:9}
-#mainApp .content-section .table-responsive thead th{
-  box-shadow:0 1px 0 rgba(255,255,255,.18),0 2px 3px rgba(15,23,42,.06);
+@media(max-width:767.98px){#mainApp .table-responsive{max-height:min(65vh,560px)}}
+@media print{#mainApp .table-responsive{max-height:none!important;overflow:visible!important}#mainApp .table-responsive thead th,#mainApp .table-responsive thead td{position:static!important}}
+/* Tombol mata berada di dalam sisi kanan input password. */
+#loginPage .login-password-group { position: relative; display: flex; width: 100%; }
+#loginPage .login-password-group > #loginPass { width: 100%; min-width: 0; padding-right: 3.1rem !important; }
+#loginPage .login-password-group > #toggleLoginPassword {
+  position: absolute; top: 1px; right: 1px; bottom: 1px; z-index: 5;
+  width: 42px; min-width: 42px; padding: 0; display: inline-flex;
+  align-items: center; justify-content: center; color: #64748b;
+  background: transparent; border: 0; border-radius: 0 10px 10px 0; box-shadow: none;
 }
-.login-password-group .form-control{min-width:0}
-.login-password-toggle{min-width:46px;border-color:#ced8e5;background:#f8fafc}
-.login-password-toggle:hover{background:#eaf1fb}
-@media print{#mainApp .content-section .table-responsive{max-height:none!important;overflow:visible!important}}
+#loginPage .login-password-group > #toggleLoginPassword:hover,
+#loginPage .login-password-group > #toggleLoginPassword:focus-visible { color: #1769dc; background: #eaf2ff; outline: none; }
+#loginPage #toggleLoginPasswordIcon { font-size: 1.05rem; line-height: 1; }
+
 </style>
 </head>
 
@@ -7779,41 +7788,35 @@
 .simada-guru-qr-page #guruQrReader video{width:100%!important;border-radius:10px;object-fit:cover}
 @media(max-width:767.98px){.simada-guru-qr-page .guru-qr-inline-leave{padding:12px}.simada-guru-qr-page #guruQrReader{min-height:210px}}
 </style>
-</body>
-<style id="simadu-sticky-header-login-fix">
-/* Sticky header untuk tabel di area aplikasi. Isi tabel yang discroll. */
-#mainApp .table-responsive {
-  position: relative; max-height: min(68vh, 640px); overflow: auto !important;
-  overscroll-behavior: contain; -webkit-overflow-scrolling: touch; scrollbar-gutter: stable;
-}
-#mainApp .table-responsive > table { margin-bottom: 0; }
-#mainApp .table-responsive > table > thead > tr > th,
-#mainApp .table-responsive > table > thead > tr > td {
-  position: sticky !important; top: 0; z-index: 20;
-  background-clip: padding-box; box-shadow: 0 1px 0 rgba(15, 23, 42, .12);
-}
-/* Baris pertama adalah ringkasan; baris kedua adalah nama kolom. */
-#mainApp .table-responsive > table > thead > tr:first-child > th,
-#mainApp .table-responsive > table > thead > tr:first-child > td { top: 0; z-index: 22; }
-#mainApp .table-responsive > table > thead > tr:nth-child(2) > th,
-#mainApp .table-responsive > table > thead > tr:nth-child(2) > td { top: 34px; z-index: 21; }
-@media (max-width: 767.98px) { #mainApp .table-responsive { max-height: min(65vh, 560px); } }
-@media print {
-  #mainApp .table-responsive { max-height: none !important; overflow: visible !important; }
-  #mainApp .table-responsive thead th, #mainApp .table-responsive thead td { position: static !important; }
-}
-/* Tombol mata berada di dalam sisi kanan input password. */
-#loginPage .login-password-group { position: relative; display: flex; width: 100%; }
-#loginPage .login-password-group > #loginPass { width: 100%; min-width: 0; padding-right: 3.1rem !important; }
-#loginPage .login-password-group > #toggleLoginPassword {
-  position: absolute; top: 1px; right: 1px; bottom: 1px; z-index: 5;
-  width: 42px; min-width: 42px; padding: 0; display: inline-flex;
-  align-items: center; justify-content: center; color: #64748b;
-  background: transparent; border: 0; border-radius: 0 10px 10px 0; box-shadow: none;
-}
-#loginPage .login-password-group > #toggleLoginPassword:hover,
-#loginPage .login-password-group > #toggleLoginPassword:focus-visible { color: #1769dc; background: #eaf2ff; outline: none; }
-#loginPage #toggleLoginPasswordIcon { font-size: 1.05rem; line-height: 1; }
-</style>
-
+<script id="simadu-sticky-header-dynamic-v2">
+(function(){
+  'use strict';
+  const WRAPPER='#mainApp .table-responsive';
+  const observedRows=new WeakSet();
+  const ro=typeof ResizeObserver!=='undefined'?new ResizeObserver(entries=>entries.forEach(entry=>{const t=entry.target.closest&&entry.target.closest('table');if(t)update(t)})):null;
+  function update(table){
+    if(!table||!table.tHead)return;
+    let top=0;
+    Array.from(table.tHead.rows||[]).forEach((row,index)=>{
+      const h=Math.ceil(row.getBoundingClientRect().height||row.offsetHeight||0);
+      row.querySelectorAll(':scope > th, :scope > td').forEach(cell=>{cell.style.setProperty('--simadu-sticky-top',top+'px');cell.style.setProperty('--simadu-sticky-z',String(40-index));});
+      if(ro&&!observedRows.has(row)){ro.observe(row);observedRows.add(row)}
+      top+=h;
+    });
+  }
+  function prep(w){if(w)w.querySelectorAll('table').forEach(update)}
+  function scan(root){if(!root)return;if(root.matches&&root.matches(WRAPPER))prep(root);if(root.querySelectorAll)root.querySelectorAll(WRAPPER).forEach(prep)}
+  function init(){
+    scan(document);
+    if(typeof MutationObserver!=='undefined'){
+      const mo=new MutationObserver(records=>records.forEach(r=>{if(r.type!=='childList')return;r.addedNodes.forEach(n=>{if(n.nodeType===1)scan(n)});const t=r.target.closest&&r.target.closest('table');if(t)update(t)}));
+      mo.observe(document.getElementById('mainApp')||document.body,{childList:true,subtree:true});
+    }
+    window.addEventListener('resize',()=>scan(document),{passive:true});
+    document.addEventListener('shown.bs.tab',()=>requestAnimationFrame(()=>scan(document)));
+    requestAnimationFrame(()=>scan(document));
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+})();
+</script>
 </body></html>
